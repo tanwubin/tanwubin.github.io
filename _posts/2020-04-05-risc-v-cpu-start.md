@@ -63,3 +63,6 @@ top: false
 
     https://riscv-mcu.com/community-community-topic-id-95.html
 
+> RTOS 
+
+    https://mp.weixin.qq.com/s/M3Bgv1v-AHfg_5K5nnto3Q

@@ -25,7 +25,7 @@ permalink: /links/
   [Cscope](http://cscope.sourceforge.net/) -
   [Ctags](http://ctags.sourceforge.net/)
   
-- Makefile
+- ~~Makefile~~ need change to cmake
 
   [Makefile经典教程](http://blog.csdn.net/ruglcc/article/details/7814546/)
   
@@ -42,12 +42,7 @@ permalink: /links/
 
 - 咨询公司
 
-  [IHS](https://ihsmarkit.com/index.html)  
-  
-- 亲子
-
-  [宝妈俱乐部](http://cardbang.com)  
-
+  [IHS](https://ihsmarkit.com/index.html)   
 
 <script>
     $(document).ready(function() {

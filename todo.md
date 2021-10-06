@@ -7,7 +7,7 @@ permalink: /todo/
 
 ## 最近在干嘛 #
 
-- 2021.10.5 linux内核驱动、logicsim等、RISC-V
+- 2021.10.5 linux内核驱动、logicsim等(https://blog.csdn.net/qq_52000150/article/details/120130044)、RISC-V
 
 - 2018.9.16 wpa计划、超级大脑计划、css世界计划
 

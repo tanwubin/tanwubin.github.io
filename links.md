@@ -4,6 +4,10 @@ title: 茶香-Links
 permalink: /links/
 ---
 
+- 数字电路
+
+  [简单CPU设计实践](https://lianera.github.io/post/2014/cpu-step-by-step/)
+
 - Management
 
   [Gabriel Anderbjörk](http://gabriel.anderbjork.se/index.htm)

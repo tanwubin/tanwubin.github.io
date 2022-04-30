@@ -1,4 +1,5 @@
 markdown: kramdown
+theme: Hacker
 kramdown:
   input: GFM
 permalink: /:year/:month/:title

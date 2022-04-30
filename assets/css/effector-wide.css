@@ -59,14 +59,14 @@ body {
     font-family: "Microsoft YaHei",Trebuchet,"Trebuchet MS",Tahoma,"Lucida Grande","Lucida Sans Unicode",Verdana,sans-serif;
     /*font-size: 15px;*/
     line-height: 30px;
-    color: #555;
+    color: #00ff00;
     /*background:url(https://tanwubin.github.io/upload/image/sand.png);*/
     background-color:#3a355e;
 }
 a {
     /*color: #F95B1F;*/
     /*color: #000000;*/
-    color: #2f9386;
+    color: #ffff00;
     text-decoration: none;
 }
 a:hover {
@@ -438,7 +438,7 @@ span.label.label-important:hover {
 }
 
 .postsList li {
-    background-color:  #fff;
+    background-color:  #021216;
     padding:  10px 20px;
     border-radius: 5px;
 }
@@ -488,7 +488,7 @@ span.label.label-important:hover {
     padding: 0.5em 1em;
     border-left: 3px solid #2f9386;
     border-right: 3px solid #2f9386;
-    background-color: #fff;
+    /* background-color: #fff; */
     list-style: none;
     border-radius: 5px;
 }

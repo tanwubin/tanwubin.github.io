@@ -1,15 +1,11 @@
 ---
 layout: page
-title: 茶农-Grower
+title: Me
 permalink: /teawaiter/
 ---
 ![](/upload/image/tanwubin.github.io.jpg){:width="950px"}
 
-## 茶馆小二
-
-- 电子通信爱好者
-
-## 小二兴趣
+## 兴趣
 
 - 哲学
 - 计算机

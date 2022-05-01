@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 茶香-Links
+title: Links
 permalink: /links/
 ---
 

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>blog of tan</title>
-    <link>http://localhost:1313/</link>
+    <link>https://tanwubin.github.io/</link>
     <description>Recent content on blog of tan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2025 tanwubin</copyright>
-    <lastBuildDate>Sat, 25 Jan 2025 21:11:12 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Jan 2025 21:11:12 +0800</lastBuildDate><atom:link href="https://tanwubin.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Markdown Syntax</title>
-      <link>http://localhost:1313/markdown-syntax/</link>
+      <link>https://tanwubin.github.io/markdown-syntax/</link>
       <pubDate>Sat, 25 Jan 2025 21:11:12 +0800</pubDate>
       
-      <guid>http://localhost:1313/markdown-syntax/</guid>
+      <guid>https://tanwubin.github.io/markdown-syntax/</guid>
       <description>&lt;hr&gt;
 &lt;p&gt;author: &amp;ldquo;Hugo Authors&amp;rdquo;
 title: &amp;ldquo;Markdown Syntax Guide&amp;rdquo;

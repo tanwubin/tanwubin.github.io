@@ -7,13 +7,27 @@
     <generator>Hugo</generator>
     <language>en</language>
     <copyright>© 2025 tanwubin</copyright>
-    <lastBuildDate>Sun, 18 Jul 2021 10:52:59 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jan 2025 23:19:35 +0800</lastBuildDate>
     <atom:link href="https://tanwubin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Markdown</title>
       <link>https://tanwubin.github.io/tags/markdown/</link>
-      <pubDate>Sun, 18 Jul 2021 10:52:59 +0800</pubDate>
+      <pubDate>Tue, 28 Jan 2025 23:19:35 +0800</pubDate>
       <guid>https://tanwubin.github.io/tags/markdown/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mermaid</title>
+      <link>https://tanwubin.github.io/tags/mermaid/</link>
+      <pubDate>Tue, 28 Jan 2025 23:19:35 +0800</pubDate>
+      <guid>https://tanwubin.github.io/tags/mermaid/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>KaTex</title>
+      <link>https://tanwubin.github.io/tags/katex/</link>
+      <pubDate>Tue, 28 Jan 2025 23:18:30 +0800</pubDate>
+      <guid>https://tanwubin.github.io/tags/katex/</guid>
       <description></description>
     </item>
   </channel>

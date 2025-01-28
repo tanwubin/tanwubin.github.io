@@ -49,5 +49,17 @@
                 hreflang="zh-cn"
                 href="https://tanwubin.github.io/zh-cn/tags/"
                 />
+  </url><url>
+    <loc>https://tanwubin.github.io/zh-cn/search/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://tanwubin.github.io/search/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://tanwubin.github.io/zh-cn/search/"
+                />
   </url>
 </urlset>

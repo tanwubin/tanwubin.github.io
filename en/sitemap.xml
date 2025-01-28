@@ -46,6 +46,18 @@
                 href="https://tanwubin.github.io/categories/"
                 />
   </url><url>
+    <loc>https://tanwubin.github.io/search/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://tanwubin.github.io/zh-cn/search/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://tanwubin.github.io/search/"
+                />
+  </url><url>
     <loc>https://tanwubin.github.io/series/</loc>
     <xhtml:link
                 rel="alternate"

@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on blog of tan</title>
-    <link>http://localhost:1313/zh-cn/tags/</link>
+    <link>https://tanwubin.github.io/zh-cn/tags/</link>
     <description>Recent content in Tags on blog of tan</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>© 2025 tanwubin</copyright>
     <lastBuildDate>Tue, 28 Jan 2025 23:15:50 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://tanwubin.github.io/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Markdown</title>
-      <link>http://localhost:1313/zh-cn/tags/markdown/</link>
+      <link>https://tanwubin.github.io/zh-cn/tags/markdown/</link>
       <pubDate>Tue, 28 Jan 2025 23:15:50 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/markdown/</guid>
+      <guid>https://tanwubin.github.io/zh-cn/tags/markdown/</guid>
       <description></description>
     </item>
   </channel>

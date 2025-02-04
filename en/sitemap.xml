@@ -2,104 +2,104 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://tanwubin.github.io/</loc>
     <lastmod>2025-01-28T23:19:35+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/zh-cn/"
+                href="https://tanwubin.github.io/zh-cn/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/"
+                href="https://tanwubin.github.io/"
                 />
   </url><url>
-    <loc>http://localhost:1313/tags/markdown/</loc>
+    <loc>https://tanwubin.github.io/tags/markdown/</loc>
     <lastmod>2025-01-28T23:19:35+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/zh-cn/tags/markdown/"
+                href="https://tanwubin.github.io/zh-cn/tags/markdown/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/tags/markdown/"
+                href="https://tanwubin.github.io/tags/markdown/"
                 />
   </url><url>
-    <loc>http://localhost:1313/tags/mermaid/</loc>
+    <loc>https://tanwubin.github.io/tags/mermaid/</loc>
     <lastmod>2025-01-28T23:19:35+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/mermaid-diagrams/</loc>
+    <loc>https://tanwubin.github.io/mermaid-diagrams/</loc>
     <lastmod>2025-01-28T23:19:35+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://tanwubin.github.io/tags/</loc>
     <lastmod>2025-01-28T23:19:35+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/zh-cn/tags/"
+                href="https://tanwubin.github.io/zh-cn/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/tags/"
+                href="https://tanwubin.github.io/tags/"
                 />
   </url><url>
-    <loc>http://localhost:1313/tags/katex/</loc>
+    <loc>https://tanwubin.github.io/tags/katex/</loc>
     <lastmod>2025-01-28T23:18:30+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/math-typesetting/</loc>
+    <loc>https://tanwubin.github.io/math-typesetting/</loc>
     <lastmod>2025-01-28T23:18:30+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/markdown-syntax/</loc>
+    <loc>https://tanwubin.github.io/markdown-syntax/</loc>
     <lastmod>2025-01-28T23:13:59+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/zh-cn/markdown-syntax/"
+                href="https://tanwubin.github.io/zh-cn/markdown-syntax/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/markdown-syntax/"
+                href="https://tanwubin.github.io/markdown-syntax/"
                 />
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://tanwubin.github.io/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/zh-cn/categories/"
+                href="https://tanwubin.github.io/zh-cn/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/categories/"
+                href="https://tanwubin.github.io/categories/"
                 />
   </url><url>
-    <loc>http://localhost:1313/search/</loc>
+    <loc>https://tanwubin.github.io/search/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/zh-cn/search/"
+                href="https://tanwubin.github.io/zh-cn/search/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/search/"
+                href="https://tanwubin.github.io/search/"
                 />
   </url><url>
-    <loc>http://localhost:1313/series/</loc>
+    <loc>https://tanwubin.github.io/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/zh-cn/series/"
+                href="https://tanwubin.github.io/zh-cn/series/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/series/"
+                href="https://tanwubin.github.io/series/"
                 />
   </url>
 </urlset>

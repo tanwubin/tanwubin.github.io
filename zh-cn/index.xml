@@ -40,10 +40,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h5 id=&#34;文档更新add-synchronization-checklist-to-documentation&#34;&gt;文档更新：Add synchronization checklist to documentation&lt;/h5&gt;
-&lt;p&gt;详见：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://hackrf.readthedocs.io/en/latest/synchronization_checklist.html&#34;&gt;https://hackrf.readthedocs.io/en/latest/synchronization_checklist.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;详见：&lt;a href=&#34;https://hackrf.readthedocs.io/en/latest/synchronization_checklist.html&#34;&gt;synchronization_checklist&lt;/a&gt;&lt;/p&gt;
 &lt;h5 id=&#34;windows下支持ctrl_break_event停止进程&#34;&gt;windows下支持CTRL_BREAK_EVENT停止进程&lt;/h5&gt;
 &lt;p&gt;host/hackrf-tools/src/hackrf_sweep.c&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;

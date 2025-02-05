@@ -158,10 +158,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h5 id="文档更新add-synchronization-checklist-to-documentation">文档更新：Add synchronization checklist to documentation</h5>
-<p>详见：</p>
-<ul>
-<li><a href="https://hackrf.readthedocs.io/en/latest/synchronization_checklist.html">https://hackrf.readthedocs.io/en/latest/synchronization_checklist.html</a></li>
-</ul>
+<p>详见：<a href="https://hackrf.readthedocs.io/en/latest/synchronization_checklist.html">synchronization_checklist</a></p>
 <h5 id="windows下支持ctrl_break_event停止进程">windows下支持CTRL_BREAK_EVENT停止进程</h5>
 <p>host/hackrf-tools/src/hackrf_sweep.c</p>
 <div class="highlight"><div class="chroma">
@@ -206,26 +203,15 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h5 id="issue模板更新新建issues中technical-support-request模板更新">issue模板更新：新建issues中Technical Support Request模板更新</h5>
-<p>详见：</p>
-<ul>
-<li><a href="https://github.com/greatscottgadgets/hackrf/pull/1507/files">https://github.com/greatscottgadgets/hackrf/pull/1507/files</a></li>
-</ul>
+<p>详见：<a href="https://github.com/greatscottgadgets/hackrf/pull/1507/files">PR 1507</a></p>
 <h5 id="增加sgpio-deadline-check">增加SGPIO deadline check</h5>
 <p>Checks whether the M0 core missed its deadline: i.e. if the next SGPIO interrupt already occurred by the time it finished processing the last one.</p>
 <p>If so, the M0 returns to the idle mode with an error code in the M0 state. This should cause the host tools to time out, at which point the error can be checked with <code>hackrf_debug -S</code>.</p>
-<p>详见：</p>
-<ul>
-<li><a href="https://github.com/greatscottgadgets/hackrf/pull/1510/files">https://github.com/greatscottgadgets/hackrf/pull/1510/files</a></li>
-</ul>
+<p>详见：<a href="https://github.com/greatscottgadgets/hackrf/pull/1510/files">PR 1510</a></p>
 <h5 id="builddeps-bump-jinja2-from-314-to-315-in-docs">build(deps): bump jinja2 from 3.1.4 to 3.1.5 in /docs</h5>
 <p>jinja2==3.1.4&mdash;&gt;jinja2==3.1.5</p>
 <h5 id="add-a-shim-header-to-support-locking-without-ldrexstrex">Add a shim header to support locking without ldrex/strex</h5>
-<p>详见：</p>
-<ul>
-<li><a href="https://github.com/greatscottgadgets/hackrf/pull/1516">https://github.com/greatscottgadgets/hackrf/pull/1516</a></li>
-<li><a href="https://github.com/greatscottgadgets/hackrf/pull/1517/files">https://github.com/greatscottgadgets/hackrf/pull/1517/files</a></li>
-<li><a href="https://github.com/greatscottgadgets/hackrf/pull/1519/files">https://github.com/greatscottgadgets/hackrf/pull/1519/files</a></li>
-</ul>
+<p>详见：<a href="https://github.com/greatscottgadgets/hackrf/pull/1516">PR 1516</a> | <a href="https://github.com/greatscottgadgets/hackrf/pull/1517/files">PR 1517</a> | <a href="https://github.com/greatscottgadgets/hackrf/pull/1519/files">PR 1519</a></p>
 
     </article>
   </main>

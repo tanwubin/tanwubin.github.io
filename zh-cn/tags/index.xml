@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>© 2025 tanwubin</copyright>
-    <lastBuildDate>Tue, 28 Jan 2025 23:15:50 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 05 Feb 2025 21:15:50 +0800</lastBuildDate>
     <atom:link href="https://tanwubin.github.io/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HackRF</title>
+      <link>https://tanwubin.github.io/zh-cn/tags/hackrf/</link>
+      <pubDate>Wed, 05 Feb 2025 21:15:50 +0800</pubDate>
+      <guid>https://tanwubin.github.io/zh-cn/tags/hackrf/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Markdown</title>
       <link>https://tanwubin.github.io/zh-cn/tags/markdown/</link>

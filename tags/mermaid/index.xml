@@ -1,27 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mermaid on blog of tan</title><link>https://tanwubin.github.io/tags/mermaid/</link><description>Recent content in Mermaid on blog of tan</description><generator>Hugo</generator><language>en</language><copyright>© 2025 tanwubin</copyright><lastBuildDate>Tue, 28 Jan 2025 23:19:35 +0800</lastBuildDate><atom:link href="https://tanwubin.github.io/tags/mermaid/index.xml" rel="self" type="application/rss+xml"/><item><title>Mermaid Diagrams</title><link>https://tanwubin.github.io/mermaid-diagrams/</link><pubDate>Tue, 28 Jan 2025 23:19:35 +0800</pubDate><guid>https://tanwubin.github.io/mermaid-diagrams/</guid><description>&lt;h2 id="examples">Examples&lt;/h2>
-&lt;p>The following are some examples of the diagrams, charts and graphs that can be made using Mermaid. Click here to jump into the &lt;a href="http://mermaid-js.github.io/mermaid/">full syntax&lt;/a>.&lt;/p>
-&lt;h3 id="flowchart">Flowchart&lt;/h3>
-&lt;pre tabindex="0">&lt;code>flowchart LR
-
-A[Hard] --&amp;gt;|Text| B(Round)
-B --&amp;gt; C{Decision}
-C --&amp;gt;|One| D[Result 1]
-C --&amp;gt;|Two| E[Result 2]
-&lt;/code>&lt;/pre>&lt;p>will be rendered as:&lt;/p>
-&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart LR
-
-A[Hard] --&amp;gt;|Text| B(Round)
-B --&amp;gt; C{Decision}
-C --&amp;gt;|One| D[Result 1]
-C --&amp;gt;|Two| E[Result 2]
-&lt;/code>&lt;/pre>&lt;h3 id="sequence-diagram">Sequence diagram&lt;/h3>
-&lt;pre tabindex="0">&lt;code>sequenceDiagram
-Alice-&amp;gt;&amp;gt;John: Hello John, how are you?
-loop Healthcheck
- John-&amp;gt;&amp;gt;John: Fight against hypochondria
-end
-Note right of John: Rational thoughts!
-John--&amp;gt;&amp;gt;Alice: Great!
-John-&amp;gt;&amp;gt;Bob: How about you?
-Bob--&amp;gt;&amp;gt;John: Jolly good!
-&lt;/code>&lt;/pre>&lt;p>will be rendered as:&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mermaid on blog of tan</title>
+    <link>https://tanwubin.github.io/tags/mermaid/</link>
+    <description>Recent content in Mermaid on blog of tan</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>© 2025 tanwubin</copyright>
+    <lastBuildDate>Tue, 28 Jan 2025 23:19:35 +0800</lastBuildDate>
+    <atom:link href="https://tanwubin.github.io/tags/mermaid/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mermaid Diagrams</title>
+      <link>https://tanwubin.github.io/mermaid-diagrams/</link>
+      <pubDate>Tue, 28 Jan 2025 23:19:35 +0800</pubDate>
+      <guid>https://tanwubin.github.io/mermaid-diagrams/</guid>
+      <description>&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;&#xA;&lt;p&gt;The following are some examples of the diagrams, charts and graphs that can be made using Mermaid. Click here to jump into the &lt;a href=&#34;http://mermaid-js.github.io/mermaid/&#34;&gt;full syntax&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;h3 id=&#34;flowchart&#34;&gt;Flowchart&lt;/h3&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;flowchart LR&#xA;&#xA;A[Hard] --&amp;gt;|Text| B(Round)&#xA;B --&amp;gt; C{Decision}&#xA;C --&amp;gt;|One| D[Result 1]&#xA;C --&amp;gt;|Two| E[Result 2]&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;will be rendered as:&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-mermaid&#34; data-lang=&#34;mermaid&#34;&gt;flowchart LR&#xA;&#xA;A[Hard] --&amp;gt;|Text| B(Round)&#xA;B --&amp;gt; C{Decision}&#xA;C --&amp;gt;|One| D[Result 1]&#xA;C --&amp;gt;|Two| E[Result 2]&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;sequence-diagram&#34;&gt;Sequence diagram&lt;/h3&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sequenceDiagram&#xA;Alice-&amp;gt;&amp;gt;John: Hello John, how are you?&#xA;loop Healthcheck&#xA;    John-&amp;gt;&amp;gt;John: Fight against hypochondria&#xA;end&#xA;Note right of John: Rational thoughts!&#xA;John--&amp;gt;&amp;gt;Alice: Great!&#xA;John-&amp;gt;&amp;gt;Bob: How about you?&#xA;Bob--&amp;gt;&amp;gt;John: Jolly good!&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;will be rendered as:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

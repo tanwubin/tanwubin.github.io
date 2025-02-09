@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://tanwubin.github.io/series/ai-tools/</loc>
+    <loc>https://tanwubin.github.io/series/ai_tools/</loc>
     <lastmod>2025-02-09T17:03:45+08:00</lastmod>
   </url><url>
     <loc>https://tanwubin.github.io/</loc>
@@ -34,10 +34,10 @@
                 href="https://tanwubin.github.io/categories/"
                 />
   </url><url>
-    <loc>https://tanwubin.github.io/tags/deep-learning-framework/</loc>
+    <loc>https://tanwubin.github.io/tags/deep_learning_framework/</loc>
     <lastmod>2025-02-09T17:03:45+08:00</lastmod>
   </url><url>
-    <loc>https://tanwubin.github.io/categories/keep-practice/</loc>
+    <loc>https://tanwubin.github.io/categories/keep_practice/</loc>
     <lastmod>2025-02-09T17:03:45+08:00</lastmod>
   </url><url>
     <loc>https://tanwubin.github.io/series/</loc>

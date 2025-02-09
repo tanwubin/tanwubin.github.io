@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://tanwubin.github.io/zh-cn/</loc>
-    <lastmod>2025-02-05T21:15:50+08:00</lastmod>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -16,7 +16,7 @@
                 />
   </url><url>
     <loc>https://tanwubin.github.io/zh-cn/categories/</loc>
-    <lastmod>2025-02-05T21:15:50+08:00</lastmod>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -26,6 +26,57 @@
                 rel="alternate"
                 hreflang="zh-cn"
                 href="https://tanwubin.github.io/zh-cn/categories/"
+                />
+  </url><url>
+    <loc>https://tanwubin.github.io/zh-cn/categories/keep_practice/</loc>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://tanwubin.github.io/categories/keep_practice/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://tanwubin.github.io/zh-cn/categories/keep_practice/"
+                />
+  </url><url>
+    <loc>https://tanwubin.github.io/zh-cn/matlab-ofdm-simulation/</loc>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
+  </url><url>
+    <loc>https://tanwubin.github.io/zh-cn/tags/ofdm/</loc>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
+  </url><url>
+    <loc>https://tanwubin.github.io/zh-cn/series/ofdm/</loc>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
+  </url><url>
+    <loc>https://tanwubin.github.io/zh-cn/series/</loc>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://tanwubin.github.io/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://tanwubin.github.io/zh-cn/series/"
+                />
+  </url><url>
+    <loc>https://tanwubin.github.io/zh-cn/series/simulation/</loc>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
+  </url><url>
+    <loc>https://tanwubin.github.io/zh-cn/tags/</loc>
+    <lastmod>2025-02-09T20:21:42+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://tanwubin.github.io/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://tanwubin.github.io/zh-cn/tags/"
                 />
   </url><url>
     <loc>https://tanwubin.github.io/zh-cn/tags/hackrf/</loc>
@@ -39,32 +90,6 @@
   </url><url>
     <loc>https://tanwubin.github.io/zh-cn/series/sdr/</loc>
     <lastmod>2025-02-05T21:15:50+08:00</lastmod>
-  </url><url>
-    <loc>https://tanwubin.github.io/zh-cn/series/</loc>
-    <lastmod>2025-02-05T21:15:50+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://tanwubin.github.io/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://tanwubin.github.io/zh-cn/series/"
-                />
-  </url><url>
-    <loc>https://tanwubin.github.io/zh-cn/tags/</loc>
-    <lastmod>2025-02-05T21:15:50+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://tanwubin.github.io/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://tanwubin.github.io/zh-cn/tags/"
-                />
   </url><url>
     <loc>https://tanwubin.github.io/zh-cn/tags/markdown/</loc>
     <lastmod>2025-01-28T23:15:50+08:00</lastmod>

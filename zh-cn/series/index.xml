@@ -7,8 +7,22 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>© 2025 tanwubin</copyright>
-    <lastBuildDate>Wed, 05 Feb 2025 21:15:50 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 09 Feb 2025 20:21:42 +0800</lastBuildDate>
     <atom:link href="https://tanwubin.github.io/zh-cn/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OFDM</title>
+      <link>https://tanwubin.github.io/zh-cn/series/ofdm/</link>
+      <pubDate>Sun, 09 Feb 2025 20:21:42 +0800</pubDate>
+      <guid>https://tanwubin.github.io/zh-cn/series/ofdm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Simulation</title>
+      <link>https://tanwubin.github.io/zh-cn/series/simulation/</link>
+      <pubDate>Sun, 09 Feb 2025 20:21:42 +0800</pubDate>
+      <guid>https://tanwubin.github.io/zh-cn/series/simulation/</guid>
+      <description></description>
+    </item>
     <item>
       <title>SDR</title>
       <link>https://tanwubin.github.io/zh-cn/series/sdr/</link>

@@ -4,21 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <meta property="og:url" content="https://tanwubin.github.io/build-ollama-from-source/">
+  <meta property="og:url" content="https://tanwubin.github.io/build-deep-learning-framework/">
   <meta property="og:site_name" content="blog of tan">
-  <meta property="og:title" content="Build ollama from source on Windows">
-  <meta property="og:description" content="How to Build Ollama from Source for running Large Language Models on Windows">
+  <meta property="og:title" content="Build Deep Learning Framework:Step1 Variable">
+  <meta property="og:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2025-02-06T21:44:37+08:00">
-    <meta property="article:modified_time" content="2025-02-06T21:44:37+08:00">
-    <meta property="article:tag" content="Ollama">
-      <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework/">
+    <meta property="article:published_time" content="2025-02-09T17:03:45+08:00">
+    <meta property="article:modified_time" content="2025-02-09T17:03:45+08:00">
+    <meta property="article:tag" content="Deep Learning Framework">
+      <meta property="og:see_also" content="https://tanwubin.github.io/build-ollama-from-source/">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Build ollama from source on Windows">
-  <meta name="twitter:description" content="How to Build Ollama from Source for running Large Language Models on Windows">
+  <meta name="twitter:title" content="Build Deep Learning Framework:Step1 Variable">
+  <meta name="twitter:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps">
 
   
   
@@ -26,7 +26,7 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
   <title>
     
-    blog of tan - Build ollama from source on Windows
+    blog of tan - Build Deep Learning Framework:Step1 Variable
     
   </title>
   
@@ -113,11 +113,11 @@
 
   
 <div class="container mx-auto">
-  <h1 class="text-4xl font-extrabold mt-6 mb-6">Build ollama from source on Windows</h1>
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">Build Deep Learning Framework:Step1 Variable</h1>
   <div class="mb-3 text-sm flex justify-between ">
     <div>
       
-      Post at &mdash; Feb 06, 2025
+      Post at &mdash; Feb 09, 2025
       
       
     </div>
@@ -125,123 +125,45 @@
     <div>
       
       
-      <a class="ml-1" href="/tags/Ollama">#Ollama</a>
+      <a class="ml-1" href="/tags/Deep%20Learning%20Framework">#Deep Learning Framework</a>
       
     </div>
     
   </div>
   <main class="mb-8">
-    <p>How to Build Ollama from Source for running Large Language Models on Windows</p>
+    <p>How to Build Deep Learning Framework Step By Step Using 60 steps</p>
     <article class="md">
-      <h5 id="install-prerequisites">Install prerequisites</h5>
-<p>Install prerequisites:</p>
-<ul>
-<li><a href="https://go.dev/doc/install">Go</a></li>
-<li>C/C++ Compiler e.g. Clang on macOS, <a href="https://jmeubank.github.io/tdm-gcc/download/">TDM-GCC</a> (Windows amd64) or <a href="https://github.com/mstorsjo/llvm-mingw">llvm-mingw</a> (Windows arm64), GCC/Clang on Linux.</li>
-</ul>
-<p>Then build and run Ollama from the root directory of the repository:</p>
-<div class="highlight"><div class="chroma">
+      <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go run . serve
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Variable</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h5 id="configure-and-build-the-project-and-run-ollama">configure and build the project and run Ollama</h5>
-<p>Install prerequisites:</p>
-<ul>
-<li><a href="https://cmake.org/download/">CMake</a></li>
-<li><a href="https://visualstudio.microsoft.com/downloads/">Visual Studio 2022</a> including the Native Desktop Workload</li>
-<li>(Optional) NVIDIA GPU support
-<ul>
-<li><a href="https://developer.nvidia.com/cuda-downloads?target_os=Windows&amp;target_arch=x86_64&amp;target_version=11&amp;target_type=exe_network">CUDA SDK</a></li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>[Notice]
-Ensure prerequisites are in <code>PATH</code> before running CMake.</p>
-</blockquote>
-<blockquote>
-<p>[Notice]
-CUDA is only compatible with Visual Studio CMake generators.</p>
-</blockquote>
-<p>Then, configure and build the project:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cmake -B build
-</span></span><span class="line"><span class="cl">cmake --build build --config Release
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Lastly, run Ollama:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go run . serve
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h5 id="build-ollamaexe">Build Ollama.exe</h5>
-<p>Install source code:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git clone https://github.com/tanwubin/ollama.git
-</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ollama
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>compile the source to ollama.exe</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go generate ./...
-</span></span><span class="line"><span class="cl">go build .
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h5 id="pull-models">Pull Models</h5>
-<p>Install Models:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> ollama
-</span></span><span class="line"><span class="cl">ollama.exe pull llama3.2
-</span></span><span class="line"><span class="cl">ollama.exe pull deepseek-r1:7b
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h5 id="use-curl-to-test">Use curl to test</h5>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl http://127.0.0.1:11434/api/generate -d <span class="s1">&#39;{
-</span></span></span><span class="line"><span class="cl"><span class="s1">  &#34;model&#34;: &#34;llama3.2&#34;,
-</span></span></span><span class="line"><span class="cl"><span class="s1">  &#34;prompt&#34;: &#34;Why is the sky blue?&#34;,
-</span></span></span><span class="line"><span class="cl"><span class="s1">  &#34;stream&#34;: false
-</span></span></span><span class="line"><span class="cl"><span class="s1">}&#39;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>if you see the response of llama3.2 model, it means works!</p>
+</div><p>The Class Variable likes a box to store the data, while the data is not only a number or called scalar,it can be a vector or an array also.</p>
 
     </article>
   </main>

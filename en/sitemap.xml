@@ -3,10 +3,10 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://tanwubin.github.io/series/ai_tools/</loc>
-    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
+    <lastmod>2025-02-10T19:16:52+08:00</lastmod>
   </url><url>
     <loc>https://tanwubin.github.io/</loc>
-    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
+    <lastmod>2025-02-10T19:16:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -18,11 +18,11 @@
                 href="https://tanwubin.github.io/"
                 />
   </url><url>
-    <loc>https://tanwubin.github.io/build-deep-learning-framework/</loc>
-    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
+    <loc>https://tanwubin.github.io/build-deep-learning-framework-step2/</loc>
+    <lastmod>2025-02-10T19:16:52+08:00</lastmod>
   </url><url>
     <loc>https://tanwubin.github.io/categories/</loc>
-    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
+    <lastmod>2025-02-10T19:16:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -35,10 +35,10 @@
                 />
   </url><url>
     <loc>https://tanwubin.github.io/tags/deep_learning_framework/</loc>
-    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
+    <lastmod>2025-02-10T19:16:52+08:00</lastmod>
   </url><url>
     <loc>https://tanwubin.github.io/categories/keep_practice/</loc>
-    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
+    <lastmod>2025-02-10T19:16:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -51,7 +51,7 @@
                 />
   </url><url>
     <loc>https://tanwubin.github.io/series/</loc>
-    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
+    <lastmod>2025-02-10T19:16:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -64,7 +64,7 @@
                 />
   </url><url>
     <loc>https://tanwubin.github.io/tags/</loc>
-    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
+    <lastmod>2025-02-10T19:16:52+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -75,6 +75,9 @@
                 hreflang="en"
                 href="https://tanwubin.github.io/tags/"
                 />
+  </url><url>
+    <loc>https://tanwubin.github.io/build-deep-learning-framework-step1/</loc>
+    <lastmod>2025-02-09T17:03:45+08:00</lastmod>
   </url><url>
     <loc>https://tanwubin.github.io/build-ollama-from-source/</loc>
     <lastmod>2025-02-06T21:44:37+08:00</lastmod>

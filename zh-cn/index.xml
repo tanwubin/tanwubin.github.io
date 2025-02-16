@@ -14,8 +14,7 @@
       <pubDate>Sun, 16 Feb 2025 15:15:14 +0800</pubDate>
       
       <guid>https://tanwubin.github.io/zh-cn/how-to-pick-a-career/</guid>
-      <description>&lt;hr&gt;
-&lt;h1 id=&#34;你迄今为止的生活&#34;&gt;你迄今为止的生活&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;你迄今为止的生活&#34;&gt;你迄今为止的生活&lt;/h1&gt;
 &lt;p&gt;对于大多数人来说，童年就像一条河，我们就是河里的蝌蚪。&lt;/p&gt;
 &lt;p&gt;我们没有办法选择河流。我们醒来的那天，就已经在这条父母、社会和大环境给我们选定的道路上了。我们被告知了河流的生存法则、正确的泳姿和我们的目标。
 &lt;img src=&#34;https://tanwubin.github.io/img/river-2-768x429.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
@@ -97,8 +96,7 @@
       <pubDate>Sat, 15 Feb 2025 14:50:47 +0800</pubDate>
       
       <guid>https://tanwubin.github.io/zh-cn/accomplish-something/</guid>
-      <description>&lt;hr&gt;
-&lt;p&gt;欲成其事者，先坚其志，欲坚其志者，先定其心，欲定其心者，先明其理；&lt;/p&gt;
+      <description>&lt;p&gt;欲成其事者，先坚其志，欲坚其志者，先定其心，欲定其心者，先明其理；&lt;/p&gt;
 &lt;p&gt;理通而后有向，向而后能有专，专而后能恒，恒而后能果，果而后能成。&lt;/p&gt;
 &lt;p&gt;一辈子很短暂，活出自己很重要。清楚自己做什么，看到好的时机，就一定要去做，心里想的和行为保持一致。&lt;/p&gt;</description>
     </item>
@@ -135,8 +133,7 @@
       <pubDate>Wed, 05 Feb 2025 21:15:50 +0800</pubDate>
       
       <guid>https://tanwubin.github.io/zh-cn/hackrf-changelog-20241018~20250109/</guid>
-      <description>&lt;hr&gt;
-&lt;h5 id=&#34;文档更新add-opera-cake-block-diagram&#34;&gt;文档更新：Add Opera Cake Block Diagram&lt;/h5&gt;
+      <description>&lt;h5 id=&#34;文档更新add-opera-cake-block-diagram&#34;&gt;文档更新：Add Opera Cake Block Diagram&lt;/h5&gt;
 &lt;p&gt;&lt;img src=&#34;https://hackrf.readthedocs.io/en/latest/_images/operacake-block-diagram.png&#34; alt=&#34;opera cake block diagram&#34;&gt;&lt;/p&gt;
 &lt;h5 id=&#34;add-agm-cpld-to-portapack-detection-routine&#34;&gt;Add AGM CPLD to portapack detection routine&lt;/h5&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -195,7 +192,6 @@
       
       <guid>https://tanwubin.github.io/zh-cn/markdown-syntax/</guid>
       <description>&lt;p&gt;本文提供了一个可以在 Hugo 内容文件中使用的基本 Markdown 语法示例，还展示了基本 HTML 元素是否在 Hugo 主题中使用 CSS 进行修饰。&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id=&#34;标题&#34;&gt;标题&lt;/h2&gt;
 &lt;p&gt;下面的 HTML &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt;—&lt;code&gt;&amp;lt;h6&amp;gt;&lt;/code&gt; 元素代表了六个级别的章节标题。 &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt; 是最高的部分级别，而 &lt;code&gt;&amp;lt;h6&amp;gt;&lt;/code&gt; 是最低的。&lt;/p&gt;
 &lt;h1 id=&#34;一级标题&#34;&gt;一级标题&lt;/h1&gt;

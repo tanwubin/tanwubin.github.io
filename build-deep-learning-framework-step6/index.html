@@ -142,7 +142,8 @@
     <p>How to Build Deep Learning Framework Step By Step Using 60 steps:Step6</p>
     <article class="md">
       <p>The Chain Rule is the core rule for differentiating composite functions in calculus, described as:
-if the function $$ y=f(g(x)) $$,then the derivative of x is:
+if the function $$ y=f(g(x)) $$
+then the derivative of x is:
 $$
 \frac{dy}{dx} = \frac{dy}{dg}*\frac{dg}{dx}
 $$</p>
@@ -265,8 +266,8 @@ $$</p>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>the function is $$ y = (e^(x^2))^2 = = e^{2x^{2}} $$
-set $$ u = 2*x^2 $$
+</div><p>the function is $$ y = \left(e^{x^{2}}\right)^{2} = e^{2x^{2}}$$
+set $$ u = 2<em>x^2 $$
 then $$ y = e^u $$
 so
 $$
@@ -281,8 +282,23 @@ $$
 final answer is:
 $$
 \frac{dy}{dx} =\boxed{4x \cdot e^{2x^{2}}}
-$$</p>
-
+$$
+when x is 0.5:
+$$
+\frac{dy}{dx} = \boxed{4</em>0.5 \cdot e^{2*(0.5)^{2}}}
+$$
+same with the code result:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">(</span>deep-learning-from-scratch-3<span class="o">)</span> D:<span class="se">\p</span>roject<span class="se">\d</span>eep-learning-from-scratch-3&gt;python steps<span class="se">\s</span>tep06.py 
+</span></span><span class="line"><span class="cl">3.297442541400256
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
     </article>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/gumshoejs@5.1.2/dist/gumshoe.min.js"></script>

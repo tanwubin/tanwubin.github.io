@@ -266,28 +266,37 @@ $$</p>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>the function is $$ y = \left(e^{x^{2}}\right)^{2} = e^{2x^{2}} $$
-set $$ u = 2<em>x^2 $$
-then $$ y = e^u $$
-so
+</div><p>the function is
+$$
+y = \left(e^{x^{2}}\right)^{2} = e^{2x^{2}}
+$$</p>
+<p>set
+$$
+u = 2*x^2
+$$</p>
+<p>then
+$$
+y = e^u
+$$</p>
+<p>so
 $$
 \frac{dy}{du} = e^{u}
-$$
-$$
+$$</p>
+<p>$$
 \frac{du}{dx} = 4x
-$$
-$$
+$$</p>
+<p>$$
 \frac{dy}{dx} = e^{2x^{2}} \cdot 4x
-$$
-final answer is:
+$$</p>
+<p>final answer is
 $$
 \frac{dy}{dx} =\boxed{4x \cdot e^{2x^{2}}}
+$$</p>
+<p>when x is 0.5
 $$
-when x is 0.5:
-$$
-\frac{dy}{dx} = \boxed{4</em>0.5 \cdot e^{2*(0.5)^{2}}}
-$$
-same with the code result:</p>
+\frac{dy}{dx} = \boxed{4*0.5 \cdot e^{2*(0.5)^{2}}}
+$$</p>
+<p>same with the code result</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1

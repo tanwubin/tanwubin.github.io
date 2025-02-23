@@ -4,25 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <meta property="og:url" content="https://tanwubin.github.io/build-deep-learning-framework-step3/">
+  <meta property="og:url" content="https://tanwubin.github.io/build-deep-learning-framework-step7/">
   <meta property="og:site_name" content="blog of tan">
-  <meta property="og:title" content="Build Deep Learning Framework:Step3 Continuous calling of functions">
-  <meta property="og:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps:Step3">
+  <meta property="og:title" content="Build Deep Learning Framework:Step7 Auto Backpropagation">
+  <meta property="og:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps:Step7">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2025-02-12T11:45:25+08:00">
-    <meta property="article:modified_time" content="2025-02-12T11:45:25+08:00">
+    <meta property="article:published_time" content="2025-02-23T09:13:03+08:00">
+    <meta property="article:modified_time" content="2025-02-23T09:13:03+08:00">
     <meta property="article:tag" content="Deep_Learning_Framework">
-      <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step7/">
       <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step6/">
       <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step4/">
+      <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step3/">
       <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step2/">
       <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step1/">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Build Deep Learning Framework:Step3 Continuous calling of functions">
-  <meta name="twitter:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps:Step3">
+  <meta name="twitter:title" content="Build Deep Learning Framework:Step7 Auto Backpropagation">
+  <meta name="twitter:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps:Step7">
 
   
   
@@ -30,7 +30,7 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
   <title>
     
-    blog of tan - Build Deep Learning Framework:Step3 Continuous calling of functions
+    blog of tan - Build Deep Learning Framework:Step7 Auto Backpropagation
     
   </title>
   
@@ -122,11 +122,11 @@
 </div>
 <div class="container mx-auto">
   <div class="left-box">
-  <h1 class="text-4xl font-extrabold mt-6 mb-6">Build Deep Learning Framework:Step3 Continuous calling of functions</h1>
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">Build Deep Learning Framework:Step7 Auto Backpropagation</h1>
   <div class="mb-3 text-sm flex justify-between ">
     <div>
       
-      Post at &mdash; Feb 12, 2025
+      Post at &mdash; Feb 23, 2025
       
       
     </div>
@@ -140,9 +140,25 @@
     
   </div>
   <main class="mb-8">
-    <p>How to Build Deep Learning Framework Step By Step Using 60 steps:Step3</p>
+    <p>How to Build Deep Learning Framework Step By Step Using 60 steps:Step7</p>
     <article class="md">
-      <div class="highlight"><div class="chroma">
+      <p>In step6,we must calc each fun&rsquo;s backward like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">y</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>if the function call graph is complex,the code will be tedious,so how to solve it?</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -177,31 +193,103 @@
 </span><span class="lnt">31
 </span><span class="lnt">32
 </span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Variable</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">creator</span> <span class="o">=</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">set_creator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">creator</span> <span class="o">=</span> <span class="n">func</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">creator</span>  <span class="c1"># 1. Get a function</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">input</span>  <span class="c1"># 2. Get the function&#39;s input</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>  <span class="c1"># 3. Call the function&#39;s backward</span>
+</span></span><span class="line"><span class="cl">            <span class="n">x</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Function</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">data</span>
 </span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">output</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">output</span><span class="o">.</span><span class="n">set_creator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>  <span class="c1"># Set parent(function)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="nb">input</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span>  <span class="c1"># Set output</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">output</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gy</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Square</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">y</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gy</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">data</span>
+</span></span><span class="line"><span class="cl">        <span class="n">gx</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">gy</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">gx</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Exp</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">y</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gy</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">data</span>
+</span></span><span class="line"><span class="cl">        <span class="n">gx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">gy</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">gx</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">A</span> <span class="o">=</span> <span class="n">Square</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="n">B</span> <span class="o">=</span> <span class="n">Exp</span><span class="p">()</span>
@@ -211,12 +299,15 @@
 </span></span><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="n">B</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># backward</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><blockquote>
-<p>Continuous calling prepares for efficient calculation of the derivative of each variable, and the algorithm behind it is called backpropagation algorithm</p>
-</blockquote>
+</div><p>you can use the following image to understand the code:</p>
+<p><img src="/img/auto-backward.png" alt=""></p>
 
     </article>
   </main>

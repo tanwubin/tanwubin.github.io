@@ -4,16 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <meta property="og:url" content="https://tanwubin.github.io/build-deep-learning-framework-step9/">
+  <meta property="og:url" content="https://tanwubin.github.io/build-deep-learning-framework-step10/">
   <meta property="og:site_name" content="blog of tan">
-  <meta property="og:title" content="Build Deep Learning Framework:Step9 Make functions easier to use">
-  <meta property="og:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps:Step9">
+  <meta property="og:title" content="Build Deep Learning Framework:Step10 How to test the framework">
+  <meta property="og:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps:Step10">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2025-02-26T19:56:06+08:00">
-    <meta property="article:modified_time" content="2025-02-26T19:56:06+08:00">
+    <meta property="article:published_time" content="2025-02-27T08:56:28+08:00">
+    <meta property="article:modified_time" content="2025-02-27T08:56:28+08:00">
     <meta property="article:tag" content="Deep_Learning_Framework">
-      <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step10/">
+      <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step9/">
       <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step8/">
       <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step7/">
       <meta property="og:see_also" content="https://tanwubin.github.io/build-deep-learning-framework-step6/">
@@ -22,8 +22,8 @@
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Build Deep Learning Framework:Step9 Make functions easier to use">
-  <meta name="twitter:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps:Step9">
+  <meta name="twitter:title" content="Build Deep Learning Framework:Step10 How to test the framework">
+  <meta name="twitter:description" content="How to Build Deep Learning Framework Step By Step Using 60 steps:Step10">
 
   
   
@@ -31,7 +31,7 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
   <title>
     
-    blog of tan - Build Deep Learning Framework:Step9 Make functions easier to use
+    blog of tan - Build Deep Learning Framework:Step10 How to test the framework
     
   </title>
   
@@ -123,11 +123,11 @@
 </div>
 <div class="container mx-auto">
   <div class="left-box">
-  <h1 class="text-4xl font-extrabold mt-6 mb-6">Build Deep Learning Framework:Step9 Make functions easier to use</h1>
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">Build Deep Learning Framework:Step10 How to test the framework</h1>
   <div class="mb-3 text-sm flex justify-between ">
     <div>
       
-      Post at &mdash; Feb 26, 2025
+      Post at &mdash; Feb 27, 2025
       
       
     </div>
@@ -141,7 +141,7 @@
     
   </div>
   <main class="mb-8">
-    <p>How to Build Deep Learning Framework Step By Step Using 60 steps:Step9</p>
+    <p>How to Build Deep Learning Framework Step By Step Using 60 steps:Step10</p>
     <article class="md">
       <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -237,9 +237,16 @@
 </span><span class="lnt">90
 </span><span class="lnt">91
 </span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span><span class="lnt">96
+</span><span class="lnt">97
+</span><span class="lnt">98
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">unittest</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Variable</span><span class="p">:</span>
@@ -303,58 +310,74 @@
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">gx</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Exp</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">y</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gy</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">data</span>
-</span></span><span class="line"><span class="cl">        <span class="n">gx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">gy</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">gx</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Square</span><span class="p">()(</span><span class="n">x</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Exp</span><span class="p">()(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">numerical_diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x0</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="n">eps</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x1</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y0</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y1</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">(</span><span class="n">y1</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="n">y0</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">square</span><span class="p">(</span><span class="n">exp</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
-</span></span><span class="line"><span class="cl"><span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SquareTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">2.0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">expected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">4.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">3.0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">expected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">6.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">1.0</span><span class="p">))</span>  <span class="c1"># OK</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># OK</span>
-</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># NG</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_gradient_check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">num_grad</span> <span class="o">=</span> <span class="n">numerical_diff</span><span class="p">(</span><span class="n">square</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">flg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span> <span class="n">num_grad</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">flg</span><span class="p">)</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div class="chroma">
+</div><p>Test results:</p>
+<div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">(</span>deep-learning-from-scratch-3<span class="o">)</span> D:<span class="se">\p</span>roject<span class="se">\d</span>eep-learning-from-scratch-3&gt;python steps<span class="se">\s</span>tep09.py
-</span></span><span class="line"><span class="cl">3.297442541400256
-</span></span><span class="line"><span class="cl">Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
-</span></span><span class="line"><span class="cl">  File <span class="s2">&#34;D:\project\deep-learning-from-scratch-3\steps\step09.py&#34;</span>, line 92, in &lt;module&gt;
-</span></span><span class="line"><span class="cl">    <span class="nv">x</span> <span class="o">=</span> Variable<span class="o">(</span>1.0<span class="o">)</span>  <span class="c1"># NG</span>
-</span></span><span class="line"><span class="cl">        ^^^^^^^^^^^^^
-</span></span><span class="line"><span class="cl">  File <span class="s2">&#34;D:\project\deep-learning-from-scratch-3\steps\step09.py&#34;</span>, line 8, in __init__
-</span></span><span class="line"><span class="cl">    raise TypeError<span class="o">(</span><span class="s1">&#39;{} is not supported&#39;</span>.format<span class="o">(</span>type<span class="o">(</span>data<span class="o">)))</span>
-</span></span><span class="line"><span class="cl">TypeError: &lt;class <span class="s1">&#39;float&#39;</span>&gt; is not supported
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">D:<span class="se">\s</span>oftware<span class="se">\a</span>naconda3<span class="se">\e</span>nvs<span class="se">\d</span>eep-learning-from-scratch-3<span class="se">\p</span>ython.exe <span class="s2">&#34;D:/software/JetBrains/PyCharm 2024.3.2/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py&#34;</span> --target step10.py::SquareTest 
+</span></span><span class="line"><span class="cl">Testing started at 8:58 ...
+</span></span><span class="line"><span class="cl">Launching pytest with arguments step10.py::SquareTest --no-header --no-summary -q in D:<span class="se">\p</span>roject<span class="se">\d</span>eep-learning-from-scratch-3<span class="se">\s</span>teps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=============================</span> <span class="nb">test</span> session <span class="nv">starts</span> <span class="o">=============================</span>
+</span></span><span class="line"><span class="cl">collecting ... collected <span class="m">3</span> items
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">step10.py::SquareTest::test_backward PASSED                              <span class="o">[</span> 33%<span class="o">]</span>
+</span></span><span class="line"><span class="cl">step10.py::SquareTest::test_forward PASSED                               <span class="o">[</span> 66%<span class="o">]</span>
+</span></span><span class="line"><span class="cl">step10.py::SquareTest::test_gradient_check PASSED                        <span class="o">[</span>100%<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">==============================</span> <span class="m">3</span> passed in 0.02s <span class="o">==============================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Process finished with <span class="nb">exit</span> code <span class="m">0</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div>

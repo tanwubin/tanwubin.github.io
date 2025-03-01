@@ -8,7 +8,7 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
   <title>
     
-    blog of tan - How to Understand Backpropagation?
+    blog of tan - How to Understand Backpropagation?Especially How to Update Weights?
     
   </title>
   
@@ -105,12 +105,13 @@
         <li><a href="#example">Example</a></li>
       </ol>
     </li>
+    <li><a href="#a-code-demo">A Code Demo</a></li>
   </ol>
 </nav>
 </div>
 <div class="container mx-auto">
   <div class="left-box">
-  <h1 class="text-4xl font-extrabold mt-6 mb-6">How to Understand Backpropagation?</h1>
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">How to Understand Backpropagation?Especially How to Update Weights?</h1>
   <div class="mb-3 text-sm flex justify-between ">
     <div>
       
@@ -169,7 +170,841 @@ $$</p>
 <p><img src="/img/bp-example01.png" alt=""></p>
 <p><img src="/img/bp-example02.png" alt=""></p>
 <p><img src="/img/bp-example03.png" alt=""></p>
-
+<h1 id="a-code-demo">A Code Demo</h1>
+<p>two input,two hidden layer and two output layer,the active function is sigmoid.</p>
+<p>this demo show how to auto change the weight to make inputs:[0.05,0.10] calculate with the weights to match the outputs:[0.01,0.99]</p>
+<p><img src="/img/bp_trans_example.png" alt=""></p>
+<p>the code:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1">#coding:utf-8</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">math</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">NeuralNetwork</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.5</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_inputs</span><span class="p">,</span> <span class="n">num_hidden</span><span class="p">,</span> <span class="n">num_outputs</span><span class="p">,</span> <span class="n">hidden_layer_weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hidden_layer_bias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">output_layer_weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">output_layer_bias</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">num_inputs</span> <span class="o">=</span> <span class="n">num_inputs</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span> <span class="o">=</span> <span class="n">NeuronLayer</span><span class="p">(</span><span class="n">num_hidden</span><span class="p">,</span> <span class="n">hidden_layer_bias</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span> <span class="o">=</span> <span class="n">NeuronLayer</span><span class="p">(</span><span class="n">num_outputs</span><span class="p">,</span> <span class="n">output_layer_bias</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">init_weights_from_inputs_to_hidden_layer_neurons</span><span class="p">(</span><span class="n">hidden_layer_weights</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">init_weights_from_hidden_layer_neurons_to_output_layer_neurons</span><span class="p">(</span><span class="n">output_layer_weights</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">init_weights_from_inputs_to_hidden_layer_neurons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_layer_weights</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">weight_num</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_inputs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="ow">not</span> <span class="n">hidden_layer_weights</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hidden_layer_weights</span><span class="p">[</span><span class="n">weight_num</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">                <span class="n">weight_num</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">init_weights_from_hidden_layer_neurons_to_output_layer_neurons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_layer_weights</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">weight_num</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="ow">not</span> <span class="n">output_layer_weights</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output_layer_weights</span><span class="p">[</span><span class="n">weight_num</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">                <span class="n">weight_num</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* Inputs: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_inputs</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hidden Layer&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* Output Layer&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">feed_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">hidden_layer_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">feed_forward</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">feed_forward</span><span class="p">(</span><span class="n">hidden_layer_outputs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_inputs</span><span class="p">,</span> <span class="n">training_outputs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">feed_forward</span><span class="p">(</span><span class="n">training_inputs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># 1. out di*df/de</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pd_errors_wrt_output_neuron_total_net_input</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1"># ∂E/∂zⱼ</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pd_errors_wrt_output_neuron_total_net_input</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_pd_error_wrt_total_net_input</span><span class="p">(</span><span class="n">training_outputs</span><span class="p">[</span><span class="n">o</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;out di*df/de------------------------------------------------------------------------------------------&gt;&#34;</span><span class="p">,</span><span class="n">pd_errors_wrt_output_neuron_total_net_input</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 2. hidden di*df/de</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pd_errors_wrt_hidden_neuron_total_net_input</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1"># dE/dyⱼ = Σ ∂E/∂zⱼ * ∂z/∂yⱼ = Σ ∂E/∂zⱼ * wᵢⱼ</span>
+</span></span><span class="line"><span class="cl">            <span class="n">d_error_wrt_hidden_neuron_output</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;calc pd_active*pd_out*weight,&#34;</span><span class="p">,</span><span class="n">pd_errors_wrt_output_neuron_total_net_input</span><span class="p">[</span><span class="n">o</span><span class="p">],</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">h</span><span class="p">],</span><span class="s2">&#34;+&#34;</span><span class="p">,</span> <span class="n">d_error_wrt_hidden_neuron_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">d_error_wrt_hidden_neuron_output</span> <span class="o">+=</span> <span class="n">pd_errors_wrt_output_neuron_total_net_input</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">h</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Σpd_active*pd_out*weight:&#34;</span><span class="p">,</span><span class="n">d_error_wrt_hidden_neuron_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;*********************************&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># ∂E/∂zⱼ = dE/dyⱼ * ∂zⱼ/∂</span>
+</span></span><span class="line"><span class="cl">            <span class="n">delta_active</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_pd_total_net_input_wrt_input</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pd_errors_wrt_hidden_neuron_total_net_input</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_error_wrt_hidden_neuron_output</span> <span class="o">*</span> <span class="n">delta_active</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;pd_errors_wrt_hidden_neuron_total_net_input[&#34;</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="s2">&#34;]=&#34;</span><span class="p">,</span> <span class="n">d_error_wrt_hidden_neuron_output</span><span class="p">,</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">delta_active</span><span class="p">,</span> <span class="s2">&#34;=&#34;</span><span class="p">,</span> <span class="n">pd_errors_wrt_hidden_neuron_total_net_input</span><span class="p">[</span><span class="n">h</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;=================================&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;hidden di*df/de------------------------------------------------------------------------------------------&gt;&#34;</span><span class="p">,</span><span class="n">pd_errors_wrt_hidden_neuron_total_net_input</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 3. update out weights</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">w_ho</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="c1"># ∂Eⱼ/∂wᵢⱼ = ∂E/∂zⱼ * ∂zⱼ/∂wᵢⱼ</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;calc pd_active*pd_out:&#34;</span><span class="p">,</span> <span class="n">pd_errors_wrt_output_neuron_total_net_input</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">output_layer_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_pd_total_net_input_wrt_weight</span><span class="p">(</span><span class="n">w_ho</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pd_error_wrt_weight</span> <span class="o">=</span> <span class="n">pd_errors_wrt_output_neuron_total_net_input</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="o">*</span> <span class="n">output_layer_input</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;calc pd_active*pd_out*input:&#34;</span><span class="p">,</span> <span class="n">pd_errors_wrt_output_neuron_total_net_input</span><span class="p">[</span><span class="n">o</span><span class="p">],</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span> <span class="n">output_layer_input</span><span class="p">,</span> <span class="s2">&#34;=&#34;</span><span class="p">,</span> <span class="n">pd_error_wrt_weight</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># Δw = α * ∂Eⱼ/∂wᵢ</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;update out weights:&#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">w_ho</span><span class="p">],</span> <span class="s2">&#34;-=&#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEARNING_RATE</span><span class="p">,</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                      <span class="n">pd_error_wrt_weight</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">w_ho</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEARNING_RATE</span> <span class="o">*</span> <span class="n">pd_error_wrt_weight</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-----------------------------------------------------&gt; =&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                      <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">w_ho</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;after update output weights&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 4. update hidden weights</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">w_ih</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="c1"># ∂Eⱼ/∂wᵢ = ∂E/∂zⱼ * ∂zⱼ/∂wᵢ</span>
+</span></span><span class="line"><span class="cl">                <span class="n">hidden_layer_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_pd_total_net_input_wrt_weight</span><span class="p">(</span><span class="n">w_ih</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pd_error_wrt_weight</span> <span class="o">=</span> <span class="n">pd_errors_wrt_hidden_neuron_total_net_input</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">*</span> <span class="n">hidden_layer_input</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;calc pd_active*pd_hidden*input:&#34;</span><span class="p">,</span> <span class="n">pd_errors_wrt_hidden_neuron_total_net_input</span><span class="p">[</span><span class="n">h</span><span class="p">],</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                      <span class="n">hidden_layer_input</span><span class="p">,</span> <span class="s2">&#34;=&#34;</span><span class="p">,</span> <span class="n">pd_error_wrt_weight</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># Δw = α * ∂Eⱼ/∂wᵢ</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;update hidden weights:&#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">w_ih</span><span class="p">],</span> <span class="s2">&#34;-=&#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEARNING_RATE</span><span class="p">,</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                      <span class="n">pd_error_wrt_weight</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">w_ih</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LEARNING_RATE</span> <span class="o">*</span> <span class="n">pd_error_wrt_weight</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-----------------------------------------------------&gt; =&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                      <span class="bp">self</span><span class="o">.</span><span class="n">hidden_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">w_ih</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;after update hidden weights&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">inspect</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">calculate_total_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_sets</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">total_error</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">training_sets</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">training_inputs</span><span class="p">,</span> <span class="n">training_outputs</span> <span class="o">=</span> <span class="n">training_sets</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">feed_forward</span><span class="p">(</span><span class="n">training_inputs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">training_outputs</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">                <span class="n">total_error</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_layer</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">o</span><span class="p">]</span><span class="o">.</span><span class="n">calculate_error</span><span class="p">(</span><span class="n">training_outputs</span><span class="p">[</span><span class="n">o</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">total_error</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">NeuronLayer</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_neurons</span><span class="p">,</span> <span class="n">bias</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># share the bias in the same layer</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">bias</span> <span class="k">if</span> <span class="n">bias</span> <span class="k">else</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">neurons</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_neurons</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">neurons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Neuron</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">inspect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Neurons:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neurons</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neurons</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Neuron&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Weight:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">neurons</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">w</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Bias:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">feed_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">neurons</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neuron</span><span class="o">.</span><span class="n">calculate_output</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">outputs</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">get_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">neurons</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">neuron</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">outputs</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Neuron</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bias</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">bias</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">calculate_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">squash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculate_total_net_input</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">calculate_total_net_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">total</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">total</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># active fun:sigmoid</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">squash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_net_input</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">total_net_input</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">calculate_pd_error_wrt_total_net_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_output</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;calc pd_active*pd_out&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_pd_error_wrt_output</span><span class="p">(</span><span class="n">target_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_pd_total_net_input_wrt_input</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;pd_active*pd_out=&#34;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="s2">&#34;*&#34;</span><span class="p">,</span><span class="n">b</span><span class="p">,</span> <span class="s2">&#34;=&#34;</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">result</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># calc error</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">calculate_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_output</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">target_output</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">calculate_pd_error_wrt_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_output</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-(target_output - self.output) : -(&#34;</span><span class="p">,</span> <span class="n">target_output</span><span class="p">,</span><span class="s2">&#34;-&#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="s2">&#34;)=&#34;</span><span class="p">,</span><span class="o">-</span><span class="p">(</span><span class="n">target_output</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">target_output</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">calculate_pd_total_net_input_wrt_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;self.output * (1 - self.output) : &#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span><span class="s2">&#34;*&#34;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">),</span><span class="s2">&#34;=&#34;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">calculate_pd_total_net_input_wrt_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;self.inputs[index]:&#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># example as the picture</span>
+</span></span><span class="line"><span class="cl"><span class="n">nn</span> <span class="o">=</span> <span class="n">NeuralNetwork</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">hidden_layer_weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="n">hidden_layer_bias</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">output_layer_weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">],</span> <span class="n">output_layer_bias</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># you can change to range(10000),1 is just for debug</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">train</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">loss</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">calculate_total_error</span><span class="p">([[[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.09</span><span class="p">]]]),</span> <span class="mi">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># bars = plt.bar(xs, ys)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plots</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X axis - loops&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Y axis - errors&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># another example</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># training_sets = [</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     [[0, 0], [0]],</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     [[0, 1], [1]],</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     [[1, 0], [1]],</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     [[1, 1], [0]]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ]</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># nn = NeuralNetwork(len(training_sets[0][0]), 5, len(training_sets[0][1]))</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># for i in range(10000):</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     training_inputs, training_outputs = random.choice(training_sets)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     nn.train(training_inputs, training_outputs)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     print(i, nn.calculate_total_error(training_sets))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>run output,just loop one time:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">D:<span class="se">\s</span>oftware<span class="se">\a</span>naconda3<span class="se">\e</span>nvs<span class="se">\m</span>ini_backpropagation<span class="se">\p</span>ython.exe D:<span class="se">\p</span>roject<span class="se">\m</span>ini_backpropagation<span class="se">\N</span>euralNetwork.py 
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">* Inputs: <span class="m">2</span>
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">Hidden Layer
+</span></span><span class="line"><span class="cl">Neurons: <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.15
+</span></span><span class="line"><span class="cl">  Weight: 0.2
+</span></span><span class="line"><span class="cl">  Bias: 0.35
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.25
+</span></span><span class="line"><span class="cl">  Weight: 0.3
+</span></span><span class="line"><span class="cl">  Bias: 0.35
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">* Output Layer
+</span></span><span class="line"><span class="cl">Neurons: <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.4
+</span></span><span class="line"><span class="cl">  Weight: 0.45
+</span></span><span class="line"><span class="cl">  Bias: 0.6
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.5
+</span></span><span class="line"><span class="cl">  Weight: 0.55
+</span></span><span class="line"><span class="cl">  Bias: 0.6
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out
+</span></span><span class="line"><span class="cl">-<span class="o">(</span>target_output - self.output<span class="o">)</span> : -<span class="o">(</span> 0.01 - 0.7513650695523157 <span class="o">)=</span> 0.7413650695523157
+</span></span><span class="line"><span class="cl">self.output * <span class="o">(</span><span class="m">1</span> - self.output<span class="o">)</span> :  0.7513650695523157 * 0.24863493044768425 <span class="o">=</span> 0.18681560180895948
+</span></span><span class="line"><span class="cl">pd_active*pd_out<span class="o">=</span> 0.7413650695523157 * 0.18681560180895948 <span class="o">=</span> 0.13849856162855698
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out
+</span></span><span class="line"><span class="cl">-<span class="o">(</span>target_output - self.output<span class="o">)</span> : -<span class="o">(</span> 0.09 - 0.7729284653214625 <span class="o">)=</span> 0.6829284653214626
+</span></span><span class="line"><span class="cl">self.output * <span class="o">(</span><span class="m">1</span> - self.output<span class="o">)</span> :  0.7729284653214625 * 0.22707153467853747 <span class="o">=</span> 0.17551005281727122
+</span></span><span class="line"><span class="cl">pd_active*pd_out<span class="o">=</span> 0.6829284653214626 * 0.17551005281727122 <span class="o">=</span> 0.11986081101898788
+</span></span><span class="line"><span class="cl">out di*df/de------------------------------------------------------------------------------------------&gt; <span class="o">[</span>0.13849856162855698, 0.11986081101898788<span class="o">]</span>
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out*weight, 0.13849856162855698 * 0.4 + <span class="m">0</span>
+</span></span><span class="line"><span class="cl">Σpd_active*pd_out*weight: 0.05539942465142279
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out*weight, 0.11986081101898788 * 0.5 + 0.05539942465142279
+</span></span><span class="line"><span class="cl">Σpd_active*pd_out*weight: 0.11532983016091673
+</span></span><span class="line"><span class="cl">*********************************
+</span></span><span class="line"><span class="cl">self.output * <span class="o">(</span><span class="m">1</span> - self.output<span class="o">)</span> :  0.5932699921071872 * 0.4067300078928128 <span class="o">=</span> 0.24130070857232525
+</span></span><span class="line"><span class="cl">pd_errors_wrt_hidden_neuron_total_net_input<span class="o">[</span> <span class="m">0</span> <span class="o">]=</span> 0.11532983016091673 * 0.24130070857232525 <span class="o">=</span> 0.027829169737355136
+</span></span><span class="line"><span class="cl"><span class="o">=================================</span>
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out*weight, 0.13849856162855698 * 0.45 + <span class="m">0</span>
+</span></span><span class="line"><span class="cl">Σpd_active*pd_out*weight: 0.06232435273285064
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out*weight, 0.11986081101898788 * 0.55 + 0.06232435273285064
+</span></span><span class="line"><span class="cl">Σpd_active*pd_out*weight: 0.12824779879329398
+</span></span><span class="line"><span class="cl">*********************************
+</span></span><span class="line"><span class="cl">self.output * <span class="o">(</span><span class="m">1</span> - self.output<span class="o">)</span> :  0.596884378259767 * 0.40311562174023297 <span class="o">=</span> 0.2406134172492184
+</span></span><span class="line"><span class="cl">pd_errors_wrt_hidden_neuron_total_net_input<span class="o">[</span> <span class="m">1</span> <span class="o">]=</span> 0.12824779879329398 * 0.2406134172492184 <span class="o">=</span> 0.03085814112234465
+</span></span><span class="line"><span class="cl"><span class="o">=================================</span>
+</span></span><span class="line"><span class="cl">hidden di*df/de------------------------------------------------------------------------------------------&gt; <span class="o">[</span>0.027829169737355136, 0.03085814112234465<span class="o">]</span>
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out: 0.13849856162855698
+</span></span><span class="line"><span class="cl">self.inputs<span class="o">[</span>index<span class="o">]</span>: 0.5932699921071872
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out*input: 0.13849856162855698 * 0.5932699921071872 <span class="o">=</span> 0.08216704056423078
+</span></span><span class="line"><span class="cl">update out weights: 0.4 -<span class="o">=</span> 0.5 * 0.08216704056423078
+</span></span><span class="line"><span class="cl">-----------------------------------------------------&gt; <span class="o">=</span> 0.35891647971788465
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out: 0.13849856162855698
+</span></span><span class="line"><span class="cl">self.inputs<span class="o">[</span>index<span class="o">]</span>: 0.596884378259767
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out*input: 0.13849856162855698 * 0.596884378259767 <span class="o">=</span> 0.08266762784753326
+</span></span><span class="line"><span class="cl">update out weights: 0.45 -<span class="o">=</span> 0.5 * 0.08266762784753326
+</span></span><span class="line"><span class="cl">-----------------------------------------------------&gt; <span class="o">=</span> 0.4086661860762334
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out: 0.11986081101898788
+</span></span><span class="line"><span class="cl">self.inputs<span class="o">[</span>index<span class="o">]</span>: 0.5932699921071872
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out*input: 0.11986081101898788 * 0.5932699921071872 <span class="o">=</span> 0.071109822407196
+</span></span><span class="line"><span class="cl">update out weights: 0.5 -<span class="o">=</span> 0.5 * 0.071109822407196
+</span></span><span class="line"><span class="cl">-----------------------------------------------------&gt; <span class="o">=</span> 0.464445088796402
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out: 0.11986081101898788
+</span></span><span class="line"><span class="cl">self.inputs<span class="o">[</span>index<span class="o">]</span>: 0.596884378259767
+</span></span><span class="line"><span class="cl">calc pd_active*pd_out*input: 0.11986081101898788 * 0.596884378259767 <span class="o">=</span> 0.07154304566278001
+</span></span><span class="line"><span class="cl">update out weights: 0.55 -<span class="o">=</span> 0.5 * 0.07154304566278001
+</span></span><span class="line"><span class="cl">-----------------------------------------------------&gt; <span class="o">=</span> 0.5142284771686101
+</span></span><span class="line"><span class="cl">after update output weights
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">* Inputs: <span class="m">2</span>
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">Hidden Layer
+</span></span><span class="line"><span class="cl">Neurons: <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.15
+</span></span><span class="line"><span class="cl">  Weight: 0.2
+</span></span><span class="line"><span class="cl">  Bias: 0.35
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.25
+</span></span><span class="line"><span class="cl">  Weight: 0.3
+</span></span><span class="line"><span class="cl">  Bias: 0.35
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">* Output Layer
+</span></span><span class="line"><span class="cl">Neurons: <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.35891647971788465
+</span></span><span class="line"><span class="cl">  Weight: 0.4086661860762334
+</span></span><span class="line"><span class="cl">  Bias: 0.6
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.464445088796402
+</span></span><span class="line"><span class="cl">  Weight: 0.5142284771686101
+</span></span><span class="line"><span class="cl">  Bias: 0.6
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">self.inputs<span class="o">[</span>index<span class="o">]</span>: 0.05
+</span></span><span class="line"><span class="cl">calc pd_active*pd_hidden*input: 0.027829169737355136 * 0.05 <span class="o">=</span> 0.001391458486867757
+</span></span><span class="line"><span class="cl">update hidden weights: 0.15 -<span class="o">=</span> 0.5 * 0.001391458486867757
+</span></span><span class="line"><span class="cl">-----------------------------------------------------&gt; <span class="o">=</span> 0.1493042707565661
+</span></span><span class="line"><span class="cl">self.inputs<span class="o">[</span>index<span class="o">]</span>: 0.1
+</span></span><span class="line"><span class="cl">calc pd_active*pd_hidden*input: 0.027829169737355136 * 0.1 <span class="o">=</span> 0.002782916973735514
+</span></span><span class="line"><span class="cl">update hidden weights: 0.2 -<span class="o">=</span> 0.5 * 0.002782916973735514
+</span></span><span class="line"><span class="cl">-----------------------------------------------------&gt; <span class="o">=</span> 0.19860854151313226
+</span></span><span class="line"><span class="cl">self.inputs<span class="o">[</span>index<span class="o">]</span>: 0.05
+</span></span><span class="line"><span class="cl">calc pd_active*pd_hidden*input: 0.03085814112234465 * 0.05 <span class="o">=</span> 0.0015429070561172327
+</span></span><span class="line"><span class="cl">update hidden weights: 0.25 -<span class="o">=</span> 0.5 * 0.0015429070561172327
+</span></span><span class="line"><span class="cl">-----------------------------------------------------&gt; <span class="o">=</span> 0.24922854647194137
+</span></span><span class="line"><span class="cl">self.inputs<span class="o">[</span>index<span class="o">]</span>: 0.1
+</span></span><span class="line"><span class="cl">calc pd_active*pd_hidden*input: 0.03085814112234465 * 0.1 <span class="o">=</span> 0.0030858141122344653
+</span></span><span class="line"><span class="cl">update hidden weights: 0.3 -<span class="o">=</span> 0.5 * 0.0030858141122344653
+</span></span><span class="line"><span class="cl">-----------------------------------------------------&gt; <span class="o">=</span> 0.29845709294388273
+</span></span><span class="line"><span class="cl">after update hidden weights
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">* Inputs: <span class="m">2</span>
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">Hidden Layer
+</span></span><span class="line"><span class="cl">Neurons: <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.1493042707565661
+</span></span><span class="line"><span class="cl">  Weight: 0.19860854151313226
+</span></span><span class="line"><span class="cl">  Bias: 0.35
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.24922854647194137
+</span></span><span class="line"><span class="cl">  Weight: 0.29845709294388273
+</span></span><span class="line"><span class="cl">  Bias: 0.35
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">* Output Layer
+</span></span><span class="line"><span class="cl">Neurons: <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.35891647971788465
+</span></span><span class="line"><span class="cl">  Weight: 0.4086661860762334
+</span></span><span class="line"><span class="cl">  Bias: 0.6
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.464445088796402
+</span></span><span class="line"><span class="cl">  Weight: 0.5142284771686101
+</span></span><span class="line"><span class="cl">  Bias: 0.6
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl"><span class="m">0</span> 0.496045683
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Process finished with <span class="nb">exit</span> code <span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>after 1000 loops,the loss likes this,the loss is 0.000586103:</p>
+<p><img src="/img/bp_myplot.png" alt=""></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">* Inputs: <span class="m">2</span>
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">Hidden Layer
+</span></span><span class="line"><span class="cl">Neurons: <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.2964604103620042
+</span></span><span class="line"><span class="cl">  Weight: 0.49292082072400834
+</span></span><span class="line"><span class="cl">  Bias: 0.35
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Weight: 0.39084333156627366
+</span></span><span class="line"><span class="cl">  Weight: 0.5816866631325477
+</span></span><span class="line"><span class="cl">  Bias: 0.35
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl">* Output Layer
+</span></span><span class="line"><span class="cl">Neurons: <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Weight: -3.060957226462873
+</span></span><span class="line"><span class="cl">  Weight: -3.0308626603447846
+</span></span><span class="line"><span class="cl">  Bias: 0.6
+</span></span><span class="line"><span class="cl"> Neuron <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Weight: -2.393475400842236
+</span></span><span class="line"><span class="cl">  Weight: -2.3602088337272704
+</span></span><span class="line"><span class="cl">  Bias: 0.6
+</span></span><span class="line"><span class="cl">------
+</span></span><span class="line"><span class="cl"><span class="m">999</span> 0.000586103
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
     </article>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/gumshoejs@5.1.2/dist/gumshoe.min.js"></script>

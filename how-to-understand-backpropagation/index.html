@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
+  <title>
+    
+    blog of tan - How to Understand Backpropagation?
+    
+  </title>
+  
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  
+  
+  <link rel="stylesheet" href="/minima.72741f5b78a2e6291c9e6fe83f47ce5ed0db82f18f70d77113ea4d9674a8bd3a.css" integrity="sha256-cnQfW3ii5ikcnm/oP0fOXtDbgvGPcNdxE&#43;pNlnSovTo=">
+  
+  
+  
+  <script defer type="text/javascript" src="/minima.ed14b40e9936f2e56162bc64b3a10c0b68b207b8c805e02d40888543064bdc14.js" integrity="sha256-7RS0Dpk28uVhYrxks6EMC2iyB7jIBeAtQIiFQwZL3BQ="></script>
+  
+  
+  
+</head>
+<script>
+  const theme_config = 'light'
+  const theme_light = theme_config === 'system' ? 'light' : theme_config;
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : theme_light;
+  console.debug(theme);
+
+  try {
+    localStorage.setItem('theme', theme);
+    window.minima_theme = theme;
+    document.querySelector('html').classList.add(theme);
+  } catch (e) {
+    console.error(e);
+  }
+</script>
+
+
+
+<body>
+  <header class="mt-3 mb-8">
+  <div class="container mx-auto">
+    <nav class="flex justify-between items-center">
+      <div class="flex items-center">
+        
+        <div id="theme-switch" class="text-2xl cursor-pointer">🌝</div>
+      </div>
+      <ul class="flex items-center text-base font-semibold
+        whitespace-nowrap overflow-x-auto overflow-y-hidden">
+        
+        <li class="ml-2 mr-2">
+          
+          <a href='/'>Home</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/tags">Tags</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/series">Series</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/search">🔍</a>
+          
+        </li>
+        
+      </ul>
+      
+      <ul class="flex item-center text-sm font-semibold">
+        
+        <li class="ml-2"><a href="http://localhost:1313/">EN</a></li>
+        
+        <li class="ml-2"><a href="http://localhost:1313/zh-cn/">简中</a></li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+
+  
+
+<div class="toc-div desktop-only">
+    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#the-forward">The Forward</a></li>
+    <li><a href="#the-backward">The Backward</a>
+      <ol>
+        <li><a href="#how-the-delta-transfer-backward">How the $\delta$ transfer backward</a></li>
+        <li><a href="#example">Example</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div>
+<div class="container mx-auto">
+  <div class="left-box">
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">How to Understand Backpropagation?</h1>
+  <div class="mb-3 text-sm flex justify-between ">
+    <div>
+      
+      Post at &mdash; Mar 01, 2025
+      
+      
+    </div>
+    
+    <div>
+      
+      
+      <a class="ml-1" href="/tags/Deep_Learning_Framework">#Deep_Learning_Framework</a>
+      
+    </div>
+    
+  </div>
+  <main class="mb-8">
+    <p>Principles of training multi-layer neural network using backpropagation,How to Understand Backpropagation?Especially how to update the weights?</p>
+    <article class="md">
+      <p>The project describes teaching process of multi-layer neural network employing <em>backpropagation</em> algorithm. To illustrate this process the three layer neural network with two inputs and one output,which is shown in the picture below, is used:</p>
+<p><img src="/img/bp-img01.gif" alt=""></p>
+<p>Each neuron is composed of two units. First unit adds products of weights coefficients and input signals. The second unit realise nonlinear function, called neuron activation function. Signal <em>e</em> is adder output signal, and <em>y = f(e)</em> is output signal of nonlinear element. Signal <em>y</em> is also output signal of neuron.</p>
+<p><img src="/img/bp-img01b.gif" alt=""></p>
+<h1 id="the-forward">The Forward</h1>
+<p>To teach the neural network we need training data set. The training data set consists of input signals (<em>x1</em> and <em>x2</em> ) assigned with corresponding target (desired output) <em>z</em>. The network training is an iterative process. In each iteration weights coefficients of nodes are modified using new data from training data set. Modification is calculated using algorithm described below: Each teaching step starts with forcing both input signals from training set. After this stage we can determine output signals values for each neuron in each network layer. Pictures below illustrate how signal is propagating through the network, Symbols <em>w(xm)n</em> represent weights of connections between network input <em>xm</em> and neuron <em>n</em> in input layer. Symbols <em>yn</em> represents output signal of neuron <em>n</em>.</p>
+<p><img src="/img/bp-img02.gif" alt=""></p>
+<p><img src="/img/bp-img03.gif" alt=""></p>
+<p><img src="/img/bp-img04.gif" alt=""></p>
+<p>Propagation of signals through the hidden layer. Symbols <em>wmn</em> represent weights of connections between output of neuron <em>m</em> and input of neuron <em>n</em> in the next layer.</p>
+<p><img src="/img/bp-img05.gif" alt=""></p>
+<p><img src="/img/bp-img06.gif" alt=""></p>
+<p>Propagation of signals through the output layer.</p>
+<p><img src="/img/bp-img07.gif" alt=""></p>
+<p>In the next algorithm step the output signal of the network <em>y</em> is compared with the desired output value (the target), which is found in training data set. The difference is called error signal $\delta$ of output layer neuron.</p>
+<p><img src="/img/bp-img08.gif" alt=""></p>
+<h1 id="the-backward">The Backward</h1>
+<h2 id="how-the-delta-transfer-backward">How the $\delta$ transfer backward</h2>
+<p><img src="/img/nn-network.png" alt=""></p>
+<p>$$
+\begin{align*}
+&amp;\frac{\partial E_{o1}}{\partial out_{o1}} = -(z_1 - out_{o1}) = \delta \\
+&amp;\frac{\partial E_{o1}}{\partial w_5} = \frac{\partial E_{o1}}{\partial out_{o1}} \times \frac{\partial out_{o1}}{\partial net_{o1}} \times \frac{\partial net_{o1}}{\partial w_5} \\
+&amp;\frac{\partial E_{o1}}{\partial out_{o1}} = -(z_1 - out_{o1}) \\
+&amp;\frac{\partial out_{o1}}{\partial net_{o1}} = out_{o1}(1 - out_{o1}) \\
+&amp;\frac{\partial net_{o1}}{\partial w_5} = out_{h2} \\
+&amp;\frac{\partial E_{o1}}{\partial w_5} = \frac{\partial E_{o1}}{\partial out_{o1}} \times \frac{\partial out_{o1}}{\partial net_{o1}} \times \frac{\partial net_{o1}}{\partial w_5} = -(z_1 - out_{o1}) \times \frac{\partial out_{o1}}{\partial net_{o1}} \times out_{h2} \\
+&amp;\frac{\partial E_{o1}}{\partial w_4} = \frac{\partial E_{o1}}{\partial out_{o1}} \times \frac{\partial out_{o1}}{\partial net_{o1}} \times \frac{\partial net_{o1}}{\partial out_{h2}} \times \frac{\partial out_{h2}}{\partial net_{h2}} \times \frac{\partial net_{h2}}{\partial w_4} = -(z_1 - out_{o1}) \times \frac{\partial out_{o1}}{\partial net_{o1}} \times w_5 \times \frac{\partial out_{h2}}{\partial net_{h2}} \times out_{h1} \\
+&amp;\frac{\partial E_{o1}}{\partial w_3} = \frac{\partial E_{o1}}{\partial out_{o1}} \times \frac{\partial out_{o1}}{\partial net_{o1}} \times \frac{\partial net_{o1}}{\partial out_{h2}} \times \frac{\partial out_{h2}}{\partial net_{h2}} \times \frac{\partial net_{h2}}{\partial out_{h1}} \times \frac{\partial out_{h1}}{\partial net_{h1}} \times \frac{\partial net_{h1}}{\partial w_3} \\
+&amp;\phantom{\frac{\partial E_{o1}}{\partial w_3}} = -(z_1 - out_{o1}) \times \frac{\partial out_{o1}}{\partial net_{o1}} \times w_5 \times \frac{\partial out_{h2}}{\partial net_{h2}} \times w_4 \times \frac{\partial out_{h1}}{\partial net_{h1}} \times x_1 \\
+&amp;w_{5new} = w_{5old} - \varphi \frac{\partial E_{o1}}{\partial w_5} = w_{5old} - \varphi (\delta \times \frac{\partial out_{o1}}{\partial net_{o1}}) \times out_{h2} \\
+&amp;w_{4new} = w_{4old} - \varphi \frac{\partial E_{o1}}{\partial w_4} = w_{4old} - \varphi (\delta \times \frac{\partial out_{o1}}{\partial net_{o1}}) \times (w_{5old} \times \frac{\partial out_{h2}}{\partial net_{h2}}) \times out_{h1} \\
+&amp;w_{3new} = w_{3old} - \varphi \frac{\partial E_{o1}}{\partial w_3} = w_{3old} - \varphi (\delta \times \frac{\partial out_{o1}}{\partial net_{o1}}) \times (w_{5old} \times \frac{\partial out_{h2}}{\partial net_{h2}}) \times (w_{4old} \times \frac{\partial out_{h1}}{\partial net_{h1}}) \times x_1
+\end{align*}
+$$</p>
+<h2 id="example">Example</h2>
+<p><img src="/img/bp-example01.png" alt=""></p>
+<p><img src="/img/bp-example02.png" alt=""></p>
+<p><img src="/img/bp-example03.png" alt=""></p>
+
+    </article>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/gumshoejs@5.1.2/dist/gumshoe.min.js"></script>
+  <script>
+      var spy = new Gumshoe('#TableOfContents a', {
+          nested: true,
+          nestedClass: 'active'
+      });
+  </script>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
+    integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"
+    integrity="sha384-YNHdsYkH6gMx9y3mRkmcJ2mFUjTd0qNQQvY9VYZgQd7DcN7env35GzlmFaZ23JGp"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"
+    integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"
+    crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            
+            
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            
+            throwOnError: false
+        });
+    });
+</script>
+
+
+
+
+
+<script 
+  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
+  crossorigin="anonymous">
+</script>
+<script>
+  mermaid.init(undefined, 'code.language-mermaid')
+</script>
+
+
+
+
+
+<div id="comment"></div>
+
+
+
+
+<script>
+    const s = document.createElement("script")
+    s.src = "https://giscus.app/client.js"
+    s.crossOrigin = "anonymous"
+    s.async = true
+    s.setAttribute("data-repo", "tanwubin\/tanwubin.github.io")
+    s.setAttribute("data-repo-id", "R_kgDONvnTiQ")
+    s.setAttribute("data-category", "Announcements")
+    s.setAttribute("data-category-id", "DIC_kwDONvnTic4CmaIS")
+    s.setAttribute("data-mapping", "pathname")
+    s.setAttribute("data-strict", "0")
+    s.setAttribute("data-reactions-enabled", "1")
+    s.setAttribute("data-emit-metadata", "0")
+    s.setAttribute("data-input-position", "buttom")
+    s.setAttribute("data-theme", window.minima_theme + "_protanopia")
+    s.setAttribute("data-lang", "en")
+    s.setAttribute("data-loading", "lazy")
+    document.getElementById("comment").appendChild(s)
+</script>
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+
+
+  <footer class="mt-8 mb-8">
+  <div class="container mx-auto">
+    <div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-between items-center">
+      <div class="text-center sm:text-left">
+        <p class="mt-0 text-sm">© 2025 tanwubin</p>
+        <p class="mt-0 text-xs">
+          Built with Hugo v0.142.0
+          
+        </p>
+      </div>
+      
+      <p class="flex items-center mt-0">
+        
+          <a class="icon ml-1 mr-1" href="https://twitter.com/brieftime" title="twitter">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="mailto:644346160@qq.com" title="email">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="https://github.com/tanwubin" title="github">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="/index.xml" title="rss">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+          
+          </a>
+        
+      </p>
+    </div>
+  </div>
+</footer>
+</body>
+
+</html>

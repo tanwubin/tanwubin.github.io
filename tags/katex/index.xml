@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>KaTex on blog of tan</title>
-    <link>https://tanwubin.github.io/tags/katex/</link>
+    <link>http://localhost:1313/tags/katex/</link>
     <description>Recent content in KaTex on blog of tan</description>
     <generator>Hugo</generator>
     <language>en</language>
     <copyright>© 2025 tanwubin</copyright>
     <lastBuildDate>Tue, 28 Jan 2025 23:18:30 +0800</lastBuildDate>
-    <atom:link href="https://tanwubin.github.io/tags/katex/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/katex/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Math Typesetting</title>
-      <link>https://tanwubin.github.io/math-typesetting/</link>
+      <link>http://localhost:1313/math-typesetting/</link>
       <pubDate>Tue, 28 Jan 2025 23:18:30 +0800</pubDate>
-      <guid>https://tanwubin.github.io/math-typesetting/</guid>
+      <guid>http://localhost:1313/math-typesetting/</guid>
       <description>&lt;p&gt;Mathematical notation in a Hugo project can be enabled by using third party JavaScript libraries like &lt;a href=&#34;https://katex.org&#34;&gt;KaTeX&lt;/a&gt; the one that Minima uses. Here&amp;rsquo;s what you can do in the configuration file to enable it.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;math:&#xA;  enable: false&#xA;  provider: katex&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;&#xA;&lt;p&gt;The following are some examples of mathematical notations with KaTeX that are pretty much like LaTeX&amp;rsquo;s.&lt;/p&gt;&#xA;&lt;h3 id=&#34;block&#34;&gt;Block&lt;/h3&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;\varphi = 1+\frac{1}{1+\frac{1}{1+\frac{1} {1+\cdots}}} &#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;wiil be rendered as:&lt;/p&gt;&#xA;&lt;p&gt;$$&#xA;\varphi = 1+\frac{1}{1+\frac{1}{1+\frac{1} {1+\cdots}}}&#xA;$$&lt;/p&gt;&#xA;&lt;h3 id=&#34;inline&#34;&gt;Inline&lt;/h3&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Pythagorean theorem can be written as $a^2+b^2=c^2$ where *a*, *b* and *c* are the length of legs of a triangle.&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;will be rendered as:&lt;/p&gt;</description>
     </item>
   </channel>

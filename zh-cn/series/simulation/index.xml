@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Simulation on blog of tan</title>
-    <link>https://tanwubin.github.io/zh-cn/series/simulation/</link>
+    <link>http://localhost:1313/zh-cn/series/simulation/</link>
     <description>Recent content in Simulation on blog of tan</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>© 2025 tanwubin</copyright>
     <lastBuildDate>Sun, 09 Feb 2025 20:21:42 +0800</lastBuildDate>
-    <atom:link href="https://tanwubin.github.io/zh-cn/series/simulation/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/zh-cn/series/simulation/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Matlab OFDM Simulation</title>
-      <link>https://tanwubin.github.io/zh-cn/matlab-ofdm-simulation/</link>
+      <link>http://localhost:1313/zh-cn/matlab-ofdm-simulation/</link>
       <pubDate>Sun, 09 Feb 2025 20:21:42 +0800</pubDate>
-      <guid>https://tanwubin.github.io/zh-cn/matlab-ofdm-simulation/</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://tanwubin.github.io/img/ofdm_math.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/ofdm_principle.png&#34; alt=&#34;&#34;&gt;&#xA;说明：实际工程中，an和bn一般实分开分别发送的，即实部与虚部是两路独立发送的，如下图展示an的发送：&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/subcarry.png&#34; alt=&#34;&#34;&gt;&#xA;根据上图可理解，送入IDFT的输入为复数的实部和虚部，实部和虚部怎么来的呢，就是根据调制方式映射而来。&#xA;基本原理：&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/ofdm_basic_principle.png&#34; alt=&#34;&#34;&gt;&#xA;整体逻辑：&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/overall_flowchart.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/step1.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/step2.1.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/step2.2.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/step3.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/step4.1.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/step4.2.png&#34; alt=&#34;&#34;&gt;&#xA;信道估计LS算法参考：&lt;a href=&#34;https://zhuanlan.zhihu.com/p/378335622?utm_id=0&#34;&gt;LS信道估计&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;仿真结果：&#xA;&lt;img src=&#34;https://tanwubin.github.io/img/ofdm-ls-simulation-result.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+      <guid>http://localhost:1313/zh-cn/matlab-ofdm-simulation/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://localhost:1313/img/ofdm_math.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;http://localhost:1313/img/ofdm_principle.png&#34; alt=&#34;&#34;&gt;&#xA;说明：实际工程中，an和bn一般实分开分别发送的，即实部与虚部是两路独立发送的，如下图展示an的发送：&#xA;&lt;img src=&#34;http://localhost:1313/img/subcarry.png&#34; alt=&#34;&#34;&gt;&#xA;根据上图可理解，送入IDFT的输入为复数的实部和虚部，实部和虚部怎么来的呢，就是根据调制方式映射而来。&#xA;基本原理：&#xA;&lt;img src=&#34;http://localhost:1313/img/ofdm_basic_principle.png&#34; alt=&#34;&#34;&gt;&#xA;整体逻辑：&#xA;&lt;img src=&#34;http://localhost:1313/img/overall_flowchart.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;http://localhost:1313/img/step1.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;http://localhost:1313/img/step2.1.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;http://localhost:1313/img/step2.2.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;http://localhost:1313/img/step3.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;http://localhost:1313/img/step4.1.png&#34; alt=&#34;&#34;&gt;&#xA;&lt;img src=&#34;http://localhost:1313/img/step4.2.png&#34; alt=&#34;&#34;&gt;&#xA;信道估计LS算法参考：&lt;a href=&#34;https://zhuanlan.zhihu.com/p/378335622?utm_id=0&#34;&gt;LS信道估计&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;仿真结果：&#xA;&lt;img src=&#34;http://localhost:1313/img/ofdm-ls-simulation-result.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

@@ -155,24 +155,24 @@
     <p>Principles of training multi-layer neural network using backpropagation,How to Understand Backpropagation?Especially how to update the weights?</p>
     <article class="md">
       <p>The project describes teaching process of multi-layer neural network employing <em>backpropagation</em> algorithm. To illustrate this process the three layer neural network with two inputs and one output,which is shown in the picture below, is used:</p>
-<p><img src="/img/bp-img01.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img01.gif" alt=""></p>
 <p>Each neuron is composed of two units. First unit adds products of weights coefficients and input signals. The second unit realise nonlinear function, called neuron activation function. Signal <em>e</em> is adder output signal, and <em>y = f(e)</em> is output signal of nonlinear element. Signal <em>y</em> is also output signal of neuron.</p>
-<p><img src="/img/bp-img01b.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img01b.gif" alt=""></p>
 <h1 id="the-forward">The Forward</h1>
 <p>To teach the neural network we need training data set. The training data set consists of input signals (<em>x1</em> and <em>x2</em> ) assigned with corresponding target (desired output) <em>z</em>. The network training is an iterative process. In each iteration weights coefficients of nodes are modified using new data from training data set. Modification is calculated using algorithm described below: Each teaching step starts with forcing both input signals from training set. After this stage we can determine output signals values for each neuron in each network layer. Pictures below illustrate how signal is propagating through the network, Symbols <em>w(xm)n</em> represent weights of connections between network input <em>xm</em> and neuron <em>n</em> in input layer. Symbols <em>yn</em> represents output signal of neuron <em>n</em>.</p>
-<p><img src="/img/bp-img02.gif" alt=""></p>
-<p><img src="/img/bp-img03.gif" alt=""></p>
-<p><img src="/img/bp-img04.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img02.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img03.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img04.gif" alt=""></p>
 <p>Propagation of signals through the hidden layer. Symbols <em>wmn</em> represent weights of connections between output of neuron <em>m</em> and input of neuron <em>n</em> in the next layer.</p>
-<p><img src="/img/bp-img05.gif" alt=""></p>
-<p><img src="/img/bp-img06.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img05.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img06.gif" alt=""></p>
 <p>Propagation of signals through the output layer.</p>
-<p><img src="/img/bp-img07.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img07.gif" alt=""></p>
 <p>In the next algorithm step the output signal of the network <em>y</em> is compared with the desired output value (the target), which is found in training data set. The difference is called error signal $\delta$ of output layer neuron.</p>
-<p><img src="/img/bp-img08.gif" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-img08.gif" alt=""></p>
 <h1 id="the-backward">The Backward</h1>
 <h2 id="how-the-delta-transfer-backward">How the $\delta$ transfer backward</h2>
-<p><img src="/img/nn-network.png" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/nn-network.png" alt=""></p>
 <p>$$
 \begin{align*}
 &amp;\frac{\partial E_{o1}}{\partial out_{o1}} = -(z_1 - out_{o1}) = \delta \\
@@ -190,13 +190,13 @@
 \end{align*}
 $$</p>
 <h2 id="example">Example</h2>
-<p><img src="/img/bp-example01.png" alt=""></p>
-<p><img src="/img/bp-example02.png" alt=""></p>
-<p><img src="/img/bp-example03.png" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-example01.png" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-example02.png" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp-example03.png" alt=""></p>
 <h1 id="a-code-demo">A Code Demo</h1>
 <p>two input,two hidden layer and two output layer,the active function is sigmoid.</p>
 <p>this demo show how to auto change the weight to make inputs:[0.05,0.10] calculate with the weights to match the outputs:[0.01,0.99]</p>
-<p><img src="/img/bp_trans_example.png" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp_trans_example.png" alt=""></p>
 <p>the code:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -968,7 +968,7 @@ $$</p>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>after 1000 loops,the loss likes this,the loss is 0.000586103:</p>
-<p><img src="/img/bp_myplot.png" alt=""></p>
+<p><img src="http://43.160.197.164:9000/tanwubin.github.io/blog/img/bp_myplot.png" alt=""></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1

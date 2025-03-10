@@ -2,46 +2,46 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on blog of tan</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://tanwubin.github.io/tags/</link>
     <description>Recent content in Tags on blog of tan</description>
     <generator>Hugo</generator>
     <language>en</language>
     <copyright>© 2025 tanwubin</copyright>
     <lastBuildDate>Sat, 08 Mar 2025 12:58:40 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://tanwubin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Deep_Learning_Framework</title>
-      <link>http://localhost:1313/tags/deep_learning_framework/</link>
+      <link>https://tanwubin.github.io/tags/deep_learning_framework/</link>
       <pubDate>Sat, 08 Mar 2025 12:58:40 +0800</pubDate>
-      <guid>http://localhost:1313/tags/deep_learning_framework/</guid>
+      <guid>https://tanwubin.github.io/tags/deep_learning_framework/</guid>
       <description></description>
     </item>
     <item>
       <title>Ollama</title>
-      <link>http://localhost:1313/tags/ollama/</link>
+      <link>https://tanwubin.github.io/tags/ollama/</link>
       <pubDate>Thu, 06 Feb 2025 21:44:37 +0800</pubDate>
-      <guid>http://localhost:1313/tags/ollama/</guid>
+      <guid>https://tanwubin.github.io/tags/ollama/</guid>
       <description></description>
     </item>
     <item>
       <title>Markdown</title>
-      <link>http://localhost:1313/tags/markdown/</link>
+      <link>https://tanwubin.github.io/tags/markdown/</link>
       <pubDate>Tue, 28 Jan 2025 23:19:35 +0800</pubDate>
-      <guid>http://localhost:1313/tags/markdown/</guid>
+      <guid>https://tanwubin.github.io/tags/markdown/</guid>
       <description></description>
     </item>
     <item>
       <title>Mermaid</title>
-      <link>http://localhost:1313/tags/mermaid/</link>
+      <link>https://tanwubin.github.io/tags/mermaid/</link>
       <pubDate>Tue, 28 Jan 2025 23:19:35 +0800</pubDate>
-      <guid>http://localhost:1313/tags/mermaid/</guid>
+      <guid>https://tanwubin.github.io/tags/mermaid/</guid>
       <description></description>
     </item>
     <item>
       <title>KaTex</title>
-      <link>http://localhost:1313/tags/katex/</link>
+      <link>https://tanwubin.github.io/tags/katex/</link>
       <pubDate>Tue, 28 Jan 2025 23:18:30 +0800</pubDate>
-      <guid>http://localhost:1313/tags/katex/</guid>
+      <guid>https://tanwubin.github.io/tags/katex/</guid>
       <description></description>
     </item>
   </channel>

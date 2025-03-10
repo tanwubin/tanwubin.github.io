@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>blog of tan</title>
-    <link>http://localhost:1313/zh-cn/</link>
+    <link>https://tanwubin.github.io/zh-cn/</link>
     <description>Recent content on blog of tan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <copyright>© 2025 tanwubin</copyright>
-    <lastBuildDate>Thu, 27 Feb 2025 19:17:04 +0800</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Feb 2025 19:17:04 +0800</lastBuildDate><atom:link href="https://tanwubin.github.io/zh-cn/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>世界上最神奇的24堂课-第一课：内在世界与外在世界</title>
-      <link>http://localhost:1313/zh-cn/the_master_key_system/</link>
+      <link>https://tanwubin.github.io/zh-cn/the_master_key_system/</link>
       <pubDate>Thu, 27 Feb 2025 19:17:04 +0800</pubDate>
       
-      <guid>http://localhost:1313/zh-cn/the_master_key_system/</guid>
+      <guid>https://tanwubin.github.io/zh-cn/the_master_key_system/</guid>
       <description>&lt;p&gt;1、我们能“做”什么依托于我们“是”什么，我们能“做”到什么程度依托于我们“是”什么水平，而我们“是”什么水平和我们有什么样的“想法”有关。&lt;/p&gt;
 &lt;p&gt;2、内在世界的和谐是健康的基础，也是获得一切功名、权力与造诣的必要条件。内在世界是一个真实的世界。在这个世界里，人们拥有了勇气、希望、热情、信任与信念，并从此获得了洞察未来的智慧和实现未来的技能。（此处可扩展阅读：&lt;a href=&#34;https://tanwubin.github.io/zh-cn/how-to-pick-a-career/&#34;&gt;如何找到自己的事业?&lt;/a&gt;）&lt;/p&gt;
 &lt;p&gt;3、假如我们的头脑能正确思考，体悟真理；假如神经系统传递给身体各个部分的信息是建设性的，我们就会获得愉悦、和谐的感知。这将为我们的身体注入力量、活力和其他有益的能量。但同样的，客观意识也让苦恼、疾病、贫乏、困窘等一系列混乱的、不和谐的因素进入我们的生活，它们会对我们施加有害的能量。&lt;/p&gt;
@@ -27,10 +27,10 @@
     
     <item>
       <title>如何找到自己的事业?</title>
-      <link>http://localhost:1313/zh-cn/how-to-pick-a-career/</link>
+      <link>https://tanwubin.github.io/zh-cn/how-to-pick-a-career/</link>
       <pubDate>Sun, 16 Feb 2025 15:15:14 +0800</pubDate>
       
-      <guid>http://localhost:1313/zh-cn/how-to-pick-a-career/</guid>
+      <guid>https://tanwubin.github.io/zh-cn/how-to-pick-a-career/</guid>
       <description>&lt;h1 id=&#34;你迄今为止的生活&#34;&gt;你迄今为止的生活&lt;/h1&gt;
 &lt;p&gt;对于大多数人来说，童年就像一条河，我们就是河里的蝌蚪。&lt;/p&gt;
 &lt;p&gt;我们没有办法选择河流。我们醒来的那天，就已经在这条父母、社会和大环境给我们选定的道路上了。我们被告知了河流的生存法则、正确的泳姿和我们的目标。
@@ -110,10 +110,10 @@
     
     <item>
       <title>欲成其事者</title>
-      <link>http://localhost:1313/zh-cn/accomplish-something/</link>
+      <link>https://tanwubin.github.io/zh-cn/accomplish-something/</link>
       <pubDate>Sat, 15 Feb 2025 14:50:47 +0800</pubDate>
       
-      <guid>http://localhost:1313/zh-cn/accomplish-something/</guid>
+      <guid>https://tanwubin.github.io/zh-cn/accomplish-something/</guid>
       <description>&lt;p&gt;欲成其事者，先坚其志，欲坚其志者，先定其心，欲定其心者，先明其理；&lt;/p&gt;
 &lt;p&gt;理通而后有向，向而后能有专，专而后能恒，恒而后能果，果而后能成。&lt;/p&gt;
 &lt;p&gt;一辈子很短暂，活出自己很重要。清楚自己做什么，看到好的时机，就一定要去做，心里想的和行为保持一致。&lt;/p&gt;</description>
@@ -121,10 +121,10 @@
     
     <item>
       <title>Matlab OFDM Simulation</title>
-      <link>http://localhost:1313/zh-cn/matlab-ofdm-simulation/</link>
+      <link>https://tanwubin.github.io/zh-cn/matlab-ofdm-simulation/</link>
       <pubDate>Sun, 09 Feb 2025 20:21:42 +0800</pubDate>
       
-      <guid>http://localhost:1313/zh-cn/matlab-ofdm-simulation/</guid>
+      <guid>https://tanwubin.github.io/zh-cn/matlab-ofdm-simulation/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://43.160.197.164:9000/tanwubin.github.io/blog/img/ofdm_math.png&#34; alt=&#34;&#34;&gt;
 &lt;img src=&#34;https://43.160.197.164:9000/tanwubin.github.io/blog/img/ofdm_principle.png&#34; alt=&#34;&#34;&gt;
 说明：实际工程中，an和bn一般实分开分别发送的，即实部与虚部是两路独立发送的，如下图展示an的发送：
@@ -147,10 +147,10 @@
     
     <item>
       <title>HackRF Changelog from 20241018 to 20250109 </title>
-      <link>http://localhost:1313/zh-cn/hackrf-changelog-20241018~20250109/</link>
+      <link>https://tanwubin.github.io/zh-cn/hackrf-changelog-20241018~20250109/</link>
       <pubDate>Wed, 05 Feb 2025 21:15:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/zh-cn/hackrf-changelog-20241018~20250109/</guid>
+      <guid>https://tanwubin.github.io/zh-cn/hackrf-changelog-20241018~20250109/</guid>
       <description>&lt;h5 id=&#34;文档更新add-opera-cake-block-diagram&#34;&gt;文档更新：Add Opera Cake Block Diagram&lt;/h5&gt;
 &lt;p&gt;&lt;img src=&#34;https://hackrf.readthedocs.io/en/latest/_images/operacake-block-diagram.png&#34; alt=&#34;opera cake block diagram&#34;&gt;&lt;/p&gt;
 &lt;h5 id=&#34;add-agm-cpld-to-portapack-detection-routine&#34;&gt;Add AGM CPLD to portapack detection routine&lt;/h5&gt;
@@ -205,10 +205,10 @@
     
     <item>
       <title>Markdown 语法指北</title>
-      <link>http://localhost:1313/zh-cn/markdown-syntax/</link>
+      <link>https://tanwubin.github.io/zh-cn/markdown-syntax/</link>
       <pubDate>Tue, 28 Jan 2025 23:15:50 +0800</pubDate>
       
-      <guid>http://localhost:1313/zh-cn/markdown-syntax/</guid>
+      <guid>https://tanwubin.github.io/zh-cn/markdown-syntax/</guid>
       <description>&lt;p&gt;本文提供了一个可以在 Hugo 内容文件中使用的基本 Markdown 语法示例，还展示了基本 HTML 元素是否在 Hugo 主题中使用 CSS 进行修饰。&lt;/p&gt;
 &lt;h2 id=&#34;标题&#34;&gt;标题&lt;/h2&gt;
 &lt;p&gt;下面的 HTML &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt;—&lt;code&gt;&amp;lt;h6&amp;gt;&lt;/code&gt; 元素代表了六个级别的章节标题。 &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt; 是最高的部分级别，而 &lt;code&gt;&amp;lt;h6&amp;gt;&lt;/code&gt; 是最低的。&lt;/p&gt;
@@ -449,10 +449,10 @@
     
     <item>
       <title>搜索</title>
-      <link>http://localhost:1313/zh-cn/search/</link>
+      <link>https://tanwubin.github.io/zh-cn/search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:1313/zh-cn/search/</guid>
+      <guid>https://tanwubin.github.io/zh-cn/search/</guid>
       <description></description>
     </item>
     

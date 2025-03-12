@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on garden of tan</title>
-    <link>http://localhost:1313/categories/</link>
+    <link>https://tanwubin.github.io/categories/</link>
     <description>Recent content in Categories on garden of tan</description>
     <generator>Hugo</generator>
     <language>en</language>
     <copyright>© 2025 tanwubin</copyright>
     <lastBuildDate>Wed, 12 Mar 2025 20:29:02 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://tanwubin.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Keep_Practice</title>
-      <link>http://localhost:1313/categories/keep_practice/</link>
+      <link>https://tanwubin.github.io/categories/keep_practice/</link>
       <pubDate>Wed, 12 Mar 2025 20:29:02 +0800</pubDate>
-      <guid>http://localhost:1313/categories/keep_practice/</guid>
+      <guid>https://tanwubin.github.io/categories/keep_practice/</guid>
       <description></description>
     </item>
     <item>
       <title>Keep_Learn</title>
-      <link>http://localhost:1313/categories/keep_learn/</link>
+      <link>https://tanwubin.github.io/categories/keep_learn/</link>
       <pubDate>Sat, 01 Mar 2025 08:41:00 +0800</pubDate>
-      <guid>http://localhost:1313/categories/keep_learn/</guid>
+      <guid>https://tanwubin.github.io/categories/keep_learn/</guid>
       <description></description>
     </item>
   </channel>

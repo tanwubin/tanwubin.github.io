@@ -1,3 +1,20 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Keep_Learn on garden of tan</title><link>https://tanwubin.github.io/categories/keep_learn/</link><description>Recent content in Keep_Learn on garden of tan</description><generator>Hugo</generator><language>en</language><copyright>© 2025 tanwubin</copyright><lastBuildDate>Sat, 01 Mar 2025 08:41:00 +0800</lastBuildDate><atom:link href="https://tanwubin.github.io/categories/keep_learn/index.xml" rel="self" type="application/rss+xml"/><item><title>How to Understand Backpropagation?Especially How to Update Weights?</title><link>https://tanwubin.github.io/how-to-understand-backpropagation/</link><pubDate>Sat, 01 Mar 2025 08:41:00 +0800</pubDate><guid>https://tanwubin.github.io/how-to-understand-backpropagation/</guid><description>&lt;p>The project describes teaching process of multi-layer neural network employing &lt;em>backpropagation&lt;/em> algorithm. To illustrate this process the three layer neural network with two inputs and one output,which is shown in the picture below, is used:&lt;/p>
-&lt;p>&lt;img src="https://tanwubin.github.io/../assets/img/bp-img01.gif" alt="">&lt;/p>
-&lt;p>Each neuron is composed of two units. First unit adds products of weights coefficients and input signals. The second unit realise nonlinear function, called neuron activation function. Signal &lt;em>e&lt;/em> is adder output signal, and &lt;em>y = f(e)&lt;/em> is output signal of nonlinear element. Signal &lt;em>y&lt;/em> is also output signal of neuron.&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Keep_Learn on garden of tan</title>
+    <link>https://tanwubin.github.io/categories/keep_learn/</link>
+    <description>Recent content in Keep_Learn on garden of tan</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>© 2025 tanwubin</copyright>
+    <lastBuildDate>Sat, 01 Mar 2025 08:41:00 +0800</lastBuildDate>
+    <atom:link href="https://tanwubin.github.io/categories/keep_learn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Understand Backpropagation?Especially How to Update Weights?</title>
+      <link>https://tanwubin.github.io/how-to-understand-backpropagation/</link>
+      <pubDate>Sat, 01 Mar 2025 08:41:00 +0800</pubDate>
+      <guid>https://tanwubin.github.io/how-to-understand-backpropagation/</guid>
+      <description>&lt;p&gt;The project describes teaching process of multi-layer neural network employing &lt;em&gt;backpropagation&lt;/em&gt; algorithm. To illustrate this process the three layer neural network with two inputs and one output,which is shown in the picture below, is used:&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://tanwubin.github.io/../assets/img/bp-img01.gif&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Each neuron is composed of two units. First unit adds products of weights coefficients and input signals. The second unit realise nonlinear function, called neuron activation function. Signal &lt;em&gt;e&lt;/em&gt; is adder output signal, and &lt;em&gt;y = f(e)&lt;/em&gt; is output signal of nonlinear element. Signal &lt;em&gt;y&lt;/em&gt; is also output signal of neuron.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <meta property="og:url" content="https://blog.sparkbigbang.com/build-ollama-from-source/">
+  <meta property="og:url" content="https://blog.sparkbigbang.com/how-to-use-typora/">
   <meta property="og:site_name" content="BlogSparkBigBang">
-  <meta property="og:title" content="Build ollama from source on Windows">
-  <meta property="og:description" content="How to Build Ollama from Source for running Large Language Models on Windows">
+  <meta property="og:title" content="How to Use Typora">
+  <meta property="og:description" content="typora v1.10.8">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
-    <meta property="article:published_time" content="2025-02-06T21:44:37+08:00">
-    <meta property="article:modified_time" content="2025-02-06T21:44:37+08:00">
-    <meta property="article:tag" content="Ollama">
+    <meta property="article:published_time" content="2026-05-04T18:25:48+08:00">
+    <meta property="article:modified_time" content="2026-05-04T18:25:48+08:00">
+    <meta property="article:tag" content="Markdown">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Build ollama from source on Windows">
-  <meta name="twitter:description" content="How to Build Ollama from Source for running Large Language Models on Windows">
+  <meta name="twitter:title" content="How to Use Typora">
+  <meta name="twitter:description" content="typora v1.10.8">
 
   
   
@@ -25,7 +25,7 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
   <title>
     
-    BlogSparkBigBang - Build ollama from source on Windows
+    BlogSparkBigBang - How to Use Typora
     
   </title>
   
@@ -117,128 +117,57 @@
   <ol>
     <li>
       <ol>
-        <li>
-          <ol>
-            <li>
-              <ol>
-                <li>
-                  <ol>
-                    <li><a href="#install-prerequisites">Install prerequisites</a></li>
-                    <li><a href="#configure-and-build-the-project-and-run-ollama">configure and build the project and run Ollama</a></li>
-                    <li><a href="#build-ollamaexe">Build Ollama.exe</a></li>
-                    <li><a href="#pull-models">Pull Models</a></li>
-                    <li><a href="#use-curl-to-test">Use curl to test</a></li>
-                  </ol>
-                </li>
-              </ol>
-            </li>
-          </ol>
-        </li>
+        <li><a href="#activate-steps">Activate Steps</a></li>
+        <li><a href="#some-opensource-for-this">Some opensource for this</a></li>
+        <li><a href="#reference">Reference</a></li>
       </ol>
     </li>
   </ol>
 </nav>
 </div>
 <div class="container mx-auto">
-  <h1 class="text-4xl font-extrabold mt-6 mb-6">Build ollama from source on Windows</h1>
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">How to Use Typora</h1>
   <div class="mb-3 text-sm flex justify-between ">
     <div>
       
-      Post at &mdash; Feb 06, 2025
+      Post at &mdash; May 04, 2026
       
+      
+      <span class="ml-3 tag">
+        DRAFT
+      </span>
       
     </div>
     
     <div>
       
       
-      <a class="ml-1" href="/tags/Ollama">#Ollama</a>
+      <a class="ml-1" href="/tags/markdown">#markdown</a>
       
     </div>
     
   </div>
   <main class="mb-8">
-    <p>How to Build Ollama from Source for running Large Language Models on Windows</p>
+    <p>typora v1.10.8</p>
     <article class="md">
-      <h5 id="install-prerequisites">Install prerequisites</h5>
-<p>Install prerequisites:</p>
+      <h2 id="activate-steps">Activate Steps</h2>
+<p>For version 1.10.8</p>
 <ul>
-<li><a href="https://go.dev/doc/install">Go</a></li>
-<li>C/C++ Compiler e.g. Clang on macOS, <a href="https://jmeubank.github.io/tdm-gcc/download/">TDM-GCC</a> (Windows amd64) or <a href="https://github.com/mstorsjo/llvm-mingw">llvm-mingw</a> (Windows arm64), GCC/Clang on Linux.</li>
+<li>Change Activate State</li>
 </ul>
-<p>Then build and run Ollama from the root directory of the repository:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go run . serve
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h5 id="configure-and-build-the-project-and-run-ollama">configure and build the project and run Ollama</h5>
-<p>Install prerequisites:</p>
-<ul>
-<li><a href="https://cmake.org/download/">CMake</a></li>
-<li><a href="https://visualstudio.microsoft.com/downloads/">Visual Studio 2022</a> including the Native Desktop Workload</li>
-<li>(Optional) NVIDIA GPU support
-<ul>
-<li><a href="https://developer.nvidia.com/cuda-downloads?target_os=Windows&amp;target_arch=x86_64&amp;target_version=11&amp;target_type=exe_network">CUDA SDK</a></li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>[Notice]
-Ensure prerequisites are in <code>PATH</code> before running CMake.</p>
-</blockquote>
-<blockquote>
-<p>[Notice]
-CUDA is only compatible with Visual Studio CMake generators.</p>
-</blockquote>
-<p>Then, configure and build the project:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cmake -B build
-</span></span><span class="line"><span class="cl">cmake --build build --config Release
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// /Applications/Typora.app/Contents/Resources/TypeMark/page-dist/static/js/LicenseIndex.180dd4c7.5b0f7af9.chunk.js
+</span></span></span><span class="line"><span class="cl"><span class="c1">// change hasActivated=&#34;true&#34;==e.hasActivated to hasActivated=&#34;true&#34;==&#34;true&#34;
+</span></span></span></code></pre></td></tr></table>
 </div>
-</div><p>Lastly, run Ollama:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go run . serve
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h5 id="build-ollamaexe">Build Ollama.exe</h5>
-<p>Install source code:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">git clone https://github.com/tanwubin/ollama.git
-</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ollama
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>compile the source to ollama.exe</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">go generate ./...
-</span></span><span class="line"><span class="cl">go build .
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h5 id="pull-models">Pull Models</h5>
-<p>Install Models:</p>
+</div><ul>
+<li>Pop windows auto close</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -246,12 +175,29 @@ CUDA is only compatible with Visual Studio CMake generators.</p>
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nb">cd</span> ollama
-</span></span><span class="line"><span class="cl">ollama.exe pull llama3.2
-</span></span><span class="line"><span class="cl">ollama.exe pull deepseek-r1:7b
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// /Applications/Typora.app/Contents/Resources/TypeMark/page-dist/static/js/0.99879679.chunk.js
+</span></span></span><span class="line"><span class="cl"><span class="c1">// add following code in the first line:
+</span></span></span><span class="line"><span class="cl"><span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;.default-btn.secondary-btn&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">();</span> <span class="p">},</span> <span class="mi">20</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h5 id="use-curl-to-test">Use curl to test</h5>
+</div><ul>
+<li>Auto close the activate success tips</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// /Applications/Typora.app/Contents/Resources/TypeMark/page-dist/license.html
+</span></span></span><span class="line"><span class="cl"><span class="c1">// before &lt;/body&gt; add following script to auto close the activate success tips.
+</span></span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span><span class="nb">window</span><span class="p">.</span><span class="nx">onload</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span><span class="nx">setTimeout</span><span class="p">(()=&gt;{</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&#34;#root &gt; div &gt; div.footer &gt; div.footer-left &gt; button&#34;</span><span class="p">).</span><span class="nx">click</span><span class="p">();},</span><span class="mi">10</span><span class="p">)}</span><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Disable the non-activate button</li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -259,16 +205,31 @@ CUDA is only compatible with Visual Studio CMake generators.</p>
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">curl http://127.0.0.1:11434/api/generate -d <span class="s1">&#39;{
-</span></span></span><span class="line"><span class="cl"><span class="s1">  &#34;model&#34;: &#34;llama3.2&#34;,
-</span></span></span><span class="line"><span class="cl"><span class="s1">  &#34;prompt&#34;: &#34;Why is the sky blue?&#34;,
-</span></span></span><span class="line"><span class="cl"><span class="s1">  &#34;stream&#34;: false
-</span></span></span><span class="line"><span class="cl"><span class="s1">}&#39;</span>
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">//</span> <span class="o">/</span><span class="nt">Applications</span><span class="o">/</span><span class="nt">Typora</span><span class="p">.</span><span class="nc">app</span><span class="o">/</span><span class="nt">Contents</span><span class="o">/</span><span class="nt">Resources</span><span class="o">/</span><span class="nt">TypeMark</span><span class="o">/</span><span class="nt">index</span><span class="p">.</span><span class="nc">html</span>
+</span></span><span class="line"><span class="cl"><span class="o">//</span> <span class="nt">add</span> <span class="nt">following</span> <span class="nt">code</span> <span class="nt">before</span> <span class="o">&lt;/</span><span class="nt">html</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nt">style</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">body</span> <span class="o">&gt;</span> <span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&#34;button&#34;</span><span class="o">][</span><span class="nt">title</span><span class="o">*=</span><span class="s2">&#34;activate typora&#34;</span><span class="o">]</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">visibility</span><span class="p">:</span> <span class="kc">hidden</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;/</span><span class="nt">style</span><span class="o">&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>if you see the response of llama3.2 model, it means works!</p>
+</div><h2 id="some-opensource-for-this">Some opensource for this</h2>
+<p><a href="https://github.com/tanwubin/typorahub">https://github.com/tanwubin/typorahub</a></p>
+<p>While the path in the script need to adapter.</p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://blog.csdn.net/2402_82616859/article/details/149565442">https://blog.csdn.net/2402_82616859/article/details/149565442</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/2021702882353772218">https://zhuanlan.zhihu.com/p/2021702882353772218</a></li>
+<li><a href="https://typorahub.pages.dev">https://typorahub.pages.dev</a></li>
+<li><a href="https://juejin.cn/post/7234006333484597307">https://juejin.cn/post/7234006333484597307</a></li>
+<li><a href="https://blog.csdn.net/weixin_39876223/article/details/147514730">https://blog.csdn.net/weixin_39876223/article/details/147514730</a></li>
+<li><a href="https://blog.csdn.net/wangyufei0815/article/details/140553239">https://blog.csdn.net/wangyufei0815/article/details/140553239</a></li>
+</ul>
 
     </article>
   </main>

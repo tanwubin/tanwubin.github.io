@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.sparkbigbang.com/</loc>
-    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
+    <lastmod>2026-05-04T18:25:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -11,15 +11,12 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="en-us"
                 href="https://blog.sparkbigbang.com/"
                 />
   </url><url>
-    <loc>https://blog.sparkbigbang.com/build-deep-learning-framework-step12/</loc>
-    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
-  </url><url>
     <loc>https://blog.sparkbigbang.com/categories/</loc>
-    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
+    <lastmod>2026-05-04T18:25:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -27,18 +24,15 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="en-us"
                 href="https://blog.sparkbigbang.com/categories/"
                 />
   </url><url>
-    <loc>https://blog.sparkbigbang.com/series/deep_learning_framework/</loc>
-    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.sparkbigbang.com/tags/deep_learning_framework/</loc>
-    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
+    <loc>https://blog.sparkbigbang.com/how-to-use-typora/</loc>
+    <lastmod>2026-05-04T18:25:48+08:00</lastmod>
   </url><url>
     <loc>https://blog.sparkbigbang.com/categories/keep_practice/</loc>
-    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
+    <lastmod>2026-05-04T18:25:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -46,12 +40,25 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="en-us"
                 href="https://blog.sparkbigbang.com/categories/keep_practice/"
                 />
   </url><url>
+    <loc>https://blog.sparkbigbang.com/tags/markdown/</loc>
+    <lastmod>2026-05-04T18:25:48+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://blog.sparkbigbang.com/zh-cn/tags/markdown/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://blog.sparkbigbang.com/tags/markdown/"
+                />
+  </url><url>
     <loc>https://blog.sparkbigbang.com/series/</loc>
-    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
+    <lastmod>2026-05-04T18:25:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -59,12 +66,15 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="en-us"
                 href="https://blog.sparkbigbang.com/series/"
                 />
   </url><url>
+    <loc>https://blog.sparkbigbang.com/series/software-tools/</loc>
+    <lastmod>2026-05-04T18:25:48+08:00</lastmod>
+  </url><url>
     <loc>https://blog.sparkbigbang.com/tags/</loc>
-    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
+    <lastmod>2026-05-04T18:25:48+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
@@ -72,9 +82,18 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="en-us"
                 href="https://blog.sparkbigbang.com/tags/"
                 />
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/build-deep-learning-framework-step12/</loc>
+    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/series/deep_learning_framework/</loc>
+    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/tags/deep_learning_framework/</loc>
+    <lastmod>2025-03-12T20:29:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.sparkbigbang.com/build-deep-learning-framework-step11/</loc>
     <lastmod>2025-03-08T12:58:40+08:00</lastmod>
@@ -91,7 +110,7 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="en-us"
                 href="https://blog.sparkbigbang.com/categories/keep_learn/"
                 />
   </url><url>
@@ -131,19 +150,6 @@
     <loc>https://blog.sparkbigbang.com/tags/ollama/</loc>
     <lastmod>2025-02-06T21:44:37+08:00</lastmod>
   </url><url>
-    <loc>https://blog.sparkbigbang.com/tags/markdown/</loc>
-    <lastmod>2025-01-28T23:19:35+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://blog.sparkbigbang.com/zh-cn/tags/markdown/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://blog.sparkbigbang.com/tags/markdown/"
-                />
-  </url><url>
     <loc>https://blog.sparkbigbang.com/tags/mermaid/</loc>
     <lastmod>2025-01-28T23:19:35+08:00</lastmod>
   </url><url>
@@ -165,7 +171,7 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="en-us"
                 href="https://blog.sparkbigbang.com/markdown-syntax/"
                 />
   </url><url>
@@ -177,7 +183,7 @@
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="en"
+                hreflang="en-us"
                 href="https://blog.sparkbigbang.com/search/"
                 />
   </url>

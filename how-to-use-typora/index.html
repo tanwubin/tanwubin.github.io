@@ -119,6 +119,7 @@
       <ol>
         <li><a href="#activate-steps">Activate Steps</a></li>
         <li><a href="#some-opensource-for-this">Some opensource for this</a></li>
+        <li><a href="#btwinstall-brew-hugo-uv">BTW:install brew-hugo-uv</a></li>
         <li><a href="#reference">Reference</a></li>
       </ol>
     </li>
@@ -132,10 +133,6 @@
       
       Post at &mdash; May 04, 2026
       
-      
-      <span class="ml-3 tag">
-        DRAFT
-      </span>
       
     </div>
     
@@ -221,7 +218,256 @@
 </div><h2 id="some-opensource-for-this">Some opensource for this</h2>
 <p><a href="https://github.com/tanwubin/typorahub">https://github.com/tanwubin/typorahub</a></p>
 <p>While the path in the script need to adapter.</p>
-<h2 id="reference">Reference</h2>
+<h2 id="btwinstall-brew-hugo-uv">BTW:install brew-hugo-uv</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># install brew for mac</span>
+</span></span><span class="line"><span class="cl">% /bin/bash -c <span class="s2">&#34;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Checking <span class="k">for</span> <span class="sb">`</span>sudo<span class="sb">`</span> access <span class="o">(</span>which may request your password<span class="o">)</span>...
+</span></span><span class="line"><span class="cl">Password:
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; This script will install:
+</span></span><span class="line"><span class="cl">/opt/homebrew/bin/brew
+</span></span><span class="line"><span class="cl">/opt/homebrew/share/doc/homebrew
+</span></span><span class="line"><span class="cl">/opt/homebrew/share/man/man1/brew.1
+</span></span><span class="line"><span class="cl">/opt/homebrew/share/zsh/site-functions/_brew
+</span></span><span class="line"><span class="cl">/opt/homebrew/etc/bash_completion.d/brew
+</span></span><span class="line"><span class="cl">/opt/homebrew
+</span></span><span class="line"><span class="cl">/etc/paths.d/homebrew
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; The following new directories will be created:
+</span></span><span class="line"><span class="cl">/opt/homebrew/bin
+</span></span><span class="line"><span class="cl">/opt/homebrew/etc
+</span></span><span class="line"><span class="cl">/opt/homebrew/include
+</span></span><span class="line"><span class="cl">/opt/homebrew/lib
+</span></span><span class="line"><span class="cl">/opt/homebrew/sbin
+</span></span><span class="line"><span class="cl">/opt/homebrew/share
+</span></span><span class="line"><span class="cl">/opt/homebrew/var
+</span></span><span class="line"><span class="cl">/opt/homebrew/opt
+</span></span><span class="line"><span class="cl">/opt/homebrew/share/zsh
+</span></span><span class="line"><span class="cl">/opt/homebrew/share/zsh/site-functions
+</span></span><span class="line"><span class="cl">/opt/homebrew/var/homebrew
+</span></span><span class="line"><span class="cl">/opt/homebrew/var/homebrew/linked
+</span></span><span class="line"><span class="cl">/opt/homebrew/Cellar
+</span></span><span class="line"><span class="cl">/opt/homebrew/Caskroom
+</span></span><span class="line"><span class="cl">/opt/homebrew/Frameworks
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Press RETURN/ENTER to <span class="k">continue</span> or any other key to abort:
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /usr/bin/install -d -o root -g wheel -m <span class="m">0755</span> /opt/homebrew
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /bin/mkdir -p /opt/homebrew/bin /opt/homebrew/etc /opt/homebrew/include /opt/homebrew/lib /opt/homebrew/sbin /opt/homebrew/share /opt/homebrew/var /opt/homebrew/opt /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions /opt/homebrew/var/homebrew /opt/homebrew/var/homebrew/linked /opt/homebrew/Cellar /opt/homebrew/Caskroom /opt/homebrew/Frameworks
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /bin/chmod <span class="nv">ug</span><span class="o">=</span>rwx /opt/homebrew/bin /opt/homebrew/etc /opt/homebrew/include /opt/homebrew/lib /opt/homebrew/sbin /opt/homebrew/share /opt/homebrew/var /opt/homebrew/opt /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions /opt/homebrew/var/homebrew /opt/homebrew/var/homebrew/linked /opt/homebrew/Cellar /opt/homebrew/Caskroom /opt/homebrew/Frameworks
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /bin/chmod go-w /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /usr/sbin/chown tanwubin /opt/homebrew/bin /opt/homebrew/etc /opt/homebrew/include /opt/homebrew/lib /opt/homebrew/sbin /opt/homebrew/share /opt/homebrew/var /opt/homebrew/opt /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions /opt/homebrew/var/homebrew /opt/homebrew/var/homebrew/linked /opt/homebrew/Cellar /opt/homebrew/Caskroom /opt/homebrew/Frameworks
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /usr/bin/chgrp admin /opt/homebrew/bin /opt/homebrew/etc /opt/homebrew/include /opt/homebrew/lib /opt/homebrew/sbin /opt/homebrew/share /opt/homebrew/var /opt/homebrew/opt /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions /opt/homebrew/var/homebrew /opt/homebrew/var/homebrew/linked /opt/homebrew/Cellar /opt/homebrew/Caskroom /opt/homebrew/Frameworks
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /usr/sbin/chown -R tanwubin:admin /opt/homebrew
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Downloading and installing Homebrew...
+</span></span><span class="line"><span class="cl">remote: Enumerating objects: 331050, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Counting objects: 100% <span class="o">(</span>580/580<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Compressing objects: 100% <span class="o">(</span>254/254<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Total <span class="m">331050</span> <span class="o">(</span>delta 440<span class="o">)</span>, reused <span class="m">374</span> <span class="o">(</span>delta 326<span class="o">)</span>, pack-reused <span class="m">330470</span> <span class="o">(</span>from 3<span class="o">)</span>
+</span></span><span class="line"><span class="cl">remote: Enumerating objects: 55, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Counting objects: 100% <span class="o">(</span>33/33<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Total <span class="m">55</span> <span class="o">(</span>delta 33<span class="o">)</span>, reused <span class="m">33</span> <span class="o">(</span>delta 33<span class="o">)</span>, pack-reused <span class="m">22</span> <span class="o">(</span>from 1<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /bin/mkdir -p /etc/paths.d
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo tee /etc/paths.d/homebrew
+</span></span><span class="line"><span class="cl">/opt/homebrew/bin
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /usr/sbin/chown root:wheel /etc/paths.d/homebrew
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; /usr/bin/sudo /bin/chmod a+r /etc/paths.d/homebrew
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Updating Homebrew...
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Downloading https://ghcr.io/v2/homebrew/core/portable-ruby/blobs/sha256:8ad98d9cf15477d1a43f4012cfd5eff5c271398bca1e2724b55bd4944a0bb1d4
+</span></span><span class="line"><span class="cl"><span class="c1">################################################################################################################# 100.0%</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring portable-ruby-4.0.3.arm64_big_sur.bottle.tar.gz
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installation successful!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Homebrew has enabled anonymous aggregate formulae and cask analytics.
+</span></span><span class="line"><span class="cl">Read the analytics documentation <span class="o">(</span>and how to opt-out<span class="o">)</span> here:
+</span></span><span class="line"><span class="cl">  https://docs.brew.sh/Analytics
+</span></span><span class="line"><span class="cl">No analytics data has been sent yet <span class="o">(</span>nor will any be during this install run<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Homebrew is run entirely by unpaid volunteers. Please consider donating:
+</span></span><span class="line"><span class="cl">  https://github.com/Homebrew/brew#donations
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Next steps:
+</span></span><span class="line"><span class="cl">- Run these commands in your terminal to add Homebrew to your PATH:
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> &gt;&gt; /Users/tanwubin/.zprofile
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s1">&#39;eval &#34;$(/opt/homebrew/bin/brew shellenv zsh)&#34;&#39;</span> &gt;&gt; /Users/tanwubin/.zprofile
+</span></span><span class="line"><span class="cl">    <span class="nb">eval</span> <span class="s2">&#34;</span><span class="k">$(</span>/opt/homebrew/bin/brew shellenv zsh<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">- Run brew <span class="nb">help</span> to get started
+</span></span><span class="line"><span class="cl">- Further documentation:
+</span></span><span class="line"><span class="cl">    https://docs.brew.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">% <span class="nb">echo</span> &gt;&gt; /Users/tanwubin/.zprofile
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;eval &#34;$(/opt/homebrew/bin/brew shellenv zsh)&#34;&#39;</span> &gt;&gt; /Users/tanwubin/.zprofile
+</span></span><span class="line"><span class="cl"><span class="nb">eval</span> <span class="s2">&#34;</span><span class="k">$(</span>/opt/homebrew/bin/brew shellenv zsh<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">% cat ~/.zprofile 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">eval</span> <span class="s2">&#34;</span><span class="k">$(</span>/opt/homebrew/bin/brew shellenv zsh<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">% brew -v
+</span></span><span class="line"><span class="cl">Homebrew 5.1.8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># install hugo</span>
+</span></span><span class="line"><span class="cl">% brew install hugo
+</span></span><span class="line"><span class="cl">✔︎ JSON API formula.jws.json                                                                  Downloaded   32.0MB/ 32.0MB
+</span></span><span class="line"><span class="cl">✔︎ JSON API cask.jws.json                                                                     Downloaded   15.5MB/ 15.5MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Fetching downloads <span class="k">for</span>: hugo
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest hugo <span class="o">(</span>0.161.1<span class="o">)</span>                                                             Downloaded    7.4KB/  7.4KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle hugo <span class="o">(</span>0.161.1<span class="o">)</span>                                                                      Downloaded   26.2MB/ 26.2MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring hugo--0.161.1.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/hugo/0.161.1: <span class="m">54</span> files, 83.1MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Running <span class="sb">`</span>brew cleanup hugo<span class="sb">`</span>...
+</span></span><span class="line"><span class="cl">Disable this behaviour by setting <span class="sb">`</span><span class="nv">HOMEBREW_NO_INSTALL_CLEANUP</span><span class="o">=</span>1<span class="sb">`</span>.
+</span></span><span class="line"><span class="cl">Hide these hints with <span class="sb">`</span><span class="nv">HOMEBREW_NO_ENV_HINTS</span><span class="o">=</span>1<span class="sb">`</span> <span class="o">(</span>see <span class="sb">`</span>man brew<span class="sb">`</span><span class="o">)</span>.
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Caveats
+</span></span><span class="line"><span class="cl">zsh completions have been installed to:
+</span></span><span class="line"><span class="cl">  /opt/homebrew/share/zsh/site-functions
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">% hugo version
+</span></span><span class="line"><span class="cl">hugo v0.161.1+extended+withdeploy darwin/arm64 <span class="nv">BuildDate</span><span class="o">=</span>2026-04-29T13:56:01Z <span class="nv">VendorInfo</span><span class="o">=</span>Homebrew
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">% brew upgrade hugo
+</span></span><span class="line"><span class="cl">Warning: hugo 0.161.1 already installed
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># install uv</span>
+</span></span><span class="line"><span class="cl">% curl -LsSf https://astral.sh/uv/install.sh <span class="p">|</span> sh
+</span></span><span class="line"><span class="cl">downloading uv 0.11.8 aarch64-apple-darwin
+</span></span><span class="line"><span class="cl">installing to /Users/tanwubin/.local/bin
+</span></span><span class="line"><span class="cl">  uv
+</span></span><span class="line"><span class="cl">  uvx
+</span></span><span class="line"><span class="cl">everything<span class="s1">&#39;s installed!
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">To add $HOME/.local/bin to your PATH, either restart your shell or run:
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">    source $HOME/.local/bin/env (sh, bash, zsh)
+</span></span></span><span class="line"><span class="cl"><span class="s1">    source $HOME/.local/bin/env.fish (fish)
+</span></span></span><span class="line"><span class="cl"><span class="s1">% uv self update
+</span></span></span><span class="line"><span class="cl"><span class="s1">info: Checking for updates...
+</span></span></span><span class="line"><span class="cl"><span class="s1">success: You&#39;</span>re already on version v0.11.8 of uv <span class="o">(</span>the latest version<span class="o">)</span>.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="reference">Reference</h2>
 <ul>
 <li><a href="https://blog.csdn.net/2402_82616859/article/details/149565442">https://blog.csdn.net/2402_82616859/article/details/149565442</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/2021702882353772218">https://zhuanlan.zhihu.com/p/2021702882353772218</a></li>

@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta property="og:url" content="https://blog.sparkbigbang.com/my-ai-agents-using-n8n/">
+  <meta property="og:site_name" content="BlogSparkBigBang">
+  <meta property="og:title" content="My AI Agent Using n8n---Env setup">
+  <meta property="og:description" content="how to use ai to analysis news auto?">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2026-05-10T13:36:48+08:00">
+    <meta property="article:modified_time" content="2026-05-10T13:36:48+08:00">
+    <meta property="article:tag" content="Auto_work">
+    <meta property="article:tag" content="News_analysis">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="My AI Agent Using n8n---Env setup">
+  <meta name="twitter:description" content="how to use ai to analysis news auto?">
+
+  
+  
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
+  <title>
+    
+    BlogSparkBigBang - My AI Agent Using n8n---Env setup
+    
+  </title>
+  
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  
+  
+  
+  <link rel="stylesheet" href="/minima.004eb07110ed1f522fab38e30c07be21bb847d4dd1d0249b610a725a4cfb20e3.css" integrity="">
+  
+  
+  
+  <script defer type="text/javascript" src="/minima.f859a9ffaa678975629a52a3197ce4ee45a440c96813ff4c841225c615d0eee1.js" integrity="sha256-&#43;Fmp/6pniXVimlKjGXzk7kWkQMloE/9MhBIlxhXQ7uE="></script>
+  
+  
+  
+</head>
+<script>
+  const theme_config = 'sand'
+  const theme_light = theme_config === 'system' ? 'light' : theme_config;
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : theme_light;
+  console.debug(theme);
+
+  try {
+    localStorage.setItem('theme', theme);
+    window.minima_theme = theme;
+    document.querySelector('html').classList.add(theme);
+  } catch (e) {
+    console.error(e);
+  }
+</script>
+
+
+
+<body>
+  <header class="mt-3 mb-8">
+  <div class="container mx-auto">
+    <nav class="flex justify-between items-center">
+      <div class="flex items-center">
+        
+        <div id="theme-switch" class="text-2xl cursor-pointer">🌝</div>
+      </div>
+      <ul class="flex items-center text-base font-semibold
+        whitespace-nowrap overflow-x-auto overflow-y-hidden">
+        
+        <li class="ml-2 mr-2">
+          
+          <a href='/'>Home</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/tags">Tags</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/series">Series</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/search">🔍</a>
+          
+        </li>
+        
+      </ul>
+      
+      <ul class="flex item-center text-sm font-semibold">
+        
+        <li class="ml-2"><a href="https://blog.sparkbigbang.com/">EN</a></li>
+        
+        <li class="ml-2"><a href="https://blog.sparkbigbang.com/zh-cn/">CH</a></li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+
+  
+<div class="toc-div desktop-only">
+  <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#environment-setup">Environment Setup</a></li>
+        <li><a href="#n8n-install-build-and-start">n8n install build and start</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div>
+<div class="container mx-auto">
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">My AI Agent Using n8n---Env setup</h1>
+  <div class="mb-3 text-sm flex justify-between ">
+    <div>
+      
+      Post at &mdash; May 10, 2026
+      
+      
+    </div>
+    
+    <div>
+      
+      
+      <a class="ml-1" href="/tags/auto_work">#auto_work</a>
+      
+      
+      <a class="ml-1" href="/tags/news_analysis">#news_analysis</a>
+      
+    </div>
+    
+  </div>
+  <main class="mb-8">
+    <p>how to use ai to analysis news auto?</p>
+    <article class="md">
+      <h2 id="environment-setup">Environment Setup</h2>
+<p>from the guide:https://github.com/n8n-io/n8n/blob/master/CONTRIBUTING.md, we known that the requirements need <code>node</code> and <code>pnpm</code>,if the computer has not installed the software,just like below,we need install first:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % node -v
+</span></span><span class="line"><span class="cl">zsh: <span class="nb">command</span> not found: node
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % pnpm -v
+</span></span><span class="line"><span class="cl">zsh: <span class="nb">command</span> not found: pnpm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>so,first let&rsquo;s install the <code>node</code> and <code>pnpm</code>:</p>
+<p><code>node</code> install:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># install nvm to install node</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># install nvm:node version manage</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ref:https://github.com/nvm-sh/nvm</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh <span class="p">|</span> bash
+</span></span><span class="line"><span class="cl">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+</span></span><span class="line"><span class="cl">                                 Dload  Upload   Total   Spent    Left  Speed
+</span></span><span class="line"><span class="cl"><span class="m">100</span> <span class="m">16774</span>  <span class="m">100</span> <span class="m">16774</span>    <span class="m">0</span>     <span class="m">0</span>  <span class="m">25921</span>      <span class="m">0</span> --:--:-- --:--:-- --:--:-- <span class="nv">25885</span>
+</span></span><span class="line"><span class="cl"><span class="o">=</span>&gt; Downloading nvm from git to <span class="s1">&#39;/Users/tanwubin/.nvm&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">=</span>&gt; Cloning into <span class="s1">&#39;/Users/tanwubin/.nvm&#39;</span>...
+</span></span><span class="line"><span class="cl">remote: Enumerating objects: 427, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Counting objects: 100% <span class="o">(</span>427/427<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Compressing objects: 100% <span class="o">(</span>353/353<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Total <span class="m">427</span> <span class="o">(</span>delta 60<span class="o">)</span>, reused <span class="m">191</span> <span class="o">(</span>delta 46<span class="o">)</span>, pack-reused <span class="m">0</span> <span class="o">(</span>from 0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Receiving objects: 100% <span class="o">(</span>427/427<span class="o">)</span>, 414.94 KiB <span class="p">|</span> 1016.00 KiB/s, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">Resolving deltas: 100% <span class="o">(</span>60/60<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">* <span class="o">(</span>HEAD detached at FETCH_HEAD<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">master</span>
+</span></span><span class="line"><span class="cl"><span class="o">=</span>&gt; Compressing and cleaning up git <span class="nv">repository</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=</span>&gt; Appending nvm <span class="nb">source</span> string to /Users/tanwubin/.zshrc
+</span></span><span class="line"><span class="cl"><span class="o">=</span>&gt; Appending bash_completion <span class="nb">source</span> string to /Users/tanwubin/.zshrc
+</span></span><span class="line"><span class="cl"><span class="o">=</span>&gt; Close and reopen your terminal to start using nvm or run the following to use it now:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">NVM_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.nvm&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> -s <span class="s2">&#34;</span><span class="nv">$NVM_DIR</span><span class="s2">/nvm.sh&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="se">\.</span> <span class="s2">&#34;</span><span class="nv">$NVM_DIR</span><span class="s2">/nvm.sh&#34;</span>  <span class="c1"># This loads nvm</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> -s <span class="s2">&#34;</span><span class="nv">$NVM_DIR</span><span class="s2">/bash_completion&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="se">\.</span> <span class="s2">&#34;</span><span class="nv">$NVM_DIR</span><span class="s2">/bash_completion&#34;</span>  <span class="c1"># This loads nvm bash_completion</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl"><span class="c1"># restart the terminal</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % nvm --version
+</span></span><span class="line"><span class="cl">0.40.4
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % nvm install <span class="m">24</span>
+</span></span><span class="line"><span class="cl">Downloading and installing node v24.15.0...
+</span></span><span class="line"><span class="cl">Downloading https://nodejs.org/dist/v24.15.0/node-v24.15.0-darwin-arm64.tar.xz...
+</span></span><span class="line"><span class="cl"><span class="c1">################################################################################################################# 100.0%</span>
+</span></span><span class="line"><span class="cl">Computing checksum with sha256sum
+</span></span><span class="line"><span class="cl">Checksums matched!
+</span></span><span class="line"><span class="cl">Now using node v24.15.0 <span class="o">(</span>npm v11.12.1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Creating default alias: default -&gt; <span class="m">24</span> <span class="o">(</span>-&gt; v24.15.0 *<span class="o">)</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl"><span class="c1"># .nvm dir is the source code of nvm store</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .nvm 
+</span></span><span class="line"><span class="cl">AGENTS.md		CONTRIBUTING.md		Makefile		README.md		versions
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span>			Dockerfile		nvm-exec		rename_test.sh
+</span></span><span class="line"><span class="cl">bash_completion		GOVERNANCE.md		nvm.sh			ROADMAP.md
+</span></span><span class="line"><span class="cl">CLAUDE.md		install.sh		package.json		<span class="nb">test</span>
+</span></span><span class="line"><span class="cl">CODE_OF_CONDUCT.md	LICENSE.md		PROJECT_CHARTER.md	update_test_mocks.sh
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl"><span class="c1"># .nvm/versions is the node that download with `nvm install`</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .nvm/versions 
+</span></span><span class="line"><span class="cl">node
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .nvm/versions/node/         
+</span></span><span class="line"><span class="cl">v24.15.0
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl"><span class="c1"># by the way, the npm also install with node,and store in the node dir</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .nvm/versions/node/v24.15.0/bin/
+</span></span><span class="line"><span class="cl">corepack	node		npm		npx
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % which node
+</span></span><span class="line"><span class="cl">/Users/tanwubin/.nvm/versions/node/v24.15.0/bin/node
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % which npm
+</span></span><span class="line"><span class="cl">/Users/tanwubin/.nvm/versions/node/v24.15.0/bin/npm
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl"><span class="c1"># if use `npm install -g xx`,will install package to the follow dir:</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .nvm/versions/node/v24.15.0/lib/node_modules/
+</span></span><span class="line"><span class="cl">corepack/  npm/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>pnpm</code> install:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .nvm/versions/node/v24.15.0/bin 
+</span></span><span class="line"><span class="cl">corepack	node		npm		npx
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl"><span class="c1"># when we enable corepack,in the node directory bin will create the proxy script of pnpm and some other script</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % corepack <span class="nb">enable</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .nvm/versions/node/v24.15.0/bin
+</span></span><span class="line"><span class="cl">corepack	npm		pnpm		yarn
+</span></span><span class="line"><span class="cl">node		npx		pnpx		yarnpkg
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls -l .nvm/versions/node/v24.15.0/bin 
+</span></span><span class="line"><span class="cl">total <span class="m">234272</span>
+</span></span><span class="line"><span class="cl">lrwxr-xr-x  <span class="m">1</span> tanwubin  staff         <span class="m">45</span>  4月 <span class="m">15</span> 09:45 corepack -&gt; ../lib/node_modules/corepack/dist/corepack.js
+</span></span><span class="line"><span class="cl">-rwxr-xr-x  <span class="m">1</span> tanwubin  staff  <span class="m">119944608</span>  4月 <span class="m">15</span> 09:45 node
+</span></span><span class="line"><span class="cl">lrwxr-xr-x  <span class="m">1</span> tanwubin  staff         <span class="m">38</span>  4月 <span class="m">15</span> 09:45 npm -&gt; ../lib/node_modules/npm/bin/npm-cli.js
+</span></span><span class="line"><span class="cl">lrwxr-xr-x  <span class="m">1</span> tanwubin  staff         <span class="m">38</span>  4月 <span class="m">15</span> 09:45 npx -&gt; ../lib/node_modules/npm/bin/npx-cli.js
+</span></span><span class="line"><span class="cl">lrwxr-xr-x  <span class="m">1</span> tanwubin  staff         <span class="m">41</span>  5月 <span class="m">10</span> 15:29 pnpm -&gt; ../lib/node_modules/corepack/dist/pnpm.js
+</span></span><span class="line"><span class="cl">lrwxr-xr-x  <span class="m">1</span> tanwubin  staff         <span class="m">41</span>  5月 <span class="m">10</span> 15:29 pnpx -&gt; ../lib/node_modules/corepack/dist/pnpx.js
+</span></span><span class="line"><span class="cl">lrwxr-xr-x  <span class="m">1</span> tanwubin  staff         <span class="m">41</span>  5月 <span class="m">10</span> 15:29 yarn -&gt; ../lib/node_modules/corepack/dist/yarn.js
+</span></span><span class="line"><span class="cl">lrwxr-xr-x  <span class="m">1</span> tanwubin  staff         <span class="m">44</span>  5月 <span class="m">10</span> 15:29 yarnpkg -&gt; ../lib/node_modules/corepack/dist/yarnpkg.js
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ %
+</span></span><span class="line"><span class="cl"><span class="c1"># install the pnpm by the corepack</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % corepack prepare pnpm@10.22.0 --activate
+</span></span><span class="line"><span class="cl">Preparing pnpm@10.22.0 <span class="k">for</span> immediate activation...
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl"><span class="c1"># after install by the corepack,in the .cache dir will apear the real pnpm script</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .cache/node/corepack/v1                
+</span></span><span class="line"><span class="cl">pnpm
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % ls .cache/node/corepack/v1/pnpm 
+</span></span><span class="line"><span class="cl">10.22.0
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % pnpm -v
+</span></span><span class="line"><span class="cl">10.22.0
+</span></span><span class="line"><span class="cl"><span class="c1"># later if we install package by pnpm,the package will store here</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % pnpm store path
+</span></span><span class="line"><span class="cl">/Users/tanwubin/Library/pnpm/store/v10
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan ~ % 
+</span></span><span class="line"><span class="cl"><span class="c1"># later we need generate video,so need download ffmpeg</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % brew install <span class="nv">ffmpeg</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Auto-updating Homebrew...
+</span></span><span class="line"><span class="cl">Adjust how often this is run with <span class="sb">`</span><span class="nv">$HOMEBREW_AUTO_UPDATE_SECS</span><span class="sb">`</span> or disable with
+</span></span><span class="line"><span class="cl"><span class="sb">`</span><span class="nv">$HOMEBREW_NO_AUTO_UPDATE</span><span class="o">=</span>1<span class="sb">`</span>. Hide these hints with <span class="sb">`</span><span class="nv">$HOMEBREW_NO_ENV_HINTS</span><span class="o">=</span>1<span class="sb">`</span> <span class="o">(</span>see <span class="sb">`</span>man brew<span class="sb">`</span><span class="o">)</span>.
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Auto-updated Homebrew!
+</span></span><span class="line"><span class="cl">Updated <span class="m">1</span> tap <span class="o">(</span>homebrew/core<span class="o">)</span>.
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; New Formulae
+</span></span><span class="line"><span class="cl">hexapoda: Colorful modal hex editor
+</span></span><span class="line"><span class="cl">nettle@3: Low-level cryptographic <span class="nv">library</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Fetching downloads <span class="k">for</span>: ffmpeg
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest ffmpeg <span class="o">(</span>8.1.1<span class="o">)</span>                                                             Downloaded   38.8KB/ 38.8KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest dav1d <span class="o">(</span>1.5.3<span class="o">)</span>                                                              Downloaded    7.6KB/  7.6KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest libvmaf <span class="o">(</span>3.1.0<span class="o">)</span>                                                            Downloaded    7.7KB/  7.7KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest libvpx <span class="o">(</span>1.16.0<span class="o">)</span>                                                            Downloaded    7.3KB/  7.3KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest openssl@3 <span class="o">(</span>3.6.2<span class="o">)</span>                                                          Downloaded   12.0KB/ 12.0KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest opus <span class="o">(</span>1.6.1<span class="o">)</span>                                                               Downloaded    7.3KB/  7.3KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest x264 <span class="o">(</span>r3222<span class="o">)</span>                                                               Downloaded    9.8KB/  9.8KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest svt-av1 <span class="o">(</span>4.1.0<span class="o">)</span>                                                            Downloaded    7.6KB/  7.6KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest lame <span class="o">(</span>3.100<span class="o">)</span>                                                               Downloaded   16.1KB/ 16.1KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest sdl2 <span class="o">(</span>2.32.10<span class="o">)</span>                                                             Downloaded   23.0KB/ 23.0KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest ca-certificates <span class="o">(</span>2026-03-19<span class="o">)</span>                                               Downloaded    2.0KB/  2.0KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle ca-certificates <span class="o">(</span>2026-03-19<span class="o">)</span>                                                        Downloaded  132.4KB/132.4KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest x265 <span class="o">(</span>4.2<span class="o">)</span>                                                                 Downloaded    7.6KB/  7.6KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle svt-av1 <span class="o">(</span>4.1.0<span class="o">)</span>                                                                     Downloaded    1.3MB/  1.3MB
+</span></span><span class="line"><span class="cl">✔︎ Bottle lame <span class="o">(</span>3.100<span class="o">)</span>                                                                        Downloaded  792.0KB/792.0KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle opus <span class="o">(</span>1.6.1<span class="o">)</span>                                                                        Downloaded  505.2KB/505.2KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle libvmaf <span class="o">(</span>3.1.0<span class="o">)</span>                                                                     Downloaded    1.1MB/  1.1MB
+</span></span><span class="line"><span class="cl">✔︎ Bottle dav1d <span class="o">(</span>1.5.3<span class="o">)</span>                                                                       Downloaded  364.6KB/364.6KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle libvpx <span class="o">(</span>1.16.0<span class="o">)</span>                                                                     Downloaded    1.9MB/  1.9MB
+</span></span><span class="line"><span class="cl">✔︎ Bottle x264 <span class="o">(</span>r3222<span class="o">)</span>                                                                        Downloaded    2.0MB/  2.0MB
+</span></span><span class="line"><span class="cl">✔︎ Bottle sdl2 <span class="o">(</span>2.32.10<span class="o">)</span>                                                                      Downloaded    1.8MB/  1.8MB
+</span></span><span class="line"><span class="cl">✔︎ Bottle x265 <span class="o">(</span>4.2<span class="o">)</span>                                                                          Downloaded    5.1MB/  5.1MB
+</span></span><span class="line"><span class="cl">✔︎ Bottle openssl@3 <span class="o">(</span>3.6.2<span class="o">)</span>                                                                   Downloaded   10.9MB/ 10.9MB
+</span></span><span class="line"><span class="cl">✔︎ Bottle ffmpeg <span class="o">(</span>8.1.1<span class="o">)</span>                                                                      Downloaded   21.2MB/ 21.2MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing dependencies <span class="k">for</span> ffmpeg: dav1d, lame, libvmaf, libvpx, ca-certificates, openssl@3, opus, sdl2, svt-av1, x264 and <span class="nv">x265</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: <span class="nv">dav1d</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring dav1d--1.5.3.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/dav1d/1.5.3: <span class="m">16</span> files, <span class="nv">940KB</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: <span class="nv">lame</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring lame--3.100.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/lame/3.100: <span class="m">28</span> files, 2.3MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: <span class="nv">libvmaf</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring libvmaf--3.1.0.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/libvmaf/3.1.0: <span class="m">235</span> files, 7.5MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: <span class="nv">libvpx</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring libvpx--1.16.0.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/libvpx/1.16.0: <span class="m">22</span> files, 4.4MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: ca-certificates
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring ca-certificates--2026-03-19.all.bottle.tar.gz
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Regenerating CA certificate bundle from keychain, this may take a <span class="k">while</span>...
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/ca-certificates/2026-03-19: <span class="m">4</span> files, 237.5KB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: openssl@3
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring openssl@3--3.6.2.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/openssl@3/3.6.2: 7,627 files, 37.6MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: <span class="nv">opus</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring opus--1.6.1.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/opus/1.6.1: <span class="m">16</span> files, 1.1MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: <span class="nv">sdl2</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring sdl2--2.32.10.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/sdl2/2.32.10: <span class="m">94</span> files, 6.7MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: svt-av1
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring svt-av1--4.1.0.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/svt-av1/4.1.0: <span class="m">23</span> files, 3.1MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: <span class="nv">x264</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring x264--r3222.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/x264/r3222: <span class="m">12</span> files, 4.4MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing ffmpeg dependency: <span class="nv">x265</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring x265--4.2.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/x265/4.2: <span class="m">12</span> files, 17.0MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Installing <span class="nv">ffmpeg</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring ffmpeg--8.1.1.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Caveats
+</span></span><span class="line"><span class="cl">ffmpeg-full includes additional tools and libraries that are not included in the regular ffmpeg formula.
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Summary
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/ffmpeg/8.1.1: <span class="m">287</span> files, 53.5MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Running <span class="sb">`</span>brew cleanup ffmpeg<span class="sb">`</span>...
+</span></span><span class="line"><span class="cl">Disable this behaviour by setting <span class="sb">`</span><span class="nv">HOMEBREW_NO_INSTALL_CLEANUP</span><span class="o">=</span>1<span class="sb">`</span>.
+</span></span><span class="line"><span class="cl">Hide these hints with <span class="sb">`</span><span class="nv">HOMEBREW_NO_ENV_HINTS</span><span class="o">=</span>1<span class="sb">`</span> <span class="o">(</span>see <span class="sb">`</span>man brew<span class="sb">`</span><span class="o">)</span>.
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; <span class="nv">Caveats</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; ffmpeg
+</span></span><span class="line"><span class="cl">ffmpeg-full includes additional tools and libraries that are not included in the regular ffmpeg formula.
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % 
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % ffmpeg -version
+</span></span><span class="line"><span class="cl">ffmpeg version 8.1.1 Copyright <span class="o">(</span>c<span class="o">)</span> 2000-2026 the FFmpeg developers
+</span></span><span class="line"><span class="cl">built with Apple clang version 21.0.0 <span class="o">(</span>clang-2100.0.123.102<span class="o">)</span>
+</span></span><span class="line"><span class="cl">configuration: --prefix<span class="o">=</span>/opt/homebrew/Cellar/ffmpeg/8.1.1 --enable-shared --enable-pthreads --enable-version3 --cc<span class="o">=</span>clang --host-cflags<span class="o">=</span> --host-ldflags<span class="o">=</span> --enable-ffplay --enable-gpl --enable-libsvtav1 --enable-libopus --enable-libx264 --enable-libmp3lame --enable-libdav1d --enable-libvmaf --enable-libvpx --enable-libx265 --enable-openssl --enable-videotoolbox --enable-audiotoolbox --enable-neon
+</span></span><span class="line"><span class="cl">libavutil      60. 26.101 / 60. 26.101
+</span></span><span class="line"><span class="cl">libavcodec     62. 28.101 / 62. 28.101
+</span></span><span class="line"><span class="cl">libavformat    62. 12.101 / 62. 12.101
+</span></span><span class="line"><span class="cl">libavdevice    62.  3.101 / 62.  3.101
+</span></span><span class="line"><span class="cl">libavfilter    11. 14.101 / 11. 14.101
+</span></span><span class="line"><span class="cl">libswscale      9.  5.101 /  9.  5.101
+</span></span><span class="line"><span class="cl">libswresample   6.  3.101 /  6.  3.101
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Exiting with <span class="nb">exit</span> code <span class="m">0</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % 
+</span></span><span class="line"><span class="cl"><span class="c1"># we need python, so first down uv to manage python</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % brew install uv
+</span></span><span class="line"><span class="cl">✔︎ JSON API formula.jws.json                                                                  Downloaded   32.0MB/ 32.0MB
+</span></span><span class="line"><span class="cl">✔︎ JSON API cask.jws.json                                                                     Downloaded   15.4MB/ 15.4MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Fetching downloads <span class="k">for</span>: uv
+</span></span><span class="line"><span class="cl">✔︎ Bottle Manifest uv <span class="o">(</span>0.11.13<span class="o">)</span>                                                               Downloaded    8.1KB/  8.1KB
+</span></span><span class="line"><span class="cl">✔︎ Bottle uv <span class="o">(</span>0.11.13<span class="o">)</span>                                                                        Downloaded   20.4MB/ 20.4MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Pouring uv--0.11.13.arm64_tahoe.bottle.tar.gz
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Caveats
+</span></span><span class="line"><span class="cl">The following uv executables are shadowed by other commands earlier in your PATH:
+</span></span><span class="line"><span class="cl">  uv <span class="o">(</span>shadowed by /Users/tanwubin/.local/bin/uv<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  uvx <span class="o">(</span>shadowed by /Users/tanwubin/.local/bin/uvx<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Running these by name will not invoke the version provided by Homebrew.
+</span></span><span class="line"><span class="cl">Disable this behaviour by setting <span class="sb">`</span><span class="nv">HOMEBREW_NO_PATH_SHADOW_CHECK</span><span class="o">=</span>1<span class="sb">`</span>.
+</span></span><span class="line"><span class="cl">Hide these hints with <span class="sb">`</span><span class="nv">HOMEBREW_NO_ENV_HINTS</span><span class="o">=</span>1<span class="sb">`</span> <span class="o">(</span>see <span class="sb">`</span>man brew<span class="sb">`</span><span class="o">)</span>.
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Summary
+</span></span><span class="line"><span class="cl">🍺  /opt/homebrew/Cellar/uv/0.11.13: <span class="m">17</span> files, 48.8MB
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Running <span class="sb">`</span>brew cleanup uv<span class="sb">`</span>...
+</span></span><span class="line"><span class="cl">Disable this behaviour by setting <span class="sb">`</span><span class="nv">HOMEBREW_NO_INSTALL_CLEANUP</span><span class="o">=</span>1<span class="sb">`</span>.
+</span></span><span class="line"><span class="cl">Hide these hints with <span class="sb">`</span><span class="nv">HOMEBREW_NO_ENV_HINTS</span><span class="o">=</span>1<span class="sb">`</span> <span class="o">(</span>see <span class="sb">`</span>man brew<span class="sb">`</span><span class="o">)</span>.
+</span></span><span class="line"><span class="cl"><span class="o">==</span>&gt; Caveats
+</span></span><span class="line"><span class="cl">zsh completions have been installed to:
+</span></span><span class="line"><span class="cl">  /opt/homebrew/share/zsh/site-functions
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % uv python install 3.12
+</span></span><span class="line"><span class="cl">Installed Python 3.12.13 in 1m 38s
+</span></span><span class="line"><span class="cl"> + cpython-3.12.13-macos-aarch64-none <span class="o">(</span>python3.12<span class="o">)</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % uv python list
+</span></span><span class="line"><span class="cl">cpython-3.15.0a8-macos-aarch64-none                 &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.15.0a8+freethreaded-macos-aarch64-none    &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.14.4-macos-aarch64-none                   &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.14.4+freethreaded-macos-aarch64-none      &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.13.13-macos-aarch64-none                  &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.13.13+freethreaded-macos-aarch64-none     &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.12.13-macos-aarch64-none                  /Users/tanwubin/.local/bin/python3.12 -&gt; /Users/tanwubin/.local/share/uv/python/cpython-3.12-macos-aarch64-none/bin/python3.12
+</span></span><span class="line"><span class="cl">cpython-3.12.13-macos-aarch64-none                  /Users/tanwubin/.local/share/uv/python/cpython-3.12-macos-aarch64-none/bin/python3.12
+</span></span><span class="line"><span class="cl">cpython-3.11.15-macos-aarch64-none                  &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.10.20-macos-aarch64-none                  &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.9.25-macos-aarch64-none                   &lt;download available&gt;
+</span></span><span class="line"><span class="cl">cpython-3.9.6-macos-aarch64-none                    /usr/bin/python3
+</span></span><span class="line"><span class="cl">cpython-3.8.20-macos-aarch64-none                   &lt;download available&gt;
+</span></span><span class="line"><span class="cl">pypy-3.11.15-macos-aarch64-none                     &lt;download available&gt;
+</span></span><span class="line"><span class="cl">pypy-3.10.16-macos-aarch64-none                     &lt;download available&gt;
+</span></span><span class="line"><span class="cl">pypy-3.9.19-macos-aarch64-none                      &lt;download available&gt;
+</span></span><span class="line"><span class="cl">pypy-3.8.16-macos-aarch64-none                      &lt;download available&gt;
+</span></span><span class="line"><span class="cl">graalpy-3.12.0-macos-aarch64-none                   &lt;download available&gt;
+</span></span><span class="line"><span class="cl">graalpy-3.11.0-macos-aarch64-none                   &lt;download available&gt;
+</span></span><span class="line"><span class="cl">graalpy-3.10.0-macos-aarch64-none                   &lt;download available&gt;
+</span></span><span class="line"><span class="cl">graalpy-3.8.5-macos-aarch64-none                    &lt;download available&gt;
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % uv python find
+</span></span><span class="line"><span class="cl">/Users/tanwubin/.local/share/uv/python/cpython-3.12-macos-aarch64-none/bin/python3.12
+</span></span><span class="line"><span class="cl"><span class="c1"># system default python</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % python3 --version
+</span></span><span class="line"><span class="cl">Python 3.9.6
+</span></span><span class="line"><span class="cl"><span class="c1"># uv download python</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % python3.12 --version
+</span></span><span class="line"><span class="cl">Python 3.12.13
+</span></span><span class="line"><span class="cl"><span class="c1"># based on uv to create a venv for project</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % uv venv --python 3.12
+</span></span><span class="line"><span class="cl">Using CPython 3.12.13
+</span></span><span class="line"><span class="cl">Creating virtual environment at: .venv
+</span></span><span class="line"><span class="cl">Activate with: <span class="nb">source</span> .venv/bin/activate
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % 
+</span></span><span class="line"><span class="cl"><span class="c1"># active and install requirements</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan md2video % <span class="nb">source</span> .venv/bin/activate
+</span></span><span class="line"><span class="cl"><span class="o">(</span>md2video<span class="o">)</span> tanwubin@MacBookForTan md2video % 
+</span></span><span class="line"><span class="cl"><span class="o">(</span>md2video<span class="o">)</span> tanwubin@MacBookForTan md2video % 
+</span></span><span class="line"><span class="cl"><span class="o">(</span>md2video<span class="o">)</span> tanwubin@MacBookForTan md2video % 
+</span></span><span class="line"><span class="cl"><span class="o">(</span>md2video<span class="o">)</span> tanwubin@MacBookForTan md2video % uv pip install -r requirements.txt 
+</span></span><span class="line"><span class="cl">Resolved <span class="m">45</span> packages in 4.40s
+</span></span><span class="line"><span class="cl">Prepared <span class="m">45</span> packages in 35.40s
+</span></span><span class="line"><span class="cl">Installed <span class="m">45</span> packages in 54ms
+</span></span><span class="line"><span class="cl"> + annotated-types<span class="o">==</span>0.7.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">anyio</span><span class="o">==</span>4.13.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">attrs</span><span class="o">==</span>26.1.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">beautifulsoup4</span><span class="o">==</span>4.14.3
+</span></span><span class="line"><span class="cl"> + <span class="nv">certifi</span><span class="o">==</span>2026.4.22
+</span></span><span class="line"><span class="cl"> + charset-normalizer<span class="o">==</span>3.4.7
+</span></span><span class="line"><span class="cl"> + <span class="nv">decorator</span><span class="o">==</span>5.2.1
+</span></span><span class="line"><span class="cl"> + <span class="nv">distro</span><span class="o">==</span>1.9.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">h11</span><span class="o">==</span>0.16.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">httpcore</span><span class="o">==</span>1.0.9
+</span></span><span class="line"><span class="cl"> + <span class="nv">httpx</span><span class="o">==</span>0.28.1
+</span></span><span class="line"><span class="cl"> + <span class="nv">idna</span><span class="o">==</span>3.15
+</span></span><span class="line"><span class="cl"> + <span class="nv">imageio</span><span class="o">==</span>2.37.3
+</span></span><span class="line"><span class="cl"> + imageio-ffmpeg<span class="o">==</span>0.6.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">jiter</span><span class="o">==</span>0.14.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">markdown</span><span class="o">==</span>3.10.2
+</span></span><span class="line"><span class="cl"> + <span class="nv">markdown2</span><span class="o">==</span>2.5.5
+</span></span><span class="line"><span class="cl"> + <span class="nv">moviepy</span><span class="o">==</span>2.2.1
+</span></span><span class="line"><span class="cl"> + <span class="nv">numpy</span><span class="o">==</span>2.4.5
+</span></span><span class="line"><span class="cl"> + <span class="nv">openai</span><span class="o">==</span>2.37.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">outcome</span><span class="o">==</span>1.3.0.post0
+</span></span><span class="line"><span class="cl"> + <span class="nv">packaging</span><span class="o">==</span>26.2
+</span></span><span class="line"><span class="cl"> + <span class="nv">pathlib</span><span class="o">==</span>1.0.1
+</span></span><span class="line"><span class="cl"> + <span class="nv">pillow</span><span class="o">==</span>11.3.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">proglog</span><span class="o">==</span>0.1.12
+</span></span><span class="line"><span class="cl"> + <span class="nv">pydantic</span><span class="o">==</span>2.13.4
+</span></span><span class="line"><span class="cl"> + pydantic-core<span class="o">==</span>2.46.4
+</span></span><span class="line"><span class="cl"> + <span class="nv">pydub</span><span class="o">==</span>0.25.1
+</span></span><span class="line"><span class="cl"> + <span class="nv">pysocks</span><span class="o">==</span>1.7.1
+</span></span><span class="line"><span class="cl"> + python-dotenv<span class="o">==</span>1.2.2
+</span></span><span class="line"><span class="cl"> + <span class="nv">pyyaml</span><span class="o">==</span>6.0.3
+</span></span><span class="line"><span class="cl"> + <span class="nv">requests</span><span class="o">==</span>2.34.2
+</span></span><span class="line"><span class="cl"> + <span class="nv">selenium</span><span class="o">==</span>4.44.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">sniffio</span><span class="o">==</span>1.3.1
+</span></span><span class="line"><span class="cl"> + <span class="nv">sortedcontainers</span><span class="o">==</span>2.4.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">soupsieve</span><span class="o">==</span>2.8.3
+</span></span><span class="line"><span class="cl"> + <span class="nv">tqdm</span><span class="o">==</span>4.67.3
+</span></span><span class="line"><span class="cl"> + <span class="nv">trio</span><span class="o">==</span>0.33.0
+</span></span><span class="line"><span class="cl"> + trio-websocket<span class="o">==</span>0.12.2
+</span></span><span class="line"><span class="cl"> + typing-extensions<span class="o">==</span>4.15.0
+</span></span><span class="line"><span class="cl"> + typing-inspection<span class="o">==</span>0.4.2
+</span></span><span class="line"><span class="cl"> + <span class="nv">urllib3</span><span class="o">==</span>2.7.0
+</span></span><span class="line"><span class="cl"> + webdriver-manager<span class="o">==</span>4.0.2
+</span></span><span class="line"><span class="cl"> + websocket-client<span class="o">==</span>1.9.0
+</span></span><span class="line"><span class="cl"> + <span class="nv">wsproto</span><span class="o">==</span>1.3.2
+</span></span><span class="line"><span class="cl"><span class="o">(</span>md2video<span class="o">)</span> tanwubin@MacBookForTan md2video % 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>After the operation,we prepared the <code>node</code> and <code>pnpm</code> that satisfy the n8n project.</p>
+<h2 id="n8n-install-build-and-start">n8n install build and start</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># git clone</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan Projects % git clone https://github.com/tanwubin/n8n.git
+</span></span><span class="line"><span class="cl">Cloning into <span class="s1">&#39;n8n&#39;</span>...
+</span></span><span class="line"><span class="cl">remote: Enumerating objects: 505878, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Counting objects: 100% <span class="o">(</span>39/39<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Compressing objects: 100% <span class="o">(</span>36/36<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Total <span class="m">505878</span> <span class="o">(</span>delta 8<span class="o">)</span>, reused <span class="m">3</span> <span class="o">(</span>delta 3<span class="o">)</span>, pack-reused <span class="m">505839</span> <span class="o">(</span>from 3<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Receiving objects: 100% <span class="o">(</span>505878/505878<span class="o">)</span>, 344.89 MiB <span class="p">|</span> 213.00 KiB/s, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">Resolving deltas: 100% <span class="o">(</span>379521/379521<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">Updating files: 100% <span class="o">(</span>18494/18494<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan Projects % 
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan Projects % <span class="nb">cd</span> n8n
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % git fetch --tags
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % git tag -l n8n@1.80.3
+</span></span><span class="line"><span class="cl">n8n@1.80.3
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % 
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % git branch
+</span></span><span class="line"><span class="cl">* master
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % git checkout -b n8n@1.80.3
+</span></span><span class="line"><span class="cl">Switched to a new branch <span class="s1">&#39;n8n@1.80.3&#39;</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % git branch
+</span></span><span class="line"><span class="cl">  master
+</span></span><span class="line"><span class="cl">* n8n@1.80.3
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % 
+</span></span><span class="line"><span class="cl"><span class="c1"># Install all dependencies of all modules and link them together</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># becaude the package.json define the packageManager is pnpm@10.32.1,so here will install pnpm another version</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># &#34;packageManager&#34;: &#34;pnpm@10.32.1&#34;,</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % pnpm install
+</span></span><span class="line"><span class="cl">! Corepack is about to download https://registry.npmjs.org/pnpm/-/pnpm-10.32.1.tgz
+</span></span><span class="line"><span class="cl">? Do you want to <span class="k">continue</span>? <span class="o">[</span>Y/n<span class="o">]</span> Y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> WARN  Tarball download average speed <span class="m">32</span> KiB/s <span class="o">(</span>size <span class="m">33</span> KiB<span class="o">)</span> is below <span class="m">50</span> KiB/s: https://registry.npmjs.org/@parcel/watcher/-/watcher-2.5.1.tgz <span class="o">(</span>GET<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> WARN  Tarball download average speed <span class="m">12</span> KiB/s <span class="o">(</span>size <span class="m">26</span> KiB<span class="o">)</span> is below <span class="m">50</span> KiB/s: https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.21.tgz <span class="o">(</span>GET<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> WARN  Tarball download average speed <span class="m">44</span> KiB/s <span class="o">(</span>size <span class="m">157</span> KiB<span class="o">)</span> is below <span class="m">50</span> KiB/s: https://registry.npmjs.org/pngjs/-/pngjs-7.0.0.tgz <span class="o">(</span>GET<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> WARN  Tarball download average speed <span class="m">37</span> KiB/s <span class="o">(</span>size <span class="m">45</span> KiB<span class="o">)</span> is below <span class="m">50</span> KiB/s: https://registry.npmjs.org/cjs-module-lexer/-/cjs-module-lexer-2.2.0.tgz <span class="o">(</span>GET<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> WARN  Tarball download average speed <span class="m">20</span> KiB/s <span class="o">(</span>size <span class="m">22</span> KiB<span class="o">)</span> is below <span class="m">50</span> KiB/s: https://registry.npmjs.org/@types/luxon/-/luxon-3.2.0.tgz <span class="o">(</span>GET<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> WARN  <span class="m">44</span> other warnings
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % 
+</span></span><span class="line"><span class="cl"><span class="c1"># we can see that there exists two pnpm versions</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % ls ~/.cache/node/corepack/v1/pnpm 
+</span></span><span class="line"><span class="cl">10.22.0	10.32.1
+</span></span><span class="line"><span class="cl"><span class="c1"># begin build</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n % pnpm build
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&gt; n8n-monorepo@2.20.0 build /Users/tanwubin/Projects/n8n
+</span></span><span class="line"><span class="cl">&gt; turbo run build
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl"> Tasks:    <span class="m">59</span> successful, <span class="m">59</span> total
+</span></span><span class="line"><span class="cl">Cached:    <span class="m">0</span> cached, <span class="m">59</span> total
+</span></span><span class="line"><span class="cl">  Time:    1m22.892s 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&gt;   ...Finishing writing to cache...                                                                                     WARNING  no output files found <span class="k">for</span> task @n8n/local-gateway#build. Please check your <span class="sb">`</span>outputs<span class="sb">`</span> key in <span class="sb">`</span>turbo.json<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">tanwubin@MacBookForTan n8n %
+</span></span><span class="line"><span class="cl"><span class="c1"># To start n8n execute</span>
+</span></span><span class="line"><span class="cl">pnpm start
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>btw:when start, occur an error:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Your n8n server is configured to use a secure cookie,
+</span></span><span class="line"><span class="cl">however you are either visiting this via an insecure URL, or using Safari.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">To fix this, please consider the following options:
+</span></span><span class="line"><span class="cl">Setup TLS/HTTPS <span class="o">(</span>recommended<span class="o">)</span>, or
+</span></span><span class="line"><span class="cl">If you are running this locally, and not using Safari, try using localhost instead
+</span></span><span class="line"><span class="cl">If you prefer to disable this security feature <span class="o">(</span>not recommended<span class="o">)</span>, <span class="nb">set</span> the environment variable N8N_SECURE_COOKIE to <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># fix the error</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">N8N_SECURE_COOKIE</span><span class="o">=</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl">pnpm start
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>After start success, just exploring the n8n world&hellip;</p>
+
+    </article>
+  </main>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
+    integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"
+    integrity="sha384-YNHdsYkH6gMx9y3mRkmcJ2mFUjTd0qNQQvY9VYZgQd7DcN7env35GzlmFaZ23JGp"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"
+    integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"
+    crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            
+            
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            
+            throwOnError: false
+        });
+    });
+</script>
+
+
+
+
+
+<script 
+  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
+  crossorigin="anonymous">
+</script>
+<script>
+  mermaid.init(undefined, 'code.language-mermaid')
+</script>
+
+
+
+
+
+<div id="comment"></div>
+
+
+
+
+<script>
+    const s = document.createElement("script")
+    s.src = "https://giscus.app/client.js"
+    s.crossOrigin = "anonymous"
+    s.async = true
+    s.setAttribute("data-repo", "tanwubin\/tanwubin.github.io")
+    s.setAttribute("data-repo-id", "R_kgDONvnTiQ")
+    s.setAttribute("data-category", "Announcements")
+    s.setAttribute("data-category-id", "DIC_kwDONvnTic4CmaIS")
+    s.setAttribute("data-mapping", "pathname")
+    s.setAttribute("data-strict", "0")
+    s.setAttribute("data-reactions-enabled", "1")
+    s.setAttribute("data-emit-metadata", "0")
+    s.setAttribute("data-input-position", "buttom")
+    s.setAttribute("data-theme", window.minima_theme + "_protanopia")
+    s.setAttribute("data-lang", "en")
+    s.setAttribute("data-loading", "lazy")
+    document.getElementById("comment").appendChild(s)
+</script>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+  <footer class="mt-8 mb-8">
+  <div class="container mx-auto">
+    <div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-between items-center">
+      <div class="text-center sm:text-left">
+        <p class="mt-0 text-sm">© 2025 SparkBigBang</p>
+        <p class="mt-0 text-xs">
+          Built with Hugo v0.161.1
+          
+        </p>
+      </div>
+      
+      <p class="flex items-center mt-0">
+        
+          <a class="icon ml-1 mr-1" href="https://twitter.com/brieftime" title="twitter">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="mailto:644346160@qq.com" title="email">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="https://github.com/tanwubin" title="github">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="/index.xml" title="rss">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+          
+          </a>
+        
+      </p>
+    </div>
+  </div>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gumshoejs@5.1.2/dist/gumshoe.min.js"></script>
+  <script>
+    var spy = new Gumshoe('#TableOfContents a', {
+        nested: true,
+        nestedClass: 'active'
+      });
+  </script>
+</body>
+
+</html>

@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>© 2025 SparkBigBang</copyright>
-    <lastBuildDate>Mon, 06 Apr 2026 08:46:34 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 01 Aug 2026 18:17:04 +0800</lastBuildDate>
     <atom:link href="https://blog.sparkbigbang.com/zh-cn/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>存储仿真</title>
+      <link>https://blog.sparkbigbang.com/zh-cn/series/%E5%AD%98%E5%82%A8%E4%BB%BF%E7%9C%9F/</link>
+      <pubDate>Sat, 01 Aug 2026 18:17:04 +0800</pubDate>
+      <guid>https://blog.sparkbigbang.com/zh-cn/series/%E5%AD%98%E5%82%A8%E4%BB%BF%E7%9C%9F/</guid>
+      <description></description>
+    </item>
     <item>
       <title>仿真</title>
       <link>https://blog.sparkbigbang.com/zh-cn/series/%E4%BB%BF%E7%9C%9F/</link>

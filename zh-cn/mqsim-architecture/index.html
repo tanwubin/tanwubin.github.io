@@ -1,0 +1,3043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta property="og:url" content="https://blog.sparkbigbang.com/zh-cn/mqsim-architecture/">
+  <meta property="og:site_name" content="BlogSparkBigBang">
+  <meta property="og:title" content="MQSIM架构解析">
+  <meta property="og:description" content="SSD仿真器架构解析">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2026-08-01T18:17:04+08:00">
+    <meta property="article:modified_time" content="2026-08-01T18:17:04+08:00">
+    <meta property="article:tag" content="存储">
+    <meta property="article:tag" content="仿真">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="MQSIM架构解析">
+  <meta name="twitter:description" content="SSD仿真器架构解析">
+
+  
+  
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
+  <title>
+    
+    BlogSparkBigBang - MQSIM架构解析
+    
+  </title>
+  
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  
+  
+  
+  <link rel="stylesheet" href="/minima.004eb07110ed1f522fab38e30c07be21bb847d4dd1d0249b610a725a4cfb20e3.css" integrity="">
+  
+  
+  
+  <script defer type="text/javascript" src="/minima.dfa385b1090205830af1510b19e8e9f4f8f730a4cea1b502f18ab83d965d3e86.js" integrity="sha256-36OFsQkCBYMK8VELGejp9Pj3MKTOobUC8Yq4PZZdPoY="></script>
+  
+  
+  
+</head>
+<script>
+  const theme_config = 'light'
+  const theme_light = theme_config === 'system' ? 'light' : theme_config;
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : theme_light;
+  console.debug(theme);
+
+  try {
+    localStorage.setItem('theme', theme);
+    window.minima_theme = theme;
+    document.querySelector('html').classList.add(theme);
+  } catch (e) {
+    console.error(e);
+  }
+</script>
+
+
+
+<body>
+  <header class="mt-3 mb-8">
+  <div class="container mx-auto">
+    <nav class="flex justify-between items-center">
+      <div class="flex items-center">
+        
+        <div id="theme-switch" class="text-2xl cursor-pointer">🌝</div>
+      </div>
+      <ul class="flex items-center text-base font-semibold
+        whitespace-nowrap overflow-x-auto overflow-y-hidden">
+        
+        <li class="ml-2 mr-2">
+          
+          <a href='/zh-cn/'>首页</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/zh-cn/tags">标签</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/zh-cn/series">系列</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/zh-cn/search">🔍</a>
+          
+        </li>
+        
+      </ul>
+      
+      <ul class="flex item-center text-sm font-semibold">
+        
+        <li class="ml-2"><a href="https://blog.sparkbigbang.com/">EN</a></li>
+        
+        <li class="ml-2"><a href="https://blog.sparkbigbang.com/zh-cn/">CH</a></li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+
+  
+<div class="toc-div desktop-only">
+  <nav id="TableOfContents">
+  <ol>
+    <li><a href="#mqsim-项目整体架构">MQSim 项目整体架构</a>
+      <ol>
+        <li><a href="#1-项目概览">1. 项目概览</a></li>
+        <li><a href="#2-目录结构">2. 目录结构</a></li>
+        <li><a href="#3-仿真引擎核心srcsim">3. 仿真引擎核心（<code>src/sim/</code>）</a></li>
+        <li><a href="#4-顶层系统架构">4. 顶层系统架构</a></li>
+        <li><a href="#5-主机侧组件srchost">5. 主机侧组件（<code>src/host/</code>）</a></li>
+        <li><a href="#6-ssd-设备侧组件srcssd">6. SSD 设备侧组件（<code>src/ssd/</code>）</a></li>
+        <li><a href="#7-nvm-芯片物理模型srcnvm_chip">7. NVM 芯片物理模型（<code>src/nvm_chip/</code>）</a></li>
+        <li><a href="#8-配置与参数体系srcexec">8. 配置与参数体系（<code>src/exec/</code>）</a></li>
+        <li><a href="#9-工具库srcutils">9. 工具库（<code>src/utils/</code>）</a></li>
+        <li><a href="#10-关键数据流与请求处理流程">10. 关键数据流与请求处理流程</a></li>
+        <li><a href="#11-信号-槽通信机制">11. 信号-槽通信机制</a></li>
+        <li><a href="#12-预条件化preconditioning">12. 预条件化（Preconditioning）</a></li>
+        <li><a href="#13-统计与报告">13. 统计与报告</a></li>
+        <li><a href="#14-设计模式与架构特点">14. 设计模式与架构特点</a></li>
+        <li><a href="#15-类继承关系总览">15. 类继承关系总览</a></li>
+        <li><a href="#16-深入理解仿真引擎的心跳机制">16. 深入理解：仿真引擎的&quot;心跳&quot;机制</a></li>
+        <li><a href="#17-代码走读指南">17. 代码走读指南</a></li>
+        <li><a href="#18-参考资料">18. 参考资料</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div>
+<div class="container mx-auto">
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">MQSIM架构解析</h1>
+  <div class="mb-3 text-sm flex justify-between ">
+    <div>
+      
+      发布于 &mdash; 2026 年 08 月 01 日
+      
+      
+    </div>
+    
+    <div>
+      
+      
+      <a class="ml-1" href="/zh-cn/tags/%e5%ad%98%e5%82%a8">#存储</a>
+      
+      
+      <a class="ml-1" href="/zh-cn/tags/%e4%bb%bf%e7%9c%9f">#仿真</a>
+      
+    </div>
+    
+  </div>
+  <main class="mb-8">
+    <p>SSD仿真器架构解析</p>
+    <article class="md">
+      <h1 id="mqsim-项目整体架构">MQSim 项目整体架构</h1>
+<blockquote>
+<p>MQSim 是一个精确模拟现代 NVMe 和 SATA SSD 行为的仿真器，由 CMU-SAFARI / ETH Zurich 团队开发，发表于 FAST 2018。它能够忠实建模多队列主机接口协议（如 NVMe）、SSD 稳态行为以及 I/O 请求的端到端延迟。</p>
+</blockquote>
+<hr>
+<h2 id="1-项目概览">1. 项目概览</h2>
+<p>MQSim 是一个<strong>离散事件驱动</strong>的 SSD 仿真器，采用 C++11 编写。其核心设计理念是将 SSD 的硬件栈与主机栈分层建模，通过统一的事件引擎驱动整个仿真过程。</p>
+<ul>
+<li><strong>入口</strong>：<code>src/main.cpp</code></li>
+<li><strong>构建</strong>：Linux 下使用 <code>Makefile</code>（g++ -std=c++11），Windows 下使用 <code>MQSim.sln</code>（Visual Studio 2017+）</li>
+<li><strong>输入</strong>：SSD 配置文件（XML）+ 工作负载定义文件（XML）</li>
+<li><strong>输出</strong>：仿真结果文件（XML）</li>
+</ul>
+<h3 id="运行流程">运行流程</h3>
+<pre tabindex="0"><code>./MQSim -i &lt;SSD配置文件&gt; -w &lt;工作负载定义文件&gt;
+</code></pre><ol>
+<li><code>main.cpp</code> 解析命令行参数，读取 SSD 配置和工作负载定义（XML）</li>
+<li>若配置/工作负载文件不存在，则自动生成默认示例文件</li>
+<li>针对每个 I/O 场景（IO_Scenario），重建 Host 与 SSD 模型并执行仿真</li>
+<li>仿真结束后，将统计结果写入 <code>*_scenario_N.xml</code> 文件</li>
+</ol>
+<hr>
+<h2 id="2-目录结构">2. 目录结构</h2>
+<pre tabindex="0"><code>MQSim/
+├── src/
+│   ├── main.cpp                 # 程序入口：参数解析、配置读取、仿真调度、结果收集
+│   ├── sim/                     # 仿真引擎核心（事件驱动框架）
+│   ├── exec/                    # 执行层（参数集、设备/主机系统组装）
+│   ├── host/                    # 主机侧组件（PCIe、IO Flow、SATA HBA）
+│   ├── ssd/                     # SSD 设备侧组件（FTL、缓存、PHY、主机接口）
+│   ├── nvm_chip/                # NVM 芯片物理模型（Flash Chip/Die/Plane/Block/Page）
+│   └── utils/                   # 工具库（XML、随机数、地址分区等）
+├── ssdconfig.xml                # 示例 SSD 配置文件
+├── workload.xml                 # 示例工作负载定义文件
+├── traces/                      # 示例磁盘 trace 文件
+├── fast18/                      # FAST 2018 论文实验配置
+├── Makefile                     # Linux 构建脚本
+└── MQSim.sln / .vcxproj         # Windows 构建工程
+</code></pre><hr>
+<h2 id="3-仿真引擎核心srcsim">3. 仿真引擎核心（<code>src/sim/</code>）</h2>
+<p>MQSim 采用经典的<strong>离散事件仿真</strong>架构，所有仿真对象通过事件队列驱动。</p>
+<h3 id="31-核心类关系">3.1 核心类关系</h3>
+<pre tabindex="0"><code>Engine (单例，全局唯一)
+  ├── EventTree (红黑树，按触发时间排序的事件队列)
+  │     └── Sim_Event (事件：触发时间 + 目标对象 + 参数)
+  └── ObjectList (unordered_map&lt;id, Sim_Object*&gt;)
+        └── Sim_Object (所有仿真对象的基类)
+</code></pre><h3 id="32-关键类说明">3.2 关键类说明</h3>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>文件</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Engine</code></td>
+          <td><code>Engine.h/cpp</code></td>
+          <td><strong>单例</strong>仿真引擎。管理所有 <code>Sim_Object</code>，驱动事件循环。通过宏 <code>Simulator</code> 访问（<code>#define Simulator MQSimEngine::Engine::Instance()</code>）</td>
+      </tr>
+      <tr>
+          <td><code>EventTree</code></td>
+          <td><code>EventTree.h/cpp</code></td>
+          <td>基于<strong>红黑树</strong>的事件队列实现，支持 O(log n) 的插入/删除/取最小事件</td>
+      </tr>
+      <tr>
+          <td><code>Sim_Object</code></td>
+          <td><code>Sim_Object.h</code></td>
+          <td>所有仿真对象的<strong>抽象基类</strong>，定义生命周期接口</td>
+      </tr>
+      <tr>
+          <td><code>Sim_Event</code></td>
+          <td><code>Sim_Event.h</code></td>
+          <td>事件对象，包含触发时间、目标对象、参数、类型；同一时间点的事件以链表串联</td>
+      </tr>
+      <tr>
+          <td><code>Sim_Reporter</code></td>
+          <td><code>Sim_Reporter.h</code></td>
+          <td>报告接口，定义 <code>Report_results_in_XML()</code> 用于输出统计结果</td>
+      </tr>
+      <tr>
+          <td><code>Sim_Defs</code></td>
+          <td><code>Sim_Defs.h</code></td>
+          <td>核心类型定义：<code>sim_time_type</code>(uint64_t)、<code>stream_id_type</code>、时间常量等</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="33-sim_object-生命周期">3.3 Sim_Object 生命周期</h3>
+<p><code>Sim_Object</code> 定义了四个关键虚函数，引擎在 <code>Start_simulation()</code> 中按以下顺序调用：</p>
+<pre tabindex="0"><code>1. Setup_triggers()          # 连接对象间的事件触发关系（信号-槽）
+2. Validate_simulation_config()  # 校验配置正确性
+3. Start_simulation()        # 启动仿真（注册初始事件）
+4. Execute_simulator_event() # 事件循环中反复调用，处理每个到达的事件
+</code></pre><h3 id="34-事件循环enginestart_simulation">3.4 事件循环（<code>Engine::Start_simulation</code>）</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="err">事件队列非空</span> <span class="o">&amp;&amp;</span> <span class="err">未停止</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="err">取出最小触发时间的事件节点</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">推进仿真时间</span> <span class="n">_sim_time</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">Fire_time</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">遍历该时间点的所有事件链表</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">event</span><span class="o">-&gt;</span><span class="n">Target_sim_object</span><span class="o">-&gt;</span><span class="n">Execute_simulator_event</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="err">删除已处理事件</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="4-顶层系统架构">4. 顶层系统架构</h2>
+<p>MQSim 将整个系统分为**主机侧（Host）<strong>和</strong>设备侧（SSD Device）**两大子系统，通过 PCIe/SATA 接口连接。</p>
+<h3 id="41-系统级数据通路">4.1 系统级数据通路</h3>
+<pre tabindex="0"><code>┌─────────────────────────── 主机侧 (Host_System) ───────────────────────────┐
+│                                                                            │
+│  IO_Flow_Synthetic / IO_Flow_Trace_Based  (生成 I/O 请求)                   │
+│         │                                                                  │
+│         ▼                                                                  │
+│  PCIe_Root_Complex  ────  PCIe_Link  ────  PCIe_Switch                     │
+│  (CPU/内存侧)              (带宽建模)        (路由)            SATA_HBA      │
+│                                                            (SATA 适配)      │
+└──────────────────────────────────┬─────────────────────────────────────────┘
+                                   │ PCIe / SATA 消息
+┌──────────────────────────────────▼─────────────────────────────────────────┐
+│                        SSD 设备侧 (SSD_Device)                              │
+│                                                                            │
+│  Host_Interface  ◄──►  Data_Cache_Manager  ◄──►  FTL  ◄──►  NVM_PHY  ◄──►  │
+│  (NVMe/SATA)           (DRAM 数据缓存)         (闪存转换层)    (物理层)      │
+│                                                                            │
+│                                                              Channels/Chips│
+└────────────────────────────────────────────────────────────────────────────┘
+</code></pre><h3 id="42-组装流程ssd_device-构造函数">4.2 组装流程（<code>SSD_Device</code> 构造函数）</h3>
+<p><code>SSD_Device</code> 构造函数（<code>src/exec/SSD_Device.cpp</code>）按以下步骤组装设备：</p>
+<ol>
+<li><strong>创建 Flash 芯片</strong>：根据 SLC/MLC/TLC 配置读/写延迟参数</li>
+<li><strong>创建通道与芯片</strong>：实例化 <code>ONFI_Channel_NVDDR2</code> 和 <code>Flash_Chip</code></li>
+<li><strong>创建 PHY</strong>：<code>NVM_PHY_ONFI_NVDDR2</code>（通道控制器）</li>
+<li><strong>创建 FTL</strong>：<code>FTL</code>（闪存转换层）</li>
+<li><strong>创建 TSU</strong>：<code>TSU_OutOfOrder</code> 或 <code>TSU_Priority_OutOfOrder</code>（事务调度单元）</li>
+<li><strong>创建 Flash_Block_Manager</strong>：块管理器</li>
+<li><strong>创建 Address_Mapping_Unit</strong>：<code>Page_Level</code> 或 <code>Hybrid</code>（地址映射单元）</li>
+<li><strong>创建 GC_and_WL_Unit</strong>：<code>GC_and_WL_Unit_Page_Level</code>（垃圾回收与磨损均衡）</li>
+<li><strong>创建 Data_Cache_Manager</strong>：<code>Simple</code> 或 <code>Advanced</code>（数据缓存管理器）</li>
+<li><strong>创建 Host_Interface</strong>：<code>NVMe</code> 或 <code>SATA</code>（主机接口）</li>
+</ol>
+<p>所有 <code>Sim_Object</code> 子类实例均通过 <code>Simulator-&gt;AddObject()</code> 注册到引擎。</p>
+<hr>
+<h2 id="5-主机侧组件srchost">5. 主机侧组件（<code>src/host/</code>）</h2>
+<h3 id="51-组件说明">5.1 组件说明</h3>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Host_System</code></td>
+          <td>主机系统顶层，组装 PCIe 组件和 IO Flow，触发预条件化</td>
+      </tr>
+      <tr>
+          <td><code>IO_Flow_Base</code></td>
+          <td>IO 流基类，管理 NVMe 提交/完成队列对、请求统计</td>
+      </tr>
+      <tr>
+          <td><code>IO_Flow_Synthetic</code></td>
+          <td><strong>合成工作负载</strong>生成器，支持多种地址分布、请求大小分布、强度模式</td>
+      </tr>
+      <tr>
+          <td><code>IO_Flow_Trace_Based</code></td>
+          <td><strong>Trace 回放</strong>工作负载，读取 ASCII 格式磁盘 trace</td>
+      </tr>
+      <tr>
+          <td><code>PCIe_Root_Complex</code></td>
+          <td>PCIe 根复合体，连接 CPU/内存与 PCIe 链路</td>
+      </tr>
+      <tr>
+          <td><code>PCIe_Link</code></td>
+          <td>PCIe 链路，建模带宽与延迟</td>
+      </tr>
+      <tr>
+          <td><code>PCIe_Switch</code></td>
+          <td>PCIe 交换机，在主机与 SSD 间路由消息</td>
+      </tr>
+      <tr>
+          <td><code>SATA_HBA</code></td>
+          <td>SATA 主机总线适配器，管理 NCQ</td>
+      </tr>
+      <tr>
+          <td><code>Host_IO_Request</code></td>
+          <td>主机侧 I/O 请求结构</td>
+      </tr>
+      <tr>
+          <td><code>PCIe_Message</code></td>
+          <td>PCIe 消息（读请求/写请求/读完成/写完成）</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="52-io-flow-工作负载生成">5.2 IO Flow 工作负载生成</h3>
+<ul>
+<li>
+<p><strong>合成工作负载</strong>（<code>IO_Flow_Synthetic</code>）：</p>
+<ul>
+<li>两种生成模式：<code>BANDWIDTH</code>（按带宽）或 <code>QUEUE_DEPTH</code>（按队列深度）</li>
+<li>地址分布：<code>STREAMING</code>、<code>RANDOM_UNIFORM</code>、<code>RANDOM_HOTCOLD</code>、<code>MIXED_STREAMING_RANDOM</code></li>
+<li>请求大小分布：<code>FIXED</code> 或 <code>NORMAL</code></li>
+<li>支持地址对齐、热/冷区域比例配置</li>
+</ul>
+</li>
+<li>
+<p><strong>Trace 回放</strong>（<code>IO_Flow_Trace_Based</code>）：</p>
+<ul>
+<li>支持 ASCII 格式 trace（到达时间、设备号、起始地址、大小、读/写）</li>
+<li>支持回放次数、执行百分比配置</li>
+</ul>
+</li>
+</ul>
+<h3 id="53-主机通信路径">5.3 主机通信路径</h3>
+<pre tabindex="0"><code>IO_Flow 生成请求
+    │
+    ├─ NVMe: 写入 Submission Queue → 更新 SQ Tail 寄存器
+    │         → PCIe_Root_Complex → PCIe_Link → PCIe_Switch → SSD Host_Interface
+    │
+    └─ SATA: 通过 SATA_HBA 提交到 NCQ
+</code></pre><hr>
+<h2 id="6-ssd-设备侧组件srcssd">6. SSD 设备侧组件（<code>src/ssd/</code>）</h2>
+<p>SSD 设备内部采用分层流水线架构，数据从主机接口流入，经缓存、FTL、PHY 最终到达闪存芯片。</p>
+<h3 id="61-主机接口层host-interface">6.1 主机接口层（Host Interface）</h3>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Host_Interface_Base</code></td>
+          <td>主机接口基类，包含 <code>Input_Stream_Manager</code>（输入流管理）和 <code>Request_Fetch_Unit</code>（请求抓取单元）</td>
+      </tr>
+      <tr>
+          <td><code>Host_Interface_NVMe</code></td>
+          <td>NVMe 接口，支持多队列（每流一对 SQ/CQ）、<code>Queue_Fetch_Size</code> 参数</td>
+      </tr>
+      <tr>
+          <td><code>Host_Interface_SATA</code></td>
+          <td>SATA 接口，使用原生命令队列（NCQ）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键设计</strong>：</p>
+<ul>
+<li><code>Input_Stream_Manager</code>：管理到达请求的分割（segment_user_request），将用户请求切分为闪存事务</li>
+<li><code>Request_Fetch_Unit</code>：通过 DMA 从主机内存抓取请求信息和写数据，发送读数据回主机</li>
+<li>通过<strong>信号-槽机制</strong>（函数指针回调）与缓存管理器通信</li>
+</ul>
+<h3 id="62-数据缓存层data-cache-manager">6.2 数据缓存层（Data Cache Manager）</h3>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Data_Cache_Manager_Base</code></td>
+          <td>缓存管理器基类，定义缓存模式与共享模式</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_Manager_Flash_Simple</code></td>
+          <td><strong>简单缓存</strong>：实现简单的数据 destaging buffer</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_Manager_Flash_Advanced</code></td>
+          <td><strong>高级缓存</strong>：支持多流共享/分区，含 Bloom Filter、背压缓冲</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_Flash</code></td>
+          <td>缓存数据结构，基于 LRU 淘汰，按流分区</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>缓存模式</strong>（<code>Caching_Mode</code>）：</p>
+<ul>
+<li><code>WRITE_CACHE</code>：写缓存</li>
+<li><code>READ_CACHE</code>：读缓存</li>
+<li><code>WRITE_READ_CACHE</code>：读写缓存</li>
+<li><code>TURNED_OFF</code>：关闭缓存</li>
+</ul>
+<p><strong>共享模式</strong>（<code>Cache_Sharing_Mode</code>）：</p>
+<ul>
+<li><code>SHARED</code>：所有流共享整个缓存空间</li>
+<li><code>EQUAL_PARTITIONING</code>：流间均等分区</li>
+</ul>
+<p><strong>DRAM 时序建模</strong>：通过 <code>estimate_dram_access_time()</code> 函数基于 tRCD/tCL/tRP 和突发传输时间估算 DRAM 访问延迟。</p>
+<h3 id="63-闪存转换层ftl">6.3 闪存转换层（FTL）</h3>
+<p><code>FTL</code>（继承自 <code>NVM_Firmware</code>）是 SSD 固件的核心，包含四个子模块：</p>
+<pre tabindex="0"><code>                    FTL (NVM_Firmware)
+                   /     |        |        \
+    Address_Mapping  Block_Manager  GC_and_WL  TSU
+       Unit            (块管理)     Unit      (事务调度)
+    (地址映射)                     (垃圾回收+磨损均衡)
+</code></pre><h4 id="631-地址映射单元address-mapping-unit">6.3.1 地址映射单元（Address Mapping Unit）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Address_Mapping_Unit_Base</code></td>
+          <td>地址映射基类，定义 LPA→PPA 转换、CMT 管理、GC 屏障接口</td>
+      </tr>
+      <tr>
+          <td><code>Address_Mapping_Unit_Page_Level</code></td>
+          <td><strong>页级映射</strong>：每个逻辑页对应一个物理页，CMT 缓存映射表项</td>
+      </tr>
+      <tr>
+          <td><code>Address_Mapping_Unit_Hybrid</code></td>
+          <td><strong>混合映射</strong>：块级 + 页级混合映射</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键概念</strong>：</p>
+<ul>
+<li><strong>CMT（Cached Mapping Table）</strong>：缓存映射表，存放于 DRAM/SRAM，容量可配置</li>
+<li><strong>Plane Allocation Scheme</strong>：24 种通道/芯片/Die/Plane 分配方案（CWDP 等）</li>
+<li><strong>GC 屏障机制</strong>：在 GC 移动 LPA 期间设置访问屏障，保证数据一致性</li>
+<li><strong>映射页管理</strong>：映射表本身也存储在闪存上，需要专门的映射页读写</li>
+</ul>
+<h4 id="632-块管理器flash-block-manager">6.3.2 块管理器（Flash Block Manager）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Flash_Block_Manager_Base</code></td>
+          <td>块管理基类，维护每 Plane 的簿记信息</td>
+      </tr>
+      <tr>
+          <td><code>Flash_Block_Manager</code></td>
+          <td>具体实现</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键数据结构</strong>：</p>
+<ul>
+<li><code>Block_Pool_Slot_Type</code>：单块簿记（当前写页索引、无效页数、擦除次数、状态机）</li>
+<li><code>PlaneBookKeepingType</code>：Plane 簿记（空闲块池、写前沿 Data_wf/GC_wf/Translation_wf）</li>
+<li><code>Block_Service_Status</code>：块状态机（IDLE/GC_WL/USER/GC_USER 等），消除 GC 与用户 I/O 的竞态</li>
+<li><strong>双写前沿（Double Write Frontier）</strong>：用户写和 GC 写使用不同写前沿块，支持热/冷分离</li>
+</ul>
+<h4 id="633-垃圾回收与磨损均衡单元gc-and-wear-leveling-unit">6.3.3 垃圾回收与磨损均衡单元（GC and Wear Leveling Unit）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>GC_and_WL_Unit_Base</code></td>
+          <td>GC/WL 基类</td>
+      </tr>
+      <tr>
+          <td><code>GC_and_WL_Unit_Page_Level</code></td>
+          <td>页级 GC/WL 实现</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>GC 块选择策略</strong>（<code>GC_Block_Selection_Policy_Type</code>）：</p>
+<ul>
+<li><code>GREEDY</code>：贪心（选无效页最多的块）</li>
+<li><code>RGA</code>：随机贪心</li>
+<li><code>RANDOM</code> / <code>RANDOM_P</code> / <code>RANDOM_PP</code>：随机选择变体</li>
+<li><code>FIFO</code>：先进先出</li>
+</ul>
+<p><strong>关键特性</strong>：</p>
+<ul>
+<li><strong>可抢占 GC</strong>（Preemptible GC）：GC 可被用户请求抢占，通过 <code>gc_hard_threshold</code> 控制</li>
+<li><strong>动态磨损均衡</strong>：基于擦除次数的动态均衡</li>
+<li><strong>静态磨损均衡</strong>：基于最大/最小擦除次数差的静态均衡</li>
+<li><strong>Copyback 操作</strong>：支持闪存内部数据拷贝，减少数据传输</li>
+<li><strong>命令挂起</strong>：支持在读请求到达时挂起正在进行的擦除/编程操作</li>
+</ul>
+<h4 id="634-事务调度单元tsu">6.3.4 事务调度单元（TSU）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>TSU_Base</code></td>
+          <td>事务调度基类，管理事务接收/调度/分发槽</td>
+      </tr>
+      <tr>
+          <td><code>TSU_OutOfOrder</code></td>
+          <td><strong>乱序调度</strong>（Sprinkler 论文方案）</td>
+      </tr>
+      <tr>
+          <td><code>TSU_Priority_OutOfOrder</code></td>
+          <td><strong>优先级乱序调度</strong>：结合 NVMe 优先级</td>
+      </tr>
+      <tr>
+          <td><code>TSU_FLIN</code></td>
+          <td>FLIN 调度（代码中已注释，未启用）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>调度机制</strong>：</p>
+<pre tabindex="0"><code>Prepare_for_transaction_submit()   // 开始一批调度
+Submit_transaction(tx1)            // 提交事务
+Submit_transaction(tx2)
+...
+Schedule()                         // 执行调度，利用 Die 交错和 Plane 并行
+</code></pre><p>TSU 为每个 Channel×Chip 组合维护多类事务队列：</p>
+<ul>
+<li><code>User_Read_TR_Queue</code> / <code>User_Write_TR_Queue</code></li>
+<li><code>Mapping_Read_TR_Queue</code> / <code>Mapping_Write_TR_Queue</code></li>
+<li><code>GC_Read_TR_Queue</code> / <code>GC_Write_TR_Queue</code> / <code>GC_Erase_TR_Queue</code></li>
+</ul>
+<h3 id="64-物理层nvm-phy">6.4 物理层（NVM PHY）</h3>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>NVM_PHY_Base</code></td>
+          <td>PHY 基类</td>
+      </tr>
+      <tr>
+          <td><code>NVM_PHY_ONFI</code></td>
+          <td>ONFI 协议 PHY 基类，定义通道/芯片状态查询接口</td>
+      </tr>
+      <tr>
+          <td><code>NVM_PHY_ONFI_NVDDR2</code></td>
+          <td><strong>NVDDR2 协议实现</strong>：精确建模命令传输、数据传输、执行的时间重叠</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键设计</strong>：</p>
+<ul>
+<li><code>DieBookKeepingEntry</code>：Die 级簿记，记录活动命令、挂起命令、预期完成时间</li>
+<li><code>ChipBookKeepingEntry</code>：Chip 级簿记，记录芯片状态、活动 Die 数</li>
+<li>精确建模<strong>命令传输与执行的重叠</strong>（overlapped command transfer and execution）</li>
+<li>支持<strong>Die 交错</strong>（Die Interleaving）和<strong>多平面操作</strong>（Multi-plane）</li>
+<li>支持<strong>命令挂起/恢复</strong>（Suspend/Resume）</li>
+</ul>
+<h3 id="65-通道与事务">6.5 通道与事务</h3>
+<table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>NVM_Channel_Base</code></td>
+          <td>通道基类</td>
+      </tr>
+      <tr>
+          <td><code>ONFI_Channel_Base</code></td>
+          <td>ONFI 通道，管理通道状态（IDLE/BUSY）和挂载的芯片</td>
+      </tr>
+      <tr>
+          <td><code>ONFI_Channel_NVDDR2</code></td>
+          <td>NVDDR2 通道实现</td>
+      </tr>
+      <tr>
+          <td><code>Flash_Transaction_Queue</code></td>
+          <td>闪存事务队列（继承 std::list），含统计探针 <code>Queue_Probe</code></td>
+      </tr>
+      <tr>
+          <td><code>NVM_Transaction</code></td>
+          <td>事务基类（流ID、来源、类型、用户请求关联）</td>
+      </tr>
+      <tr>
+          <td><code>NVM_Transaction_Flash</code></td>
+          <td>闪存事务（含 LPA/PPA/物理地址）</td>
+      </tr>
+      <tr>
+          <td><code>NVM_Transaction_Flash_RD/WR/ER</code></td>
+          <td>读/写/擦除事务</td>
+      </tr>
+      <tr>
+          <td><code>User_Request</code></td>
+          <td>设备侧用户请求，包含事务列表和统计信息</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="7-nvm-芯片物理模型srcnvm_chip">7. NVM 芯片物理模型（<code>src/nvm_chip/</code>）</h2>
+<p>MQSim 精确建模闪存芯片的层次结构：</p>
+<pre tabindex="0"><code>Flash_Chip (芯片)
+  └── Die (Die，可独立并行执行命令)
+        └── Plane (Plane，支持多平面操作)
+              └── Block (块，擦除单元)
+                    └── Page (页，读写单元)
+</code></pre><table>
+  <thead>
+      <tr>
+          <th>类</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>NVM_Chip</code></td>
+          <td>芯片抽象基类</td>
+      </tr>
+      <tr>
+          <td><code>Flash_Chip</code></td>
+          <td>闪存芯片实现，建模命令执行延迟、挂起/恢复、统计</td>
+      </tr>
+      <tr>
+          <td><code>Die</code></td>
+          <td>Die 结构，含状态、当前/挂起命令、预期完成时间</td>
+      </tr>
+      <tr>
+          <td><code>Plane</code></td>
+          <td>Plane 结构，含块数组、健康块数、读写擦计数</td>
+      </tr>
+      <tr>
+          <td><code>Block</code></td>
+          <td>块结构，含页状态位图、擦除计数</td>
+      </tr>
+      <tr>
+          <td><code>Page</code></td>
+          <td>页结构</td>
+      </tr>
+      <tr>
+          <td><code>Physical_Page_Address</code></td>
+          <td>物理页地址（Channel/Chip/Die/Plane/Block/Page）</td>
+      </tr>
+      <tr>
+          <td><code>Flash_Command</code></td>
+          <td>闪存命令（读/写/擦除/copyback 及多平面变体）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>闪存技术</strong>（<code>Flash_Technology_Type</code>）：SLC / MLC / TLC，不同技术的页延迟不同（LSB/CSB/MSB）。</p>
+<hr>
+<h2 id="8-配置与参数体系srcexec">8. 配置与参数体系（<code>src/exec/</code>）</h2>
+<p>MQSim 采用 XML 格式的分层配置体系：</p>
+<pre tabindex="0"><code>Execution_Parameter_Set (顶层)
+  ├── Host_Parameter_Set (主机配置)
+  │     ├── PCIe_Lane_Bandwidth / PCIe_Lane_Count
+  │     ├── SATA_Processing_Delay
+  │     └── IO_Flow_Definitions (IO 流定义列表)
+  │           ├── IO_Flow_Parameter_Set_Synthetic
+  │           └── IO_Flow_Parameter_Set_Trace_Based
+  └── Device_Parameter_Set (SSD 设备配置)
+        ├── HostInterface_Type (NVME/SATA)
+        ├── Caching_Mechanism (SIMPLE/ADVANCED)
+        ├── Address_Mapping (PAGE_LEVEL/HYBRID)
+        ├── Transaction_Scheduling_Policy
+        ├── GC 相关参数
+        ├── Flash_Channel_Count / Chip_No_Per_Channel
+        └── Flash_Parameter_Set (闪存参数)
+              ├── Flash_Technology (SLC/MLC/TLC)
+              ├── 页读/写/擦除延迟
+              └── Die/Plane/Block/Page 数量
+</code></pre><p>所有参数集类继承 <code>Parameter_Set_Base</code>，实现 <code>XML_serialize()</code> / <code>XML_deserialize()</code> 方法，使用 <code>rapidxml</code> 库解析 XML。</p>
+<h3 id="81-ssdconfigxml-参数详解">8.1 ssdconfig.xml 参数详解</h3>
+<p><code>ssdconfig.xml</code> 对应 <code>Execution_Parameter_Set</code>，包含 <code>Host_Parameter_Set</code>（主机参数）和 <code>Device_Parameter_Set</code>（设备参数）两大块。下面逐个参数解析。</p>
+<h4 id="811-host_parameter_set主机参数">8.1.1 Host_Parameter_Set（主机参数）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>PCIe_Lane_Bandwidth</code></td>
+          <td><code>1.0</code></td>
+          <td>GB/s</td>
+          <td>单条 PCIe 通道的带宽。总带宽 = 此值 × <code>PCIe_Lane_Count</code></td>
+      </tr>
+      <tr>
+          <td><code>PCIe_Lane_Count</code></td>
+          <td><code>4</code></td>
+          <td>条</td>
+          <td>PCIe 通道数。示例配置总带宽 = 1.0 × 4 = 4 GB/s</td>
+      </tr>
+      <tr>
+          <td><code>SATA_Processing_Delay</code></td>
+          <td><code>400000</code></td>
+          <td>ns</td>
+          <td>SATA 接口收发消息的软硬件处理延迟（仅 SATA 接口生效）</td>
+      </tr>
+      <tr>
+          <td><code>Enable_ResponseTime_Logging</code></td>
+          <td><code>false</code></td>
+          <td>布尔</td>
+          <td>是否开启响应时间日志（调试用，会显著降低性能）</td>
+      </tr>
+      <tr>
+          <td><code>ResponseTime_Logging_Period_Length</code></td>
+          <td><code>1000000</code></td>
+          <td>ns</td>
+          <td>响应时间日志的记录周期</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>理解要点</strong>：主机参数主要决定&quot;请求从主机到 SSD 的传输有多快&quot;。NVMe 用 PCIe 带宽参数，SATA 用处理延迟参数。</p>
+</blockquote>
+<h4 id="812-device_parameter_set设备参数">8.1.2 Device_Parameter_Set（设备参数）</h4>
+<p><strong>① 通用与接口参数</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Seed</code></td>
+          <td><code>321</code></td>
+          <td>-</td>
+          <td>设备随机数生成器的种子（影响 GC 块选择、磨损均衡等随机行为）</td>
+      </tr>
+      <tr>
+          <td><code>Enabled_Preconditioning</code></td>
+          <td><code>false</code></td>
+          <td>布尔</td>
+          <td>是否启用预条件化（填充 SSD 到稳态，使仿真结果更真实）</td>
+      </tr>
+      <tr>
+          <td><code>Memory_Type</code></td>
+          <td><code>FLASH</code></td>
+          <td>-</td>
+          <td>存储介质类型，目前仅支持 <code>FLASH</code></td>
+      </tr>
+      <tr>
+          <td><code>HostInterface_Type</code></td>
+          <td><code>NVME</code></td>
+          <td>-</td>
+          <td>主机接口类型：<code>NVME</code> 或 <code>SATA</code></td>
+      </tr>
+      <tr>
+          <td><code>IO_Queue_Depth</code></td>
+          <td><code>65535</code></td>
+          <td>条目数</td>
+          <td>NVMe 的 SQ/CQ 深度（或 SATA 的 NCQ 深度，最大 32）</td>
+      </tr>
+      <tr>
+          <td><code>Queue_Fetch_Size</code></td>
+          <td><code>512</code></td>
+          <td>条目数</td>
+          <td>NVMe 主机接口每次从 SQ 批量抓取的请求数（影响延迟与吞吐的权衡）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>② 数据缓存参数</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Caching_Mechanism</code></td>
+          <td><code>ADVANCED</code></td>
+          <td>-</td>
+          <td>缓存机制：<code>SIMPLE</code>（简单 destage buffer）或 <code>ADVANCED</code>（含 Bloom Filter、背压）</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_Sharing_Mode</code></td>
+          <td><code>SHARED</code></td>
+          <td>-</td>
+          <td>多流缓存共享模式：<code>SHARED</code>（共享）或 <code>EQUAL_PARTITIONING</code>（均等分区）</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_Capacity</code></td>
+          <td><code>268435456</code></td>
+          <td>字节</td>
+          <td>数据缓存总容量（示例 = 256 MB）</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_DRAM_Row_Size</code></td>
+          <td><code>8192</code></td>
+          <td>字节</td>
+          <td>DRAM 行大小</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_DRAM_Data_Rate</code></td>
+          <td><code>100</code></td>
+          <td>MT/s</td>
+          <td>DRAM 数据速率</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_DRAM_Data_Busrt_Size</code></td>
+          <td><code>1</code></td>
+          <td>字节</td>
+          <td>DRAM 单次突发传输字节数</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_DRAM_tRCD</code></td>
+          <td><code>13</code></td>
+          <td>ns</td>
+          <td>DRAM RAS-to-CAS 延迟</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_DRAM_tCL</code></td>
+          <td><code>13</code></td>
+          <td>ns</td>
+          <td>DRAM CAS 延迟</td>
+      </tr>
+      <tr>
+          <td><code>Data_Cache_DRAM_tRP</code></td>
+          <td><code>13</code></td>
+          <td>ns</td>
+          <td>DRAM 预充电延迟</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>理解要点</strong>：DRAM 参数用于估算每次缓存访问的延迟（<code>estimate_dram_access_time</code>），tRCD + tCL + tRP 是一次完整 DRAM 访问的三个阶段。</p>
+</blockquote>
+<p><strong>③ 地址映射参数</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Address_Mapping</code></td>
+          <td><code>PAGE_LEVEL</code></td>
+          <td>-</td>
+          <td>映射类型：<code>PAGE_LEVEL</code>（页级映射）或 <code>HYBRID</code>（混合映射）</td>
+      </tr>
+      <tr>
+          <td><code>Ideal_Mapping_Table</code></td>
+          <td><code>false</code></td>
+          <td>布尔</td>
+          <td>若为 <code>true</code>，假设所有映射表项都在 DRAM 中（无 CMT 缺失，用于理想化实验）</td>
+      </tr>
+      <tr>
+          <td><code>CMT_Capacity</code></td>
+          <td><code>2097152</code></td>
+          <td>字节</td>
+          <td>CMT（缓存映射表）容量（示例 = 2 MB）</td>
+      </tr>
+      <tr>
+          <td><code>CMT_Sharing_Mode</code></td>
+          <td><code>SHARED</code></td>
+          <td>-</td>
+          <td>CMT 多流共享模式：<code>SHARED</code> 或 <code>EQUAL_SIZE_PARTITIONING</code></td>
+      </tr>
+      <tr>
+          <td><code>Plane_Allocation_Scheme</code></td>
+          <td><code>CWDP</code></td>
+          <td>-</td>
+          <td>Plane 分配方案，24 种可选（见下方说明）</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>Plane_Allocation_Scheme 说明</strong>：4 个字母 C/W/D/P 分别代表 Channel、Chip(Way)、Die、Plane，字母顺序表示 LPA 到物理地址的映射优先级。例如 <code>CWDP</code> 表示 LPA 先映射到 Channel，再映射到 Way、Die、Plane。这决定了逻辑页在物理介质上的分布方式，影响并行度。</p>
+</blockquote>
+<p><strong>④ 调度与垃圾回收参数</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Transaction_Scheduling_Policy</code></td>
+          <td><code>PRIORITY_OUT_OF_ORDER</code></td>
+          <td>-</td>
+          <td>事务调度策略：<code>OUT_OF_ORDER</code>、<code>PRIORITY_OUT_OF_ORDER</code> 或 <code>FLIN</code></td>
+      </tr>
+      <tr>
+          <td><code>Overprovisioning_Ratio</code></td>
+          <td><code>0.07</code></td>
+          <td>比例</td>
+          <td>预留空间比例（7% 的物理空间不暴露给主机，用于 GC 和磨损均衡）</td>
+      </tr>
+      <tr>
+          <td><code>GC_Exec_Threshold</code></td>
+          <td><code>0.05</code></td>
+          <td>比例</td>
+          <td>触发 GC 的空闲块阈值（空闲块占比低于 5% 时触发 GC）</td>
+      </tr>
+      <tr>
+          <td><code>GC_Hard_Threshold</code></td>
+          <td><code>0.005</code></td>
+          <td>比例</td>
+          <td>GC 紧急模式阈值（空闲块占比低于 0.5% 时进入不可抢占的紧急 GC）</td>
+      </tr>
+      <tr>
+          <td><code>GC_Block_Selection_Policy</code></td>
+          <td><code>RGA</code></td>
+          <td>-</td>
+          <td>GC 块选择策略：<code>GREEDY</code>/<code>RGA</code>/<code>RANDOM</code>/<code>RANDOM_P</code>/<code>RANDOM_PP</code>/<code>FIFO</code></td>
+      </tr>
+      <tr>
+          <td><code>Use_Copyback_for_GC</code></td>
+          <td><code>false</code></td>
+          <td>布尔</td>
+          <td>GC 时是否使用 copyback（闪存内部拷贝，避免数据经过控制器）</td>
+      </tr>
+      <tr>
+          <td><code>Preemptible_GC_Enabled</code></td>
+          <td><code>false</code></td>
+          <td>布尔</td>
+          <td>是否启用可抢占 GC（GC 可被用户请求抢占）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>⑤ 磨损均衡参数</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Dynamic_Wearleveling_Enabled</code></td>
+          <td><code>true</code></td>
+          <td>布尔</td>
+          <td>是否启用动态磨损均衡（基于擦除次数选择写入块）</td>
+      </tr>
+      <tr>
+          <td><code>Static_Wearleveling_Enabled</code></td>
+          <td><code>true</code></td>
+          <td>布尔</td>
+          <td>是否启用静态磨损均衡（迁移冷数据以均衡擦除次数）</td>
+      </tr>
+      <tr>
+          <td><code>Static_Wearleveling_Threshold</code></td>
+          <td><code>100</code></td>
+          <td>次数</td>
+          <td>静态磨损均衡触发阈值（最大与最小擦除次数差超过此值时触发）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>⑥ 命令挂起参数</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Preferred_suspend_erase_time_for_read</code></td>
+          <td><code>700000</code></td>
+          <td>ns</td>
+          <td>读请求到达时，若擦除操作剩余时间 &gt; 此值才挂起擦除</td>
+      </tr>
+      <tr>
+          <td><code>Preferred_suspend_erase_time_for_write</code></td>
+          <td><code>700000</code></td>
+          <td>ns</td>
+          <td>写请求到达时，若擦除操作剩余时间 &gt; 此值才挂起擦除</td>
+      </tr>
+      <tr>
+          <td><code>Preferred_suspend_write_time_for_read</code></td>
+          <td><code>100000</code></td>
+          <td>ns</td>
+          <td>读请求到达时，若写操作剩余时间 &gt; 此值才挂起写</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>理解要点</strong>：挂起是为了降低读延迟——当读请求到达而芯片正忙于写/擦时，如果剩余时间足够长（超过阈值），就挂起当前操作先执行读，然后再恢复。阈值越大，越不容易挂起。</p>
+</blockquote>
+<p><strong>⑦ 通道与芯片参数</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Flash_Channel_Count</code></td>
+          <td><code>8</code></td>
+          <td>个</td>
+          <td>闪存通道数</td>
+      </tr>
+      <tr>
+          <td><code>Flash_Channel_Width</code></td>
+          <td><code>1</code></td>
+          <td>字节</td>
+          <td>通道数据宽度（ONFI 通常为 1 字节 = 8 位）</td>
+      </tr>
+      <tr>
+          <td><code>Channel_Transfer_Rate</code></td>
+          <td><code>333</code></td>
+          <td>MT/s</td>
+          <td>通道传输速率</td>
+      </tr>
+      <tr>
+          <td><code>Chip_No_Per_Channel</code></td>
+          <td><code>4</code></td>
+          <td>个</td>
+          <td>每通道的芯片数</td>
+      </tr>
+      <tr>
+          <td><code>Flash_Comm_Protocol</code></td>
+          <td><code>NVDDR2</code></td>
+          <td>-</td>
+          <td>闪存通信协议（目前仅支持 <code>NVDDR2</code>）</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>理解要点</strong>：通道带宽 = <code>Flash_Channel_Width</code> × <code>Channel_Transfer_Rate</code> = 1 × 333 = 333 MB/s。总并行度 = 8 通道 × 4 芯片 × 2 Die × 2 Plane = 128 个可并行单元。</p>
+</blockquote>
+<h4 id="813-flash_parameter_set闪存芯片参数">8.1.3 Flash_Parameter_Set（闪存芯片参数）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Flash_Technology</code></td>
+          <td><code>MLC</code></td>
+          <td>-</td>
+          <td>闪存类型：<code>SLC</code>（1bit/cell）、<code>MLC</code>（2bit/cell）、<code>TLC</code>（3bit/cell）</td>
+      </tr>
+      <tr>
+          <td><code>CMD_Suspension_Support</code></td>
+          <td><code>ERASE</code></td>
+          <td>-</td>
+          <td>命令挂起支持：<code>NONE</code>/<code>PROGRAM</code>/<code>PROGRAM_ERASE</code>/<code>ERASE</code></td>
+      </tr>
+      <tr>
+          <td><code>Page_Read_Latency_LSB</code></td>
+          <td><code>75000</code></td>
+          <td>ns</td>
+          <td>读 LSB 页延迟（MLC/TLC 的低位页）</td>
+      </tr>
+      <tr>
+          <td><code>Page_Read_Latency_CSB</code></td>
+          <td><code>75000</code></td>
+          <td>ns</td>
+          <td>读 CSB 页延迟（TLC 的中位页）</td>
+      </tr>
+      <tr>
+          <td><code>Page_Read_Latency_MSB</code></td>
+          <td><code>75000</code></td>
+          <td>ns</td>
+          <td>读 MSB 页延迟（高位页）</td>
+      </tr>
+      <tr>
+          <td><code>Page_Program_Latency_LSB</code></td>
+          <td><code>750000</code></td>
+          <td>ns</td>
+          <td>编程 LSB 页延迟</td>
+      </tr>
+      <tr>
+          <td><code>Page_Program_Latency_CSB</code></td>
+          <td><code>750000</code></td>
+          <td>ns</td>
+          <td>编程 CSB 页延迟</td>
+      </tr>
+      <tr>
+          <td><code>Page_Program_Latency_MSB</code></td>
+          <td><code>750000</code></td>
+          <td>ns</td>
+          <td>编程 MSB 页延迟</td>
+      </tr>
+      <tr>
+          <td><code>Block_Erase_Latency</code></td>
+          <td><code>3800000</code></td>
+          <td>ns</td>
+          <td>块擦除延迟（3.8 ms）</td>
+      </tr>
+      <tr>
+          <td><code>Block_PE_Cycles_Limit</code></td>
+          <td><code>10000</code></td>
+          <td>次</td>
+          <td>块最大擦写次数（寿命限制，MLC 典型值 3000~10000）</td>
+      </tr>
+      <tr>
+          <td><code>Suspend_Erase_Time</code></td>
+          <td><code>700000</code></td>
+          <td>ns</td>
+          <td>挂起擦除操作本身的时间开销</td>
+      </tr>
+      <tr>
+          <td><code>Suspend_Program_Time</code></td>
+          <td><code>100000</code></td>
+          <td>ns</td>
+          <td>挂起编程操作本身的时间开销</td>
+      </tr>
+      <tr>
+          <td><code>Die_No_Per_Chip</code></td>
+          <td><code>2</code></td>
+          <td>个</td>
+          <td>每芯片的 Die 数（Die 可独立并行执行命令）</td>
+      </tr>
+      <tr>
+          <td><code>Plane_No_Per_Die</code></td>
+          <td><code>2</code></td>
+          <td>个</td>
+          <td>每 Die 的 Plane 数（支持多平面操作）</td>
+      </tr>
+      <tr>
+          <td><code>Block_No_Per_Plane</code></td>
+          <td><code>2048</code></td>
+          <td>个</td>
+          <td>每 Plane 的块数</td>
+      </tr>
+      <tr>
+          <td><code>Page_No_Per_Block</code></td>
+          <td><code>256</code></td>
+          <td>个</td>
+          <td>每块的页数</td>
+      </tr>
+      <tr>
+          <td><code>Page_Capacity</code></td>
+          <td><code>8192</code></td>
+          <td>字节</td>
+          <td>页数据容量（8 KB）</td>
+      </tr>
+      <tr>
+          <td><code>Page_Metadat_Capacity</code></td>
+          <td><code>448</code></td>
+          <td>字节</td>
+          <td>页元数据容量（存储 LPA 等）</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>容量计算</strong>：单芯片容量 = 2 Die × 2 Plane × 2048 Block × 256 Page × (8192 + 448) B ≈ 18 GB。整盘 = 8 通道 × 4 芯片 × 18 GB ≈ 144 GB（原始容量）。</p>
+</blockquote>
+<hr>
+<h3 id="82-workloadxml-参数详解">8.2 workload.xml 参数详解</h3>
+<p><code>workload.xml</code> 对应 <code>MQSim_IO_Scenarios</code>，可定义多个 <code>IO_Scenario</code>（每个场景独立仿真一次）。每个场景包含一个或多个 IO Flow 定义，支持合成工作负载（<code>IO_Flow_Parameter_Set_Synthetic</code>）和 trace 回放（<code>IO_Flow_Parameter_Set_Trace_Based</code>）。</p>
+<h4 id="821-io-flow-通用参数两种类型共享">8.2.1 IO Flow 通用参数（两种类型共享）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Priority_Class</code></td>
+          <td><code>HIGH</code></td>
+          <td>-</td>
+          <td>NVMe 优先级：<code>URGENT</code>/<code>HIGH</code>/<code>MEDIUM</code>/<code>LOW</code>（权重 2147483647/4/2/1）</td>
+      </tr>
+      <tr>
+          <td><code>Device_Level_Data_Caching_Mode</code></td>
+          <td><code>WRITE_CACHE</code></td>
+          <td>-</td>
+          <td>该流的缓存模式：<code>WRITE_CACHE</code>/<code>READ_CACHE</code>/<code>WRITE_READ_CACHE</code>/<code>TURNED_OFF</code></td>
+      </tr>
+      <tr>
+          <td><code>Channel_IDs</code></td>
+          <td><code>0,1,2,3,4,5,6,7</code></td>
+          <td>-</td>
+          <td>分配给该流的通道 ID（资源分区）</td>
+      </tr>
+      <tr>
+          <td><code>Chip_IDs</code></td>
+          <td><code>0,1,2,3</code></td>
+          <td>-</td>
+          <td>分配给该流的芯片 ID</td>
+      </tr>
+      <tr>
+          <td><code>Die_IDs</code></td>
+          <td><code>0,1</code></td>
+          <td>-</td>
+          <td>分配给该流的 Die ID</td>
+      </tr>
+      <tr>
+          <td><code>Plane_IDs</code></td>
+          <td><code>0,1</code></td>
+          <td>-</td>
+          <td>分配给该流的 Plane ID</td>
+      </tr>
+      <tr>
+          <td><code>Initial_Occupancy_Percentage</code></td>
+          <td><code>75</code></td>
+          <td>%</td>
+          <td>预条件化时该流的逻辑空间初始占用率</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>理解要点</strong>：<code>Channel_IDs</code> 等参数实现<strong>资源分区</strong>——不同流可以使用不同的物理资源子集。如果所有流使用全部资源，则为共享模式。</p>
+</blockquote>
+<h4 id="822-合成工作负载参数io_flow_parameter_set_synthetic">8.2.2 合成工作负载参数（IO_Flow_Parameter_Set_Synthetic）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Working_Set_Percentage</code></td>
+          <td><code>50</code></td>
+          <td>%</td>
+          <td>工作集占该流可用存储空间的比例（实际访问的地址范围）</td>
+      </tr>
+      <tr>
+          <td><code>Synthetic_Generator_Type</code></td>
+          <td><code>QUEUE_DEPTH</code></td>
+          <td>-</td>
+          <td>生成器类型：<code>BANDWIDTH</code>（按带宽）或 <code>QUEUE_DEPTH</code>（按队列深度）</td>
+      </tr>
+      <tr>
+          <td><code>Read_Percentage</code></td>
+          <td><code>0</code></td>
+          <td>%</td>
+          <td>读请求占比（0 = 全写，100 = 全读）</td>
+      </tr>
+      <tr>
+          <td><code>Address_Distribution</code></td>
+          <td><code>RANDOM_UNIFORM</code></td>
+          <td>-</td>
+          <td>地址分布：<code>STREAMING</code>/<code>RANDOM_UNIFORM</code>/<code>RANDOM_HOTCOLD</code>/<code>MIXED_STREAMING_RANDOM</code></td>
+      </tr>
+      <tr>
+          <td><code>Percentage_of_Hot_Region</code></td>
+          <td><code>0</code></td>
+          <td>%</td>
+          <td>热区占比（仅 <code>RANDOM_HOTCOLD</code> 模式生效，表示 H% 的请求访问热区）</td>
+      </tr>
+      <tr>
+          <td><code>Generated_Aligned_Addresses</code></td>
+          <td><code>true</code></td>
+          <td>布尔</td>
+          <td>是否生成对齐地址</td>
+      </tr>
+      <tr>
+          <td><code>Address_Alignment_Unit</code></td>
+          <td><code>16</code></td>
+          <td>扇区</td>
+          <td>地址对齐粒度（16 扇区 = 8 KB）</td>
+      </tr>
+      <tr>
+          <td><code>Request_Size_Distribution</code></td>
+          <td><code>FIXED</code></td>
+          <td>-</td>
+          <td>请求大小分布：<code>FIXED</code>（固定大小）或 <code>NORMAL</code>（正态分布）</td>
+      </tr>
+      <tr>
+          <td><code>Average_Request_Size</code></td>
+          <td><code>8</code></td>
+          <td>扇区</td>
+          <td>平均请求大小（8 扇区 = 4 KB）</td>
+      </tr>
+      <tr>
+          <td><code>Variance_Request_Size</code></td>
+          <td><code>0</code></td>
+          <td>扇区²</td>
+          <td>请求大小方差（仅 <code>NORMAL</code> 模式生效）</td>
+      </tr>
+      <tr>
+          <td><code>Seed</code></td>
+          <td><code>798</code></td>
+          <td>-</td>
+          <td>该流的随机数种子（影响地址、请求类型、大小等随机生成）</td>
+      </tr>
+      <tr>
+          <td><code>Average_No_of_Reqs_in_Queue</code></td>
+          <td><code>16</code></td>
+          <td>个</td>
+          <td>队列中平均请求数（<code>QUEUE_DEPTH</code> 模式下控制并发度）</td>
+      </tr>
+      <tr>
+          <td><code>Intensity</code></td>
+          <td><code>32768</code></td>
+          <td>B/s</td>
+          <td>I/O 强度（<code>BANDWIDTH</code> 模式下的带宽，字节/秒）</td>
+      </tr>
+      <tr>
+          <td><code>Stop_Time</code></td>
+          <td><code>10000000000</code></td>
+          <td>ns</td>
+          <td>停止生成请求的时间（10 秒）</td>
+      </tr>
+      <tr>
+          <td><code>Total_Requests_To_Generate</code></td>
+          <td><code>0</code></td>
+          <td>个</td>
+          <td>总请求数（若 &gt; 0，则按请求数停止；若 = 0，则按 <code>Stop_Time</code> 停止）</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>两种生成模式对比</strong>：</p>
+<ul>
+<li><code>QUEUE_DEPTH</code>：维持队列中固定数量的未完成请求（<code>Average_No_of_Reqs_in_Queue</code>），模拟恒定压力。请求到达间隔由 SSD 的处理速度自然决定。</li>
+<li><code>BANDWIDTH</code>：按固定带宽（<code>Intensity</code>）生成请求，到达间隔服从指数分布，模拟特定吞吐量。</li>
+</ul>
+</blockquote>
+<h4 id="823-trace-回放参数io_flow_parameter_set_trace_based">8.2.3 Trace 回放参数（IO_Flow_Parameter_Set_Trace_Based）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>示例值</th>
+          <th>单位</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>File_Path</code></td>
+          <td><code>traces/tpcc-small.trace</code></td>
+          <td>-</td>
+          <td>trace 文件路径（ASCII 格式）</td>
+      </tr>
+      <tr>
+          <td><code>Percentage_To_Be_Executed</code></td>
+          <td><code>100</code></td>
+          <td>%</td>
+          <td>trace 执行百分比（可只回放前 N% 的请求）</td>
+      </tr>
+      <tr>
+          <td><code>Relay_Count</code></td>
+          <td><code>1</code></td>
+          <td>次</td>
+          <td>trace 回放次数（&gt;1 表示重复回放多次）</td>
+      </tr>
+      <tr>
+          <td><code>Time_Unit</code></td>
+          <td><code>NANOSECOND</code></td>
+          <td>-</td>
+          <td>trace 中时间戳的单位：<code>PICOSECOND</code>/<code>NANOSECOND</code>/<code>MICROSECOND</code></td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p><strong>Trace 格式</strong>：每行一条记录，字段为：到达时间、设备号、起始扇区、请求大小（扇区）、读写类型（R/W）。详见 <code>src/host/ASCII_Trace_Definition.h</code>。</p>
+</blockquote>
+<h4 id="824-示例-workloadxml-解读">8.2.4 示例 workload.xml 解读</h4>
+<p>示例文件定义了 3 个场景：</p>
+<table>
+  <thead>
+      <tr>
+          <th>场景</th>
+          <th>Flow 1</th>
+          <th>Flow 2</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>场景 1</td>
+          <td>全写，队列深度 16，HIGH 优先级</td>
+          <td>全写，队列深度 2，HIGH 优先级</td>
+          <td>两个写流争抢资源，研究写 contention</td>
+      </tr>
+      <tr>
+          <td>场景 2</td>
+          <td>全读，队列深度 16，URGENT 优先级</td>
+          <td>全读，队列深度 16，HIGH 优先级</td>
+          <td>两个读流不同优先级，研究优先级调度</td>
+      </tr>
+      <tr>
+          <td>场景 3</td>
+          <td>trace 回放 tpcc-small</td>
+          <td>-</td>
+          <td>单流 trace 回放</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>MQSim 会依次执行这 3 个场景，每个场景独立仿真，输出 <code>*_scenario_1.xml</code>、<code>*_scenario_2.xml</code>、<code>*_scenario_3.xml</code> 三个结果文件。</p>
+</blockquote>
+<hr>
+<h2 id="9-工具库srcutils">9. 工具库（<code>src/utils/</code>）</h2>
+<table>
+  <thead>
+      <tr>
+          <th>类/文件</th>
+          <th>职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>XmlWriter</code></td>
+          <td>XML 输出写入器</td>
+      </tr>
+      <tr>
+          <td><code>rapidxml/</code></td>
+          <td>第三方 XML 解析库（header-only）</td>
+      </tr>
+      <tr>
+          <td><code>RandomGenerator</code></td>
+          <td>通用随机数生成器</td>
+      </tr>
+      <tr>
+          <td><code>CMRRandomGenerator</code></td>
+          <td>CMR 随机数生成器</td>
+      </tr>
+      <tr>
+          <td><code>Logical_Address_Partitioning_Unit</code></td>
+          <td><strong>逻辑地址分区单元</strong>：在多流间分配逻辑地址空间和物理资源</td>
+      </tr>
+      <tr>
+          <td><code>Helper_Functions</code></td>
+          <td>辅助函数</td>
+      </tr>
+      <tr>
+          <td><code>StringTools</code></td>
+          <td>字符串处理工具</td>
+      </tr>
+      <tr>
+          <td><code>DistributionTypes</code></td>
+          <td>分布类型定义</td>
+      </tr>
+      <tr>
+          <td><code>Workload_Statistics</code></td>
+          <td>工作负载统计信息（用于预条件化）</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="91-逻辑地址分区">9.1 逻辑地址分区</h3>
+<p><code>Logical_Address_Partitioning_Unit</code> 是多流支持的关键：</p>
+<ul>
+<li>在 NVMe 多流场景下，将逻辑地址空间（LHA）按流分配</li>
+<li>支持物理资源（Channel/Chip/Die/Plane）的流间分区</li>
+<li>通过 <code>LPN_TO_UNIQUE_KEY</code> 宏将流 ID 编码进 LPN，使共享资源（缓存、CMT）的键唯一</li>
+</ul>
+<hr>
+<h2 id="10-关键数据流与请求处理流程">10. 关键数据流与请求处理流程</h2>
+<h3 id="101-写请求完整流程">10.1 写请求完整流程</h3>
+<pre tabindex="0"><code>1. IO_Flow 生成 Host_IO_Request（合成或 trace 回放）
+2. 通过 PCIe_Root_Complex → PCIe_Link → PCIe_Switch 传输到 SSD
+3. Host_Interface 的 Request_Fetch_Unit 通过 DMA 抓取请求信息和写数据
+4. Input_Stream_Manager 将用户请求分割为多个闪存事务（segment_user_request）
+5. Data_Cache_Manager 处理写请求：
+   - 命中缓存 → 更新缓存槽（dirty）
+   - 未命中 → 写入缓存，必要时触发 destage（回写闪存）
+6. FTL 的 Address_Mapping_Unit 进行 LPA→PPA 地址翻译：
+   - CMT 命中 → 直接获取 PPA
+   - CMT 未命中 → 从闪存读取映射页
+7. TSU 调度事务，利用 Die 交错和 Plane 并行
+8. NVM_PHY_ONFI_NVDDR2 将事务转为闪存命令，发送到通道
+9. Flash_Chip 执行编程操作，完成后发出 ready 信号
+10. 信号逐级回传：PHY → TSU → Address_Mapping → Cache → Host_Interface
+11. Host_Interface 通过完成队列通知主机，IO_Flow 更新统计
+</code></pre><h3 id="102-垃圾回收流程">10.2 垃圾回收流程</h3>
+<pre tabindex="0"><code>1. Flash_Block_Manager 检测空闲页比例低于 GC_Exec_Threshold
+2. GC_and_WL_Unit 触发 GC，按策略选择牺牲块
+3. 设置物理块屏障（Set_barrier_for_accessing_physical_block）
+4. 逐页读取牺牲块中的有效页，设置 LPA 屏障
+5. 将有效数据写入新位置（GC 写前沿），可选 copyback
+6. 更新地址映射（Address_Mapping_Unit）
+7. 擦除牺牲块，归还空闲块池
+8. 移除 LPA 屏障，恢复写服务
+</code></pre><hr>
+<h2 id="11-信号-槽通信机制">11. 信号-槽通信机制</h2>
+<p>MQSim 大量使用<strong>函数指针回调</strong>实现对象间通信（类似信号-槽机制）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 注册信号处理器
+</span></span></span><span class="line"><span class="cl"><span class="n">obj</span><span class="o">-&gt;</span><span class="n">Connect_to_user_request_arrived_signal</span><span class="p">(</span><span class="n">handler_function</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">obj</span><span class="o">-&gt;</span><span class="n">ConnectToTransactionServicedSignal</span><span class="p">(</span><span class="n">handler_function</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 广播信号
+</span></span></span><span class="line"><span class="cl"><span class="n">broadcast_user_request_arrival_signal</span><span class="p">(</span><span class="n">user_request</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">broadcastTransactionServicedSignal</span><span class="p">(</span><span class="n">transaction</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>典型信号链：</p>
+<pre tabindex="0"><code>Host_Interface --(UserRequestArrived)--&gt; Data_Cache_Manager
+Data_Cache_Manager --(UserRequestServiced)--&gt; Host_Interface
+PHY --(TransactionServiced)--&gt; TSU / GC_Unit / Address_Mapping_Unit
+Flash_Chip --(ChipReady)--&gt; NVM_PHY
+</code></pre><hr>
+<h2 id="12-预条件化preconditioning">12. 预条件化（Preconditioning）</h2>
+<p>为模拟 SSD 的<strong>稳态行为</strong>，MQSim 在仿真开始前执行预条件化：</p>
+<ol>
+<li><code>Host_System::Start_simulation()</code> 收集各 IO Flow 的工作负载统计</li>
+<li><code>SSD_Device::Perform_preconditioning()</code> 调用：
+<ul>
+<li><code>FTL::Perform_precondition()</code>：按初始占用率填充逻辑页，建立映射表，写入闪存</li>
+<li><code>Data_Cache_Manager::Do_warmup()</code>：根据工作负载特征预热缓存</li>
+</ul>
+</li>
+<li>预条件化使 SSD 从接近稳态的状态开始仿真，避免冷启动偏差</li>
+</ol>
+<hr>
+<h2 id="13-统计与报告">13. 统计与报告</h2>
+<p>MQSim 通过 <code>Sim_Reporter</code> 接口收集并输出统计结果：</p>
+<p><strong>主机侧统计</strong>（每个 IO Flow）：</p>
+<ul>
+<li>请求数量、IOPS、带宽</li>
+<li>设备响应时间（SQ 入队到 CQ 出队）</li>
+<li>端到端延迟（请求生成到完成）</li>
+</ul>
+<p><strong>设备侧统计</strong>：</p>
+<ul>
+<li>FTL 事务级统计</li>
+<li>TSU 各队列统计（队列深度、等待时间）</li>
+<li>每个 Chip 的时间分布（命令执行/数据传输/重叠/空闲占比）</li>
+</ul>
+<p>结果以 XML 格式输出，可通过 Excel 等工具分析。</p>
+<hr>
+<h2 id="14-设计模式与架构特点">14. 设计模式与架构特点</h2>
+<table>
+  <thead>
+      <tr>
+          <th>特点</th>
+          <th>说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>离散事件驱动</strong></td>
+          <td>基于红黑树事件队列，所有组件通过事件驱动</td>
+      </tr>
+      <tr>
+          <td><strong>分层架构</strong></td>
+          <td>主机接口 → 缓存 → FTL → PHY → 芯片，层次清晰</td>
+      </tr>
+      <tr>
+          <td><strong>策略模式</strong></td>
+          <td>地址映射、缓存机制、GC 策略、调度策略均可配置切换</td>
+      </tr>
+      <tr>
+          <td><strong>单例引擎</strong></td>
+          <td><code>Engine</code> 全局单例，通过 <code>Simulator</code> 宏访问</td>
+      </tr>
+      <tr>
+          <td><strong>信号-槽通信</strong></td>
+          <td>函数指针回调实现对象间解耦通信</td>
+      </tr>
+      <tr>
+          <td><strong>多流支持</strong></td>
+          <td>最多 256 个并发 IO 流，支持资源分区与共享</td>
+      </tr>
+      <tr>
+          <td><strong>精确时序建模</strong></td>
+          <td>精确建模 DRAM 访问、通道传输、命令执行及重叠</td>
+      </tr>
+      <tr>
+          <td><strong>XML 配置驱动</strong></td>
+          <td>所有参数通过 XML 配置，支持序列化/反序列化</td>
+      </tr>
+      <tr>
+          <td><strong>跨平台</strong></td>
+          <td>支持 Linux（Makefile）和 Windows（Visual Studio）</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="15-类继承关系总览">15. 类继承关系总览</h2>
+<pre tabindex="0"><code>MQSimEngine::Sim_Object (仿真对象基类)
+├── MQSimEngine::Engine (引擎，非继承，独立单例)
+├── SSD_Device
+├── Host_System
+├── NVM::NVM_Chip
+│     └── NVM::FlashMemory::Flash_Chip
+├── SSD_Components::NVM_Firmware
+│     └── SSD_Components::FTL
+├── SSD_Components::Host_Interface_Base
+│     ├── SSD_Components::Host_Interface_NVMe
+│     └── SSD_Components::Host_Interface_SATA
+├── SSD_Components::Data_Cache_Manager_Base
+│     ├── SSD_Components::Data_Cache_Manager_Flash_Simple
+│     └── SSD_Components::Data_Cache_Manager_Flash_Advanced
+├── SSD_Components::NVM_PHY_Base
+│     └── SSD_Components::NVM_PHY_ONFI
+│           └── SSD_Components::NVM_PHY_ONFI_NVDDR2
+├── SSD_Components::Address_Mapping_Unit_Base
+│     ├── SSD_Components::Address_Mapping_Unit_Page_Level
+│     └── SSD_Components::Address_Mapping_Unit_Hybrid
+├── SSD_Components::GC_and_WL_Unit_Base
+│     └── SSD_Components::GC_and_WL_Unit_Page_Level
+├── SSD_Components::TSU_Base
+│     ├── SSD_Components::TSU_OutofOrder
+│     ├── SSD_Components::TSU_Priority_OutOfOrder
+│     └── SSD_Components::TSU_FLIN
+├── SSD_Components::Flash_Block_Manager_Base
+│     └── SSD_Components::Flash_Block_Manager
+└── Host_Components::IO_Flow_Base
+      ├── Host_Components::IO_Flow_Synthetic
+      └── Host_Components::IO_Flow_Trace_Based
+
+MQSimEngine::Sim_Reporter (报告接口，多继承混入)
+├── SSD_Device : Sim_Object, Sim_Reporter
+├── Host_System : Sim_Object, Sim_Reporter
+├── Host_Interface_Base : Sim_Object, Sim_Reporter
+├── IO_Flow_Base : Sim_Object, Sim_Reporter
+└── Flash_Transaction_Queue : std::list, Sim_Reporter
+</code></pre><hr>
+<h2 id="16-深入理解仿真引擎的心跳机制">16. 深入理解：仿真引擎的&quot;心跳&quot;机制</h2>
+<blockquote>
+<p>&ldquo;所有仿真对象都注册到 Engine，引擎按时间顺序取出事件，调用目标对象的 <code>Execute_simulator_event()</code>。这就是整个系统的&rsquo;心跳&rsquo;。&rdquo;</p>
+<p>本节用真实代码，分三步拆解这条&quot;心跳&quot;链路：① 对象如何注册到引擎，② 事件如何产生并排队，③ 引擎如何取出事件并驱动对象执行。</p>
+</blockquote>
+<h3 id="161-第一步对象注册到引擎把零件装上机器">16.1 第一步：对象注册到引擎（&ldquo;把零件装上机器&rdquo;）</h3>
+<p>每个 <code>Sim_Object</code> 子类在构造时，都会调用 <code>Simulator-&gt;AddObject(this)</code> 把自己注册到引擎的对象表中。引擎用一个 <code>unordered_map&lt;id, Sim_Object*&gt;</code> 管理所有对象。</p>
+<p><strong>代码证据 1：SSD 设备组件的注册</strong>（<code>src/exec/SSD_Device.cpp</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">SSD_Device</span><span class="o">::</span><span class="n">SSD_Device</span><span class="p">(...)</span> <span class="o">:</span> <span class="n">MQSimEngine</span><span class="o">::</span><span class="n">Sim_Object</span><span class="p">(</span><span class="s">&#34;SSDDevice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">SSD_Device</span> <span class="o">*</span><span class="n">device</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">device</span><span class="p">);</span>          <span class="c1">// 注册 SSD 设备本身
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// ... 创建闪存芯片时，每个芯片都注册
+</span></span></span><span class="line"><span class="cl">    <span class="n">chips</span><span class="p">[</span><span class="n">chip_cntr</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NVM</span><span class="o">::</span><span class="n">FlashMemory</span><span class="o">::</span><span class="n">Flash_Chip</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">chips</span><span class="p">[</span><span class="n">chip_cntr</span><span class="p">]);</span> <span class="c1">// 注册每个 Flash 芯片
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// ... 创建 PHY
+</span></span></span><span class="line"><span class="cl">    <span class="n">device</span><span class="o">-&gt;</span><span class="n">PHY</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SSD_Components</span><span class="o">::</span><span class="n">NVM_PHY_ONFI_NVDDR2</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">device</span><span class="o">-&gt;</span><span class="n">PHY</span><span class="p">);</span>      <span class="c1">// 注册物理层
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// ... 创建 FTL
+</span></span></span><span class="line"><span class="cl">    <span class="n">SSD_Components</span><span class="o">::</span><span class="n">FTL</span> <span class="o">*</span><span class="n">ftl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SSD_Components</span><span class="o">::</span><span class="n">FTL</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">ftl</span><span class="p">);</span>              <span class="c1">// 注册 FTL
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// ... 创建 TSU / 地址映射 / GC / 缓存 / 主机接口，每个都 AddObject
+</span></span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">tsu</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">amu</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">gcwl</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">dcm</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">device</span><span class="o">-&gt;</span><span class="n">Host_interface</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>代码证据 2：主机组件的注册</strong>（<code>src/exec/Host_System.cpp</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Host_System</span><span class="o">::</span><span class="n">Host_System</span><span class="p">(...)</span> <span class="o">:</span> <span class="n">MQSimEngine</span><span class="o">::</span><span class="n">Sim_Object</span><span class="p">(</span><span class="s">&#34;Host&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>             <span class="c1">// 注册主机系统
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">Link</span><span class="p">);</span>       <span class="c1">// 注册 PCIe 链路
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">AddObject</span><span class="p">(</span><span class="n">io_flow</span><span class="p">);</span>          <span class="c1">// 注册每个 IO Flow
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>引擎内部如何存储</strong>（<code>src/sim/Engine.h</code>）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Engine</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">sim_object_id_type</span><span class="p">,</span> <span class="n">Sim_Object</span><span class="o">*&gt;</span> <span class="n">_ObjectList</span><span class="p">;</span> <span class="c1">// 对象表
+</span></span></span><span class="line"><span class="cl">    <span class="n">EventTree</span><span class="o">*</span> <span class="n">_EventList</span><span class="p">;</span>                                            <span class="c1">// 事件队列（红黑树）
+</span></span></span><span class="line"><span class="cl">    <span class="n">sim_time_type</span> <span class="n">_sim_time</span><span class="p">;</span>                                          <span class="c1">// 当前仿真时间
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>理解要点</strong>：注册阶段相当于&quot;把所有零件装上机器&quot;。注册后，引擎通过对象 ID 就能找到任何对象。但此时还没有任何事件，机器还没&quot;跳动&quot;。</p>
+</blockquote>
+<h3 id="162-第二步事件的产生与排队设定闹钟">16.2 第二步：事件的产生与排队（&ldquo;设定闹钟&rdquo;）</h3>
+<p>仿真对象通过 <code>Simulator-&gt;Register_sim_event(fireTime, targetObject, params, type)</code> 注册事件——这相当于&quot;设定一个闹钟&quot;，告诉引擎：<strong>在 <code>fireTime</code> 这个时刻，唤醒 <code>targetObject</code>，让它处理这个事件</strong>。</p>
+<h4 id="1621-事件如何创建引擎侧">16.2.1 事件如何创建（引擎侧）</h4>
+<p><strong>代码证据</strong>（<code>src/sim/Engine.cpp</code>）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Sim_Event</span><span class="o">*</span> <span class="n">Engine</span><span class="o">::</span><span class="n">Register_sim_event</span><span class="p">(</span><span class="n">sim_time_type</span> <span class="n">fireTime</span><span class="p">,</span> <span class="n">Sim_Object</span><span class="o">*</span> <span class="n">targetObject</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                       <span class="kt">void</span><span class="o">*</span> <span class="n">parameters</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Sim_Event</span><span class="o">*</span> <span class="n">ev</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Sim_Event</span><span class="p">(</span><span class="n">fireTime</span><span class="p">,</span> <span class="n">targetObject</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">type</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">_EventList</span><span class="o">-&gt;</span><span class="n">Insert_sim_event</span><span class="p">(</span><span class="n">ev</span><span class="p">);</span>   <span class="c1">// 插入红黑树，按 fireTime 排序
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ev</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>Sim_Event</code> 的结构（<code>src/sim/Sim_Event.h</code>）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Sim_Event</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sim_time_type</span> <span class="n">Fire_time</span><span class="p">;</span>        <span class="c1">// 何时触发
+</span></span></span><span class="line"><span class="cl">    <span class="n">Sim_Object</span><span class="o">*</span> <span class="n">Target_sim_object</span><span class="p">;</span>  <span class="c1">// 唤醒谁
+</span></span></span><span class="line"><span class="cl">    <span class="kt">void</span><span class="o">*</span> <span class="n">Parameters</span><span class="p">;</span>               <span class="c1">// 携带的参数
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">Type</span><span class="p">;</span>                       <span class="c1">// 事件类型（由对象自定义）
+</span></span></span><span class="line"><span class="cl">    <span class="n">Sim_Event</span><span class="o">*</span> <span class="n">Next_event</span><span class="p">;</span>          <span class="c1">// 同一时刻的下一个事件（链表）
+</span></span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="n">Ignore</span><span class="p">;</span>                    <span class="c1">// 是否取消
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="1622-第一个事件从哪来启动阶段的第一跳">16.2.2 第一个事件从哪来？（启动阶段的&quot;第一跳&quot;）</h4>
+<p>仿真开始时，引擎会依次调用每个对象的 <code>Start_simulation()</code>。对象在这个函数里注册自己的<strong>第一个事件</strong>，从而启动整个事件链。</p>
+<p><strong>示例：IO Flow 注册第一个请求生成事件</strong>（<code>src/host/IO_Flow_Synthetic.cpp</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">IO_Flow_Synthetic</span><span class="o">::</span><span class="n">Start_simulation</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">IO_Flow_Base</span><span class="o">::</span><span class="n">Start_simulation</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">generator_type</span> <span class="o">==</span> <span class="n">Utils</span><span class="o">::</span><span class="n">Request_Generator_Type</span><span class="o">::</span><span class="n">BANDWIDTH</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 按带宽模式：注册一个&#34;间隔时间后&#34;触发的事件，目标对象是 this（自己）
+</span></span></span><span class="line"><span class="cl">        <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Register_sim_event</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="p">(</span><span class="n">sim_time_type</span><span class="p">)</span><span class="n">random_time_interval_generator</span><span class="o">-&gt;</span><span class="n">Exponential</span><span class="p">(</span><span class="n">Average_inter_arrival_time_nano_sec</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 按队列深度模式：1 纳秒后触发
+</span></span></span><span class="line"><span class="cl">        <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Register_sim_event</span><span class="p">((</span><span class="n">sim_time_type</span><span class="p">)</span><span class="mi">1</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>这里 <code>this</code> 就是 IO Flow 自己。意思是：&ldquo;1 纳秒后，叫醒我，我会生成一批请求。&rdquo;</p>
+</blockquote>
+<h4 id="1623-事件如何链式传播心跳的持续跳动">16.2.3 事件如何&quot;链式传播&quot;？（心跳的持续跳动）</h4>
+<p>关键在于：<strong>对象在处理事件时，往往会注册新的未来事件</strong>，从而让&quot;心跳&quot;持续下去。这形成了一条事件链。</p>
+<p><strong>示例：IO Flow 处理事件时注册下一个事件</strong>（<code>src/host/IO_Flow_Synthetic.cpp</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">IO_Flow_Synthetic</span><span class="o">::</span><span class="n">Execute_simulator_event</span><span class="p">(</span><span class="n">MQSimEngine</span><span class="o">::</span><span class="n">Sim_Event</span><span class="o">*</span> <span class="n">event</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">generator_type</span> <span class="o">==</span> <span class="n">Utils</span><span class="o">::</span><span class="n">Request_Generator_Type</span><span class="o">::</span><span class="n">BANDWIDTH</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Host_IO_Request</span><span class="o">*</span> <span class="n">req</span> <span class="o">=</span> <span class="n">Generate_next_request</span><span class="p">();</span>  <span class="c1">// 生成请求
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">req</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Submit_io_request</span><span class="p">(</span><span class="n">req</span><span class="p">);</span>                       <span class="c1">// 提交请求（会触发后续 PCIe 传输事件）
+</span></span></span><span class="line"><span class="cl">            <span class="c1">// ★ 关键：注册&#34;下一个&#34;事件，让心跳持续
+</span></span></span><span class="line"><span class="cl">            <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Register_sim_event</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Time</span><span class="p">()</span> <span class="o">+</span> <span class="n">random_time_interval_generator</span><span class="o">-&gt;</span><span class="n">Exponential</span><span class="p">(</span><span class="n">Average_inter_arrival_time_nano_sec</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>示例：闪存芯片执行命令时注册&quot;命令完成&quot;事件</strong>（<code>src/nvm_chip/flash_memory/Flash_Chip.cpp</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Flash_Chip</span><span class="o">::</span><span class="n">start_command_execution</span><span class="p">(</span><span class="n">Flash_Command</span><span class="o">*</span> <span class="n">command</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Die</span><span class="o">*</span> <span class="n">targetDie</span> <span class="o">=</span> <span class="n">Dies</span><span class="p">[</span><span class="n">command</span><span class="o">-&gt;</span><span class="n">Address</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">DieID</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 计算命令何时执行完
+</span></span></span><span class="line"><span class="cl">    <span class="n">targetDie</span><span class="o">-&gt;</span><span class="n">Expected_finish_time</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Time</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="o">+</span> <span class="n">Get_command_execution_latency</span><span class="p">(</span><span class="n">command</span><span class="o">-&gt;</span><span class="n">CommandCode</span><span class="p">,</span> <span class="n">command</span><span class="o">-&gt;</span><span class="n">Address</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">PageID</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ★ 注册&#34;命令完成&#34;事件，目标对象是 this（芯片自己）
+</span></span></span><span class="line"><span class="cl">    <span class="n">targetDie</span><span class="o">-&gt;</span><span class="n">CommandFinishEvent</span> <span class="o">=</span> <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Register_sim_event</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">targetDie</span><span class="o">-&gt;</span><span class="n">Expected_finish_time</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Chip_Sim_Event_Type</span><span class="o">::</span><span class="n">COMMAND_FINISHED</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">targetDie</span><span class="o">-&gt;</span><span class="n">Status</span> <span class="o">=</span> <span class="n">DieStatus</span><span class="o">::</span><span class="n">BUSY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>理解要点</strong>：每个对象既是事件的<strong>生产者</strong>也是<strong>消费者</strong>。处理完一个事件后注册新事件，就像多米诺骨牌——推倒第一块，后面的会自动依次倒下。这就是&quot;心跳&quot;能持续跳动的原因。</p>
+</blockquote>
+<h3 id="163-第三步引擎取出事件并驱动执行闹钟响了叫醒对象">16.3 第三步：引擎取出事件并驱动执行（&ldquo;闹钟响了，叫醒对象&rdquo;）</h3>
+<p>这是&quot;心跳&quot;的核心循环，在 <code>Engine::Start_simulation()</code> 中实现。</p>
+<p><strong>代码证据</strong>（<code>src/sim/Engine.cpp</code>）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Engine</span><span class="o">::</span><span class="n">Start_simulation</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">started</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 阶段 A：对所有对象调用 Setup_triggers()（连接信号-槽）
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">obj</span> <span class="p">:</span> <span class="n">_ObjectList</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">obj</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">IsTriggersSetUp</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">            <span class="n">obj</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">Setup_triggers</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 阶段 B：对所有对象调用 Validate_simulation_config()（校验配置）
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">obj</span> <span class="p">:</span> <span class="n">_ObjectList</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">obj</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">Validate_simulation_config</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 阶段 C：对所有对象调用 Start_simulation()（注册初始事件 ← 第一跳！）
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">obj</span> <span class="p">:</span> <span class="n">_ObjectList</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">obj</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">Start_simulation</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 阶段 D：★ 事件循环（心跳的核心）★
+</span></span></span><span class="line"><span class="cl">    <span class="n">Sim_Event</span><span class="o">*</span> <span class="n">ev</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">_EventList</span><span class="o">-&gt;</span><span class="n">Count</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">stop</span><span class="p">)</span>   <span class="c1">// 事件队列空了或被叫停 → 仿真结束
+</span></span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">EventTreeNode</span><span class="o">*</span> <span class="n">minNode</span> <span class="o">=</span> <span class="n">_EventList</span><span class="o">-&gt;</span><span class="n">Get_min_node</span><span class="p">();</span>  <span class="c1">// 取出最早的事件
+</span></span></span><span class="line"><span class="cl">        <span class="n">ev</span> <span class="o">=</span> <span class="n">minNode</span><span class="o">-&gt;</span><span class="n">FirstSimEvent</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">_sim_time</span> <span class="o">=</span> <span class="n">ev</span><span class="o">-&gt;</span><span class="n">Fire_time</span><span class="p">;</span>            <span class="c1">// ★ 推进仿真时间到事件触发时刻
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">ev</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>                  <span class="c1">// 遍历同一时刻的所有事件
+</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ev</span><span class="o">-&gt;</span><span class="n">Ignore</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// ★★★ 核心一行：调用目标对象的 Execute_simulator_event() ★★★
+</span></span></span><span class="line"><span class="cl">                <span class="n">ev</span><span class="o">-&gt;</span><span class="n">Target_sim_object</span><span class="o">-&gt;</span><span class="n">Execute_simulator_event</span><span class="p">(</span><span class="n">ev</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Sim_Event</span><span class="o">*</span> <span class="n">consumed_event</span> <span class="o">=</span> <span class="n">ev</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ev</span> <span class="o">=</span> <span class="n">ev</span><span class="o">-&gt;</span><span class="n">Next_event</span><span class="p">;</span>              <span class="c1">// 同一时刻的下一个事件
+</span></span></span><span class="line"><span class="cl">            <span class="k">delete</span> <span class="n">consumed_event</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">_EventList</span><span class="o">-&gt;</span><span class="n">Remove</span><span class="p">(</span><span class="n">minNode</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="1631-对象如何响应事件execute_simulator_event-的实现">16.3.1 对象如何响应事件？（Execute_simulator_event 的实现）</h4>
+<p>每个对象通过 <code>ev-&gt;Type</code> 判断事件类型，执行不同逻辑。</p>
+<p><strong>示例：闪存芯片处理&quot;命令完成&quot;事件</strong>（<code>src/nvm_chip/flash_memory/Flash_Chip.cpp</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">Flash_Chip</span><span class="o">::</span><span class="n">Execute_simulator_event</span><span class="p">(</span><span class="n">MQSimEngine</span><span class="o">::</span><span class="n">Sim_Event</span><span class="o">*</span> <span class="n">ev</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Chip_Sim_Event_Type</span> <span class="n">eventType</span> <span class="o">=</span> <span class="p">(</span><span class="n">Chip_Sim_Event_Type</span><span class="p">)</span><span class="n">ev</span><span class="o">-&gt;</span><span class="n">Type</span><span class="p">;</span>  <span class="c1">// 取出事件类型
+</span></span></span><span class="line"><span class="cl">    <span class="n">Flash_Command</span><span class="o">*</span> <span class="n">command</span> <span class="o">=</span> <span class="p">(</span><span class="n">Flash_Command</span><span class="o">*</span><span class="p">)</span><span class="n">ev</span><span class="o">-&gt;</span><span class="n">Parameters</span><span class="p">;</span>        <span class="c1">// 取出携带的参数
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">switch</span> <span class="p">(</span><span class="n">eventType</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="n">Chip_Sim_Event_Type</span><span class="o">::</span><span class="nl">COMMAND_FINISHED</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">finish_command_execution</span><span class="p">(</span><span class="n">command</span><span class="p">);</span>  <span class="c1">// 命令执行完了 → 广播 ready 信号
+</span></span></span><span class="line"><span class="cl">            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>finish_command_execution</code> 会通过信号-槽机制通知 PHY：&ldquo;我执行完了&rdquo;，PHY 再通知 TSU，TSU 再通知地址映射/缓存……整条链路被&quot;叫醒&quot;。</p>
+<h3 id="164-完整心跳链路图解">16.4 完整心跳链路图解</h3>
+<p>把三步串起来，一次完整的&quot;心跳&quot;是这样的：</p>
+<pre tabindex="0"><code>【启动阶段】
+  Engine::Start_simulation()
+    ├─ 阶段A: 对所有对象 Setup_triggers()        ← 连接信号-槽
+    ├─ 阶段B: 对所有对象 Validate_simulation_config()  ← 校验配置
+    └─ 阶段C: 对所有对象 Start_simulation()      ← 注册初始事件（第一跳！）
+                └─ IO_Flow::Start_simulation()
+                     └─ Simulator-&gt;Register_sim_event(t=1ns, this)  ← 闹钟1入队
+
+【事件循环】（阶段D，反复跳动）
+  while (事件队列非空):
+    1. 取出最早事件 (t=1ns, IO_Flow)
+    2. _sim_time = 1ns                        ← 时间推进到 1ns
+    3. IO_Flow-&gt;Execute_simulator_event(ev):
+         ├─ Generate_next_request()           ← 生成 I/O 请求
+         ├─ Submit_io_request(req)            ← 提交（触发 PCIe 传输事件入队）
+         └─ Register_sim_event(t=1ns+Δ, this) ← 注册下一个闹钟（心跳持续！）
+
+    --- 下一轮 ---
+    1. 取出最早事件 (t=1ns+δ, PCIe_Link)
+    2. _sim_time = 1ns+δ
+    3. PCIe_Link-&gt;Execute_simulator_event(ev):
+         └─ 消息到达 SSD → 触发 Host_Interface 事件入队
+
+    --- ... 链路继续传播 ... ---
+
+    1. 取出最早事件 (t=10ms, Flash_Chip, COMMAND_FINISHED)
+    2. _sim_time = 10ms
+    3. Flash_Chip-&gt;Execute_simulator_event(ev):
+         └─ finish_command_execution() → 广播 ready 信号
+              → PHY 收到 → 通知 TSU → 通知 Cache → 通知 Host_Interface
+              → 完成队列通知主机 → IO_Flow 更新统计
+</code></pre><h3 id="165-一句话总结">16.5 一句话总结</h3>
+<blockquote>
+<p><strong>Engine 是心脏，EventTree 是起搏器，Sim_Object 是器官。</strong> 引擎每跳一次（取出一个事件），就推进仿真时间，并叫醒一个对象去干活；对象干完活又设定新的闹钟（注册新事件），于是心跳永不停止，直到事件队列清空——仿真结束。</p>
+</blockquote>
+<p>理解了这条链路，就理解了 MQSim 的运行本质：<strong>没有线程、没有锁、没有并发</strong>，只有一个单线程的事件循环，通过&quot;注册事件 → 推进时间 → 执行事件 → 注册新事件&quot;的循环，精确模拟出整个 SSD 系统的时序行为。</p>
+<hr>
+<h2 id="17-代码走读指南">17. 代码走读指南</h2>
+<blockquote>
+<p>本节给出一条<strong>由浅入深、由主干到分支</strong>的推荐阅读路径，帮助你快速建立对 MQSim 整体架构的全局认知。核心思路是：<strong>先读引擎骨架，再读组装流程，最后沿着一次 I/O 请求的数据流逐层深入</strong>。</p>
+</blockquote>
+<h3 id="171-推荐阅读顺序共-7-个阶段">17.1 推荐阅读顺序（共 7 个阶段）</h3>
+<h4 id="阶段-1理解仿真引擎骨架约-30-分钟">阶段 1：理解仿真引擎骨架（约 30 分钟）</h4>
+<p>先读最底层的引擎框架，理解&quot;事件如何驱动一切&quot;。</p>
+<table>
+  <thead>
+      <tr>
+          <th>顺序</th>
+          <th>文件</th>
+          <th>重点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><code>src/sim/Sim_Defs.h</code></td>
+          <td>基础类型：<code>sim_time_type</code>、<code>stream_id_type</code>、<code>Simulator</code> 宏、<code>PRINT_ERROR/PRINT_MESSAGE</code> 宏</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><code>src/sim/Sim_Event.h</code></td>
+          <td>事件结构：<code>Fire_time</code>、<code>Target_sim_object</code>、<code>Next_event</code>（同时间事件链表）</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><code>src/sim/Sim_Object.h</code></td>
+          <td>仿真对象基类：四个生命周期虚函数 <code>Setup_triggers/Validate/Start/Execute_event</code></td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td><code>src/sim/Engine.h</code> + <code>Engine.cpp</code></td>
+          <td><strong>重点</strong>：单例引擎、<code>Start_simulation()</code> 事件循环、<code>Register_sim_event()</code></td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td><code>src/sim/EventTree.h</code></td>
+          <td>红黑树事件队列（了解即可，不必深究实现细节）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键理解点</strong>：所有仿真对象都注册到 <code>Engine</code>，引擎按时间顺序取出事件，调用目标对象的 <code>Execute_simulator_event()</code>。这就是整个系统的&quot;心跳&quot;。</p>
+<h4 id="阶段-2理解程序入口与组装流程约-30-分钟">阶段 2：理解程序入口与组装流程（约 30 分钟）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>顺序</th>
+          <th>文件</th>
+          <th>重点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><code>src/main.cpp</code></td>
+          <td>入口：参数解析 → 读配置 → 读工作负载 → 循环执行场景 → 收集结果</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><code>src/exec/Execution_Parameter_Set.h</code></td>
+          <td>顶层参数集结构（Host + Device 两大部分）</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><code>src/exec/Device_Parameter_Set.h</code></td>
+          <td>SSD 设备的所有可配置参数（静态成员变量即配置项）</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td><code>src/exec/SSD_Device.cpp</code></td>
+          <td><strong>重点</strong>：构造函数是整个 SSD 的&quot;组装流水线&quot;，Step 1~10 依次创建各组件并连接</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键理解点</strong>：<code>SSD_Device.cpp</code> 的构造函数是理解组件关系的最佳入口，它清晰地展示了 10 步组装过程和各组件间的依赖关系。建议在此处画一张组件连接草图。</p>
+<h4 id="阶段-3理解主机侧约-40-分钟">阶段 3：理解主机侧（约 40 分钟）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>顺序</th>
+          <th>文件</th>
+          <th>重点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><code>src/exec/Host_System.cpp</code></td>
+          <td>主机组装：创建 PCIe 组件和 IO Flow，连接 SSD</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><code>src/host/IO_Flow_Base.h</code></td>
+          <td>IO 流基类：NVMe 队列对、请求提交、统计变量</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><code>src/host/IO_Flow_Synthetic.h</code></td>
+          <td>合成工作负载生成器（地址分布、请求大小、强度）</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td><code>src/host/PCIe_Root_Complex.h</code></td>
+          <td>PCIe 根复合体：请求如何进入 PCIe 链路</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td><code>src/host/PCIe_Switch.h</code></td>
+          <td>PCIe 交换机：主机与设备间的消息路由</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键理解点</strong>：IO Flow 生成请求 → 经 PCIe 链路 → 到达 SSD 主机接口。理解这条路径就理解了&quot;请求从哪来&quot;。</p>
+<h4 id="阶段-4理解-ssd-前端主机接口与缓存约-50-分钟">阶段 4：理解 SSD 前端——主机接口与缓存（约 50 分钟）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>顺序</th>
+          <th>文件</th>
+          <th>重点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><code>src/ssd/Host_Interface_Base.h</code></td>
+          <td><strong>重点</strong>：<code>Input_Stream_Manager</code>（请求分割）和 <code>Request_Fetch_Unit</code>（DMA 抓取）两大子组件</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><code>src/ssd/Host_Interface_NVMe.h</code></td>
+          <td>NVMe 实现：SQ/CQ 管理、多流、Queue_Fetch_Size</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><code>src/ssd/Host_Interface_SATA.h</code></td>
+          <td>SATA 实现：NCQ（对比 NVMe 理解差异）</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td><code>src/ssd/Data_Cache_Manager_Base.h</code></td>
+          <td>缓存基类：缓存模式、共享模式、信号连接</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td><code>src/ssd/Data_Cache_Flash.h</code></td>
+          <td>缓存数据结构：LRU 淘汰、缓存槽状态</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td><code>src/ssd/Data_Cache_Manager_Flash_Advanced.h</code></td>
+          <td>高级缓存：destage buffer、背压、Bloom Filter</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键理解点</strong>：主机接口将用户请求<strong>分割</strong>为闪存事务（<code>segment_user_request</code>），交给缓存管理器。缓存命中则直接返回，未命中则 destage 到后端。注意信号-槽回调机制（<code>Connect_to_*_signal</code>）。</p>
+<h4 id="阶段-5理解-ftl-核心约-60-分钟最重要">阶段 5：理解 FTL 核心（约 60 分钟，最重要）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>顺序</th>
+          <th>文件</th>
+          <th>重点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><code>src/ssd/NVM_Firmware.h</code></td>
+          <td>固件基类：地址转换接口</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><code>src/ssd/FTL.h</code></td>
+          <td>FTL：聚合四个子模块（映射/块管理/GC/调度）</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><code>src/ssd/Address_Mapping_Unit_Base.h</code></td>
+          <td><strong>重点</strong>：LPA→PPA 转换、CMT 管理、GC 屏障机制</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td><code>src/ssd/Address_Mapping_Unit_Page_Level.h/.cpp</code></td>
+          <td>页级映射实现（CMT 缺失时的处理流程）</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td><code>src/ssd/Flash_Block_Manager_Base.h</code></td>
+          <td><strong>重点</strong>：<code>Block_Pool_Slot_Type</code>、<code>PlaneBookKeepingType</code>、块状态机</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td><code>src/ssd/GC_and_WL_Unit_Base.h</code></td>
+          <td>GC/WL 基类：块选择策略、可抢占 GC、磨损均衡</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td><code>src/ssd/GC_and_WL_Unit_Page_Level.h/.cpp</code></td>
+          <td>GC 具体实现（读有效页→写新位置→擦除）</td>
+      </tr>
+      <tr>
+          <td>8</td>
+          <td><code>src/ssd/TSU_Base.h</code></td>
+          <td><strong>重点</strong>：事务调度框架（Prepare→Submit→Schedule）</td>
+      </tr>
+      <tr>
+          <td>9</td>
+          <td><code>src/ssd/TSU_OutofOrder.h/.cpp</code></td>
+          <td>乱序调度实现</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键理解点</strong>：FTL 是整个 SSD 固件的核心。建议重点理解：① 地址映射如何工作（CMT 命中/未命中），② GC 如何触发和执行（屏障机制保证一致性），③ TSU 如何利用 Die 交错和 Plane 并行。</p>
+<h4 id="阶段-6理解后端phy-与闪存芯片约-40-分钟">阶段 6：理解后端——PHY 与闪存芯片（约 40 分钟）</h4>
+<table>
+  <thead>
+      <tr>
+          <th>顺序</th>
+          <th>文件</th>
+          <th>重点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td><code>src/ssd/NVM_PHY_Base.h</code></td>
+          <td>PHY 基类</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td><code>src/ssd/NVM_PHY_ONFI.h</code></td>
+          <td>ONFI 协议接口：通道/芯片状态查询</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td><code>src/ssd/NVM_PHY_ONFI_NVDDR2.h</code></td>
+          <td><strong>重点</strong>：<code>DieBookKeepingEntry</code>/<code>ChipBookKeepingEntry</code>、命令传输与执行重叠建模</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td><code>src/nvm_chip/flash_memory/Flash_Chip.h</code></td>
+          <td>闪存芯片：命令执行延迟、挂起/恢复</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td><code>src/nvm_chip/flash_memory/Die.h</code> / <code>Plane.h</code> / <code>Block.h</code></td>
+          <td>闪存层次结构</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td><code>src/ssd/ONFI_Channel_Base.h</code></td>
+          <td>通道：状态管理（IDLE/BUSY）</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>关键理解点</strong>：PHY 是时序建模最精确的部分。理解&quot;命令传输&quot;与&quot;命令执行&quot;如何重叠，以及 Die 交错/多平面操作如何并行，是理解 SSD 性能的关键。</p>
+<h4 id="阶段-7追踪一次完整-io-请求约-30-分钟">阶段 7：追踪一次完整 I/O 请求（约 30 分钟）</h4>
+<p>在理解各组件后，沿着数据流完整追踪一次写请求（参见第 10.1 节）。建议在代码中设置断点或搜索关键函数：</p>
+<pre tabindex="0"><code>IO_Flow_Synthetic::Generate_next_request()          # 1. 生成请求
+  → IO_Flow_Base::Submit_io_request()                # 2. 提交到 NVMe SQ
+    → PCIe_Root_Complex::Write_to_device()           # 3. 经 PCIe 传输
+      → Host_Interface::Consume_pcie_message()        # 4. 设备接收
+        → Request_Fetch_Unit::Process_pcie_write_message()  # 5. DMA 抓取
+          → Input_Stream_Manager::Handle_new_arrived_request()  # 6. 分割事务
+            → Data_Cache_Manager::process_new_user_request()    # 7. 缓存处理
+              → FTL → Address_Mapping_Unit::Translate_lpa_to_ppa_and_dispatch()  # 8. 地址翻译
+                → TSU::Schedule()                     # 9. 事务调度
+                  → NVM_PHY::Send_command_to_chip()   # 10. 发送到芯片
+                    → Flash_Chip::Execute_simulator_event()  # 11. 闪存执行
+</code></pre><h3 id="172-高效走读技巧">17.2 高效走读技巧</h3>
+<ol>
+<li>
+<p><strong>先读 .h 再读 .cpp</strong>：头文件展示接口和结构，实现文件展示细节。先建立接口认知再深入实现。</p>
+</li>
+<li>
+<p><strong>善用搜索追踪信号链</strong>：MQSim 使用函数指针回调通信。搜索 <code>Connect_to_</code> 找到信号注册点，搜索对应的 <code>broadcast_</code> 找到信号发出点，即可理解对象间通信。</p>
+</li>
+<li>
+<p><strong>关注注释中的 Step 编号</strong>：<code>SSD_Device.cpp</code> 构造函数中的 Step 1~10 注释是理解组件创建顺序的最佳向导。</p>
+</li>
+<li>
+<p><strong>从枚举类型理解可配置策略</strong>：<code>Flash_Scheduling_Type</code>、<code>GC_Block_Selection_Policy_Type</code>、<code>Caching_Mechanism</code> 等枚举定义了所有可选策略，配合 <code>switch</code> 语句即可定位实现。</p>
+</li>
+<li>
+<p><strong>画组件关系图</strong>：在阅读 <code>SSD_Device.cpp</code> 时，边读边画组件关系图（谁持有谁的指针、谁调用谁的方法），这是建立全局认知最快的方式。</p>
+</li>
+<li>
+<p><strong>对照 XML 配置理解参数</strong>：打开 <code>ssdconfig.xml</code> 和 <code>workload.xml</code>，对照 <code>Device_Parameter_Set.h</code> 中的静态变量，理解每个配置项如何影响组件创建。</p>
+</li>
+<li>
+<p><strong>先跑通再深读</strong>：先 <code>make &amp;&amp; ./MQSim -i ssdconfig.xml -w workload.xml</code> 跑通一次，观察输出，建立感性认识后再深入代码。</p>
+</li>
+</ol>
+<h3 id="173-一页速查核心文件索引">17.3 一页速查：核心文件索引</h3>
+<pre tabindex="0"><code>入口与组装    main.cpp → Execution_Parameter_Set → SSD_Device.cpp → Host_System.cpp
+引擎骨架      sim/Sim_Object.h → sim/Engine.cpp → sim/EventTree.h
+主机侧        host/IO_Flow_Base → host/PCIe_Root_Complex → host/PCIe_Switch
+SSD 前端      ssd/Host_Interface_Base → ssd/Host_Interface_NVMe → ssd/Data_Cache_Manager_Base
+FTL 核心      ssd/FTL → ssd/Address_Mapping_Unit → ssd/Flash_Block_Manager → ssd/GC_and_WL_Unit → ssd/TSU_Base
+SSD 后端      ssd/NVM_PHY_ONFI_NVDDR2 → ssd/ONFI_Channel_Base → nvm_chip/Flash_Chip → Die → Plane → Block
+工具与配置    utils/Logical_Address_Partitioning_Unit → utils/XmlWriter → utils/rapidxml
+</code></pre><h3 id="174-各阶段代码核心要素详解">17.4 各阶段代码核心要素详解</h3>
+<blockquote>
+<p>下面针对 17.1 的 7 个阶段，逐一展开说明每个阶段<strong>要看什么、抓住什么、核心代码在哪</strong>。每个子章节都给出&quot;核心主干一句话&quot;和&quot;必看代码片段&quot;，帮助你在最短时间内抓住重点。</p>
+</blockquote>
+<h4 id="1741-阶段-1-核心事件引擎骨架">17.4.1 阶段 1 核心：事件引擎骨架</h4>
+<p><strong>核心主干一句话</strong>：理解 <code>Engine</code> 如何通过一个 <code>while</code> 循环，从红黑树取出最早事件，推进时间，调用对象的 <code>Execute_simulator_event()</code>。</p>
+<p><strong>三个必看要点</strong>：</p>
+<ol>
+<li>
+<p><strong>时间是怎么走的？</strong> —— 不是连续推进，而是&quot;跳变&quot;到下一个事件的触发时间。看 <code>Engine::Start_simulation()</code> 第 89 行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">_sim_time</span> <span class="o">=</span> <span class="n">ev</span><span class="o">-&gt;</span><span class="n">Fire_time</span><span class="p">;</span>  <span class="c1">// 时间直接跳到事件触发时刻
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这意味着两次事件之间如果没有事件，时间就&quot;瞬间过去&quot;。这是离散事件仿真的本质。</p>
+</li>
+<li>
+<p><strong>对象怎么被叫醒的？</strong> —— 看第 93 行，整个引擎最核心的一行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ev</span><span class="o">-&gt;</span><span class="n">Target_sim_object</span><span class="o">-&gt;</span><span class="n">Execute_simulator_event</span><span class="p">(</span><span class="n">ev</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>事件里存着&quot;目标对象&quot;的指针，引擎直接调用它的处理函数。对象通过 <code>ev-&gt;Type</code> 判断是什么事件。</p>
+</li>
+<li>
+<p><strong>同一时刻多个事件怎么处理？</strong> —— 看 <code>Sim_Event</code> 的 <code>Next_event</code> 字段。同一时间点的事件用链表串起来，引擎遍历链表依次执行。这保证了同一时刻事件的执行顺序。</p>
+</li>
+</ol>
+<p><strong>抓主干</strong>：读完这个阶段，你应该能回答：&ldquo;MQSim 是单线程还是多线程？时间怎么推进？对象怎么被驱动？&quot;（答案：单线程、事件驱动跳变、通过事件回调）</p>
+<h4 id="1742-阶段-2-核心程序入口与组装流程">17.4.2 阶段 2 核心：程序入口与组装流程</h4>
+<p><strong>核心主干一句话</strong>：<code>SSD_Device.cpp</code> 的构造函数是一条 10 步&quot;组装流水线&rdquo;，把 SSD 的所有零件按依赖顺序创建并连接。</p>
+<p><strong>三个必看要点</strong>：</p>
+<ol>
+<li>
+<p><strong>组装顺序就是依赖顺序</strong>：先创建底层（芯片→通道→PHY），再创建上层（FTL→TSU→块管理→地址映射→GC→缓存→主机接口）。看代码中的 Step 注释：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Step 1: 创建 Flash 芯片
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 2: 创建通道
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 3: 创建 PHY（通道控制器）
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 4: 创建 FTL
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 5: 创建 TSU
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 6: 创建 Flash_Block_Manager
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 7: 创建 Address_Mapping_Unit
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 8: 创建 GC_and_WL_Unit
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 9: 创建 Data_Cache_Manager
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Step 10: 创建 Host_Interface
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>每个组件都注册到引擎</strong>：每个 <code>new</code> 出来的 <code>Sim_Object</code> 子类都紧跟一句 <code>Simulator-&gt;AddObject(obj)</code>。这是让引擎&quot;认识&quot;这个对象，否则它不会被 <code>Start_simulation()</code> 调用。</p>
+</li>
+<li>
+<p><strong>组件间通过指针连接</strong>：看这些赋值语句，它们建立了组件间的引用关系：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">ftl</span><span class="o">-&gt;</span><span class="n">PHY</span> <span class="o">=</span> <span class="p">(</span><span class="n">NVM_PHY_ONFI</span><span class="o">*</span><span class="p">)</span><span class="n">PHY</span><span class="p">;</span>        <span class="c1">// FTL 持有 PHY
+</span></span></span><span class="line"><span class="cl"><span class="n">ftl</span><span class="o">-&gt;</span><span class="n">TSU</span> <span class="o">=</span> <span class="n">tsu</span><span class="p">;</span>                        <span class="c1">// FTL 持有 TSU
+</span></span></span><span class="line"><span class="cl"><span class="n">ftl</span><span class="o">-&gt;</span><span class="n">BlockManager</span> <span class="o">=</span> <span class="n">fbm</span><span class="p">;</span>               <span class="c1">// FTL 持有块管理器
+</span></span></span><span class="line"><span class="cl"><span class="n">ftl</span><span class="o">-&gt;</span><span class="n">Address_Mapping_Unit</span> <span class="o">=</span> <span class="n">amu</span><span class="p">;</span>       <span class="c1">// FTL 持有地址映射
+</span></span></span><span class="line"><span class="cl"><span class="n">ftl</span><span class="o">-&gt;</span><span class="n">GC_and_WL_Unit</span> <span class="o">=</span> <span class="n">gcwl</span><span class="p">;</span>            <span class="c1">// FTL 持有 GC
+</span></span></span><span class="line"><span class="cl"><span class="n">ftl</span><span class="o">-&gt;</span><span class="n">Data_cache_manager</span> <span class="o">=</span> <span class="n">dcm</span><span class="p">;</span>         <span class="c1">// FTL 持有缓存
+</span></span></span><span class="line"><span class="cl"><span class="n">dcm</span><span class="o">-&gt;</span><span class="n">Set_host_interface</span><span class="p">(</span><span class="n">Host_interface</span><span class="p">);</span> <span class="c1">// 缓存持有主机接口
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p><strong>抓主干</strong>：读完这个阶段，你应该能画出一张&quot;谁持有谁&quot;的组件关系图。这是理解后续所有数据流的基础。</p>
+<h4 id="1743-阶段-3-核心主机侧请求生成与传输">17.4.3 阶段 3 核心：主机侧请求生成与传输</h4>
+<p><strong>核心主干一句话</strong>：IO Flow 生成请求 → 经 PCIe 链路（建模带宽延迟）→ 到达 SSD 主机接口。</p>
+<p><strong>三个必看要点</strong>：</p>
+<ol>
+<li>
+<p><strong>请求怎么&quot;定时&quot;生成？</strong> —— 看 <code>IO_Flow_Synthetic</code>，它用事件实现&quot;定时器&quot;：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Start_simulation 中注册第一个事件（启动心跳）
+</span></span></span><span class="line"><span class="cl"><span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Register_sim_event</span><span class="p">((</span><span class="n">sim_time_type</span><span class="p">)</span><span class="mi">1</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Execute_simulator_event 中生成请求并注册下一个事件（持续心跳）
+</span></span></span><span class="line"><span class="cl"><span class="n">Host_IO_Request</span><span class="o">*</span> <span class="n">req</span> <span class="o">=</span> <span class="n">Generate_next_request</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">Submit_io_request</span><span class="p">(</span><span class="n">req</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Register_sim_event</span><span class="p">(</span><span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Time</span><span class="p">()</span> <span class="o">+</span> <span class="err">间隔</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这就是&quot;自我唤醒&quot;模式：事件触发时生成请求，同时设定下一个闹钟。</p>
+</li>
+<li>
+<p><strong>PCIe 链路怎么建模延迟？</strong> —— 看 <code>PCIe_Link</code>，它用事件模拟&quot;传输时间&quot;：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">PCIe_Link</span><span class="o">::</span><span class="n">Deliver</span><span class="p">(</span><span class="n">PCIe_Message</span><span class="o">*</span> <span class="n">message</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Message_buffer_toward_ssd_device</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 注册&#34;传输完成&#34;事件，时间 = 当前时间 + 传输时间
+</span></span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Register_sim_event</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Time</span><span class="p">()</span> <span class="o">+</span> <span class="n">estimate_transfer_time</span><span class="p">(</span><span class="n">message</span><span class="p">),</span> <span class="k">this</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">PCIe_Link</span><span class="o">::</span><span class="n">Execute_simulator_event</span><span class="p">(</span><span class="n">Sim_Event</span><span class="o">*</span> <span class="n">event</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">message</span> <span class="o">=</span> <span class="n">Message_buffer_toward_ssd_device</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Message_buffer_toward_ssd_device</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pcie_switch</span><span class="o">-&gt;</span><span class="n">Deliver_to_device</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>  <span class="c1">// 到达设备
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// 如果还有排队消息，继续注册下一个传输事件
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>关键：PCIe 链路是一个 <code>Sim_Object</code>，它用&quot;入队 → 注册传输完成事件 → 事件触发时出队并投递&quot;来模拟串行传输。</p>
+</li>
+<li>
+<p><strong>NVMe 队列对怎么建模？</strong> —— 看 <code>IO_Flow_Base</code> 中的 <code>NVMe_Queue_Pair</code> 结构，包含 SQ/CQ 的 head/tail 指针和基地址。请求提交时更新 SQ tail，完成时更新 CQ head。</p>
+</li>
+</ol>
+<p><strong>抓主干</strong>：读完这个阶段，你应该理解&quot;一个 I/O 请求从生成到进入 SSD 设备，经过了哪些对象、注册了哪些事件&quot;。</p>
+<h4 id="1744-阶段-4-核心ssd-前端主机接口与缓存">17.4.4 阶段 4 核心：SSD 前端——主机接口与缓存</h4>
+<p><strong>核心主干一句话</strong>：主机接口把用户请求&quot;分割&quot;成闪存粒度的事务，缓存管理器决定哪些数据留在 DRAM、哪些回写到闪存。</p>
+<p><strong>三个必看要点</strong>：</p>
+<ol>
+<li>
+<p><strong>用户请求怎么被&quot;分割&quot;？</strong> —— 主机侧的一个 I/O 请求可能跨多个闪存页，<code>Input_Stream_Manager</code> 负责把它切成多个事务。看 <code>Host_Interface_Base.h</code> 中的 <code>segment_user_request</code>：一个大请求按页大小切分成多个 <code>NVM_Transaction_Flash</code>，每个事务对应一个 LPA。切分后的事务交给缓存管理器处理。</p>
+</li>
+<li>
+<p><strong>缓存命中 vs 未命中怎么走？</strong> —— 看 <code>Data_Cache_Manager_Flash_Advanced</code>，写请求到达时：</p>
+<ul>
+<li><strong>命中缓存</strong>（LPA 已在缓存中）→ 直接更新缓存槽，标记为 dirty，请求立即完成</li>
+<li><strong>未命中</strong>（LPA 不在缓存中）→ 需要先腾出空间（evict），可能触发 destage（把 dirty 数据回写闪存），然后把新数据放入缓存</li>
+</ul>
+</li>
+<li>
+<p><strong>信号-槽怎么连接前后端？</strong> —— 看 <code>Host_Interface</code> 和 <code>Data_Cache_Manager</code> 的 <code>Setup_triggers()</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// 主机接口注册&#34;请求到达&#34;信号的接收方
+</span></span></span><span class="line"><span class="cl"><span class="k">this</span><span class="o">-&gt;</span><span class="n">ConnectToUserRequestArrivalSignal</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="n">signal_handler</span><span class="o">&lt;</span><span class="n">User_Request</span><span class="o">*&gt;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Data_Cache_Manager_Base</span><span class="o">::</span><span class="n">process_new_user_request</span><span class="p">,</span> <span class="p">...));</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这意味着：主机接口收到请求 → 发出 <code>UserRequestArrival</code> 信号 → 缓存管理器的 <code>process_new_user_request</code> 被调用。这就是前端的数据流。</p>
+</li>
+</ol>
+<p><strong>抓主干</strong>：读完这个阶段，你应该理解&quot;一个用户请求进入 SSD 后，怎么被分割、怎么过缓存、什么时候才算&rsquo;完成&rsquo;&quot;。</p>
+<h4 id="1745-阶段-5-核心ftl整个固件的大脑">17.4.5 阶段 5 核心：FTL——整个固件的大脑</h4>
+<p><strong>核心主干一句话</strong>：FTL 协调四个子模块——地址映射（LPA→PPA）、块管理（空闲块池）、垃圾回收（回收无效块）、事务调度（安排闪存命令），是 SSD 固件最核心的部分。</p>
+<p><strong>四个必看要点</strong>：</p>
+<ol>
+<li>
+<p><strong>地址映射：CMT 命中与未命中</strong> —— 看 <code>Address_Mapping_Unit_Page_Level::Translate_lpa_to_ppa_and_dispatch()</code>：</p>
+<ul>
+<li><strong>CMT 命中</strong>：映射表项在 DRAM 缓存中，直接读出 PPA，把事务交给 TSU 调度</li>
+<li><strong>CMT 未命中</strong>：需要从闪存读取映射页 → 这会生成一个 <code>Mapping_Read</code> 事务 → 读回映射数据后填入 CMT → 再继续原始请求。如果 CMT 满了，还要先 evict 一个旧映射项（可能触发回写）</li>
+</ul>
+</li>
+<li>
+<p><strong>GC 怎么触发和执行？</strong> —— 看 <code>GC_and_WL_Unit_Page_Level::Check_gc_required()</code>，这是 GC 的入口：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Check_gc_required</span><span class="p">(</span><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">free_block_pool_size</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">                       <span class="k">const</span> <span class="n">Physical_Page_Address</span><span class="o">&amp;</span> <span class="n">plane_address</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">free_block_pool_size</span> <span class="o">&lt;</span> <span class="n">block_pool_gc_threshold</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// 空闲块不够了
+</span></span></span><span class="line"><span class="cl">        <span class="c1">// 1. 按策略选牺牲块（GREEDY/RGA/RANDOM/FIFO...）
+</span></span></span><span class="line"><span class="cl">        <span class="n">gc_candidate_block_id</span> <span class="o">=</span> <span class="n">block_manager</span><span class="o">-&gt;</span><span class="n">Get_coldest_block_id</span><span class="p">(</span><span class="n">plane_address</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 2. 设置屏障，防止用户请求干扰
+</span></span></span><span class="line"><span class="cl">        <span class="n">address_mapping_unit</span><span class="o">-&gt;</span><span class="n">Set_barrier_for_accessing_physical_block</span><span class="p">(...);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 3. 逐页读有效数据 → 写到新位置 → 擦除旧块
+</span></span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">pageID</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">pageID</span> <span class="o">&lt;</span> <span class="n">block</span><span class="o">-&gt;</span><span class="n">Current_page_write_index</span><span class="p">;</span> <span class="n">pageID</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">block_manager</span><span class="o">-&gt;</span><span class="n">Is_page_valid</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">pageID</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 生成 GC 读事务 + GC 写事务（可选 copyback）
+</span></span></span><span class="line"><span class="cl">                <span class="n">tsu</span><span class="o">-&gt;</span><span class="n">Submit_transaction</span><span class="p">(</span><span class="n">gc_read</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tsu</span><span class="o">-&gt;</span><span class="n">Submit_transaction</span><span class="p">(</span><span class="n">gc_erase_tr</span><span class="p">);</span>  <span class="c1">// 擦除事务
+</span></span></span><span class="line"><span class="cl">        <span class="n">tsu</span><span class="o">-&gt;</span><span class="n">Schedule</span><span class="p">();</span>                        <span class="c1">// 交给 TSU 调度
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>关键理解：GC 不是一步完成的，而是生成一批事务交给 TSU，由事件驱动逐步完成。</p>
+</li>
+<li>
+<p><strong>TSU 怎么调度事务？</strong> —— 看 <code>TSU_OutOfOrder::Schedule()</code>，这是调度的核心：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">TSU_OutOfOrder</span><span class="o">::</span><span class="n">Schedule</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 把收到的事务按类型分发到各 Channel×Chip 的队列
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">transaction_receive_slots</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="p">...)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">switch</span> <span class="p">((</span><span class="o">*</span><span class="n">it</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Type</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="nl">READ</span><span class="p">:</span>  <span class="n">UserReadTRQueue</span><span class="p">[</span><span class="n">ch</span><span class="p">][</span><span class="n">chip</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="nl">WRITE</span><span class="p">:</span> <span class="n">UserWriteTRQueue</span><span class="p">[</span><span class="n">ch</span><span class="p">][</span><span class="n">chip</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">case</span> <span class="nl">ERASE</span><span class="p">:</span> <span class="n">GCEraseTRQueue</span><span class="p">[</span><span class="n">ch</span><span class="p">][</span><span class="n">chip</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="o">*</span><span class="n">it</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 遍历所有通道，如果通道空闲就给芯片发命令
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">channelID</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">channelID</span> <span class="o">&lt;</span> <span class="n">channel_count</span><span class="p">;</span> <span class="n">channelID</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">channel_status</span> <span class="o">==</span> <span class="n">IDLE</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">chip_no_per_channel</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">chip</span> <span class="o">=</span> <span class="n">Get_chip</span><span class="p">(</span><span class="n">channelID</span><span class="p">,</span> <span class="n">round_robin_turn</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">process_chip_requests</span><span class="p">(</span><span class="n">chip</span><span class="p">);</span>  <span class="c1">// 按优先级选队列发命令
+</span></span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>优先级逻辑在 <code>service_read_transaction</code> / <code>service_write_transaction</code> 中：映射事务 &gt; GC 紧急模式 &gt; 用户事务 &gt; GC 普通模式。</p>
+</li>
+<li>
+<p><strong>块状态机怎么防竞态？</strong> —— 看 <code>Flash_Block_Manager_Base.h</code> 中的 <code>Block_Service_Status</code>：一个块在同一时刻只能被 GC 或用户请求独占使用。GC 开始时调用 <code>GC_WL_started()</code> 把块标记为 GC 状态，用户请求看到这个状态就会等待，避免数据不一致。</p>
+</li>
+</ol>
+<p><strong>抓主干</strong>：读完这个阶段，你应该能回答：&ldquo;一个写事务从进入 FTL 到变成闪存命令，经过了哪些步骤？GC 什么时候触发、怎么执行、怎么和用户请求共存？&rdquo;</p>
+<h4 id="1746-阶段-6-核心后端phy-与闪存芯片的精确时序">17.4.6 阶段 6 核心：后端——PHY 与闪存芯片的精确时序</h4>
+<p><strong>核心主干一句话</strong>：PHY 把事务变成闪存命令，精确建模&quot;命令传输&quot;和&quot;命令执行&quot;的时间重叠，并利用 Die 交错和多平面操作最大化并行度。</p>
+<p><strong>三个必看要点</strong>：</p>
+<ol>
+<li>
+<p><strong>命令传输和执行怎么重叠？</strong> —— 看 <code>NVM_PHY_ONFI_NVDDR2::Send_command_to_chip()</code>，这是时序建模的核心：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">Send_command_to_chip</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">NVM_Transaction_Flash</span><span class="o">*&gt;&amp;</span> <span class="n">transaction_list</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 注册&#34;命令传输完成&#34;事件
+</span></span></span><span class="line"><span class="cl">    <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Register_sim_event</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Time</span><span class="p">()</span> <span class="o">+</span> <span class="n">target_channel</span><span class="o">-&gt;</span><span class="n">ReadCommandTime</span><span class="p">[...],</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">,</span> <span class="n">dieBKE</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">NVDDR2_SimEventType</span><span class="o">::</span><span class="n">READ_CMD_ADDR_TRANSFERRED</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 同时计算&#34;命令执行完成&#34;时间（= 传输完成时间 + 执行延迟）
+</span></span></span><span class="line"><span class="cl">    <span class="n">dieBKE</span><span class="o">-&gt;</span><span class="n">Expected_finish_time</span> <span class="o">=</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">chipBKE</span><span class="o">-&gt;</span><span class="n">Last_transfer_finish_time</span> <span class="o">+</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">targetChip</span><span class="o">-&gt;</span><span class="n">Get_command_execution_latency</span><span class="p">(</span><span class="n">commandCode</span><span class="p">,</span> <span class="n">pageID</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>关键：命令传输和执行是<strong>重叠</strong>的——前一个 Die 的命令在执行时，通道可以传输下一个 Die 的命令。这就是 NVDDR2 的核心优势。</p>
+</li>
+<li>
+<p><strong>Die 交错怎么实现？</strong> —— 看 <code>ChipBookKeepingEntry</code> 中的 <code>OngoingDieCMDTransfers</code> 队列：同一个 Chip 上的多个 Die 可以同时执行命令（各 Die 独立），只是共享一个通道传输命令。<code>DieInterleavedTime</code> 记录了交错传输的额外时间。</p>
+</li>
+<li>
+<p><strong>命令挂起/恢复怎么建模？</strong> —— 看 <code>service_read_transaction</code> 中的挂起逻辑：当读请求到达但芯片正在写/擦时，如果剩余时间足够长且启用了挂起功能，就挂起当前操作先执行读：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">case</span> <span class="n">ChipStatus</span><span class="o">::</span><span class="nl">WRITING</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">programSuspensionEnabled</span> <span class="o">||</span> <span class="n">HasSuspendedCommand</span><span class="p">(</span><span class="n">chip</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// 不支持挂起或已挂起过
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">Expected_finish_time</span><span class="p">(</span><span class="n">chip</span><span class="p">)</span> <span class="o">-</span> <span class="n">Simulator</span><span class="o">-&gt;</span><span class="n">Time</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">writeReasonableSuspensionTimeForRead</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>  <span class="c1">// 剩余时间太短，不值得挂起
+</span></span></span><span class="line"><span class="cl">    <span class="n">suspensionRequired</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>  <span class="c1">// 执行挂起
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>挂起后芯片发出 ready 信号，PHY 先执行读命令，再恢复被挂起的写/擦操作。</p>
+</li>
+</ol>
+<p><strong>抓主干</strong>：读完这个阶段，你应该理解&quot;闪存命令从发出到完成，时间花在哪里、哪些操作可以并行、挂起/恢复如何影响时序&quot;。</p>
+<h4 id="1747-阶段-7-核心追踪一次完整-io-请求的端到端旅程">17.4.7 阶段 7 核心：追踪一次完整 I/O 请求的端到端旅程</h4>
+<p><strong>核心主干一句话</strong>：把前 6 个阶段串起来，沿着数据流完整走一遍，验证你对整体架构的理解。</p>
+<p><strong>追踪清单（写请求为例）</strong>：</p>
+<p>按以下顺序在代码中搜索并理解每个函数的作用，每一步都问自己&quot;这里注册了什么事件？数据传给了谁？&quot;</p>
+<pre tabindex="0"><code>① IO_Flow_Synthetic::Generate_next_request()
+   → 生成 Host_IO_Request，设定 LBA、大小、读写类型
+   → 问：请求的 LBA 怎么来的？（看地址分布生成器）
+
+② IO_Flow_Base::Submit_io_request()
+   → 写入 NVMe Submission Queue，更新 SQ Tail
+   → 通过 PCIe_Root_Complex 发送 PCIe 消息
+   → 问：SQ 满了怎么办？
+
+③ PCIe_Link::Deliver() → Execute_simulator_event()
+   → 入队 → 注册传输完成事件 → 事件触发时投递到 PCIe_Switch
+   → 问：传输时间怎么算？（看 estimate_transfer_time）
+
+④ Host_Interface_NVMe::Consume_pcie_message()
+   → 更新 SQ Tail 寄存器 → Request_Fetch_Unit 开始 DMA 抓取
+   → 问：Queue_Fetch_Size 怎么影响抓取行为？
+
+⑤ Input_Stream_Manager::Handle_new_arrived_request()
+   → segment_user_request()：把大请求切成闪存页粒度的事务
+   → 问：一个 4KB 请求切成几个事务？（取决于页大小）
+
+⑥ Data_Cache_Manager::process_new_user_request()
+   → 缓存命中？→ 更新缓存，请求完成
+   → 未命中？→ destage + 插入缓存
+   → 问：destage 触发条件是什么？
+
+⑦ Address_Mapping_Unit::Translate_lpa_to_ppa_and_dispatch()
+   → CMT 命中？→ 取 PPA，交给 TSU
+   → 未命中？→ 读映射页 → 填 CMT → 再翻译
+   → 问：CMT 满了怎么 evict？
+
+⑧ TSU_OutOfOrder::Schedule()
+   → 事务入队 → 遍历通道 → 按优先级选队列 → 发命令
+   → 问：映射事务和用户事务谁先？
+
+⑨ NVM_PHY_ONFI_NVDDR2::Send_command_to_chip()
+   → 注册命令传输事件 → 计算执行完成时间
+   → 问：Die 交错怎么叠加？
+
+⑩ Flash_Chip::Execute_simulator_event(COMMAND_FINISHED)
+   → 命令执行完 → 广播 ready 信号
+   → 信号回传：PHY → TSU → 地址映射 → 缓存 → 主机接口
+   → 问：完成信号怎么传回主机的？
+
+⑪ Host_Interface → 更新 CQ → PCIe 通知主机 → IO_Flow 更新统计
+   → 问：端到端延迟从哪刻算到哪刻？
+</code></pre><p><strong>验证方法</strong>：在 <code>main.cpp</code> 的仿真执行后，打开输出的 XML 结果文件，对照统计项验证你的理解。例如：</p>
+<ul>
+<li><code>Device_Response_Time</code> = SQ 入队到 CQ 出队的时间</li>
+<li><code>End_to_End_Request_Delay</code> = 请求生成到完成的时间</li>
+<li>两者之差 = PCIe 传输 + 主机侧排队时间</li>
+</ul>
+<p><strong>抓主干</strong>：读完这个阶段，你应该能完整回答：&ldquo;一个 I/O 请求从用户程序发出到数据落盘，在 MQSim 中经过了哪些对象、哪些事件、哪些数据结构？&rdquo; 如果你能从头到尾讲清楚这条链路，就真正理解了 MQSim 的架构。</p>
+<hr>
+<h2 id="18-参考资料">18. 参考资料</h2>
+<ul>
+<li><strong>论文</strong>：Tavakkol et al., &ldquo;MQSim: A Framework for Enabling Realistic Studies of Modern Multi-Queue SSD Devices&rdquo;, FAST 2018</li>
+<li><strong>GitHub</strong>：https://github.com/CMU-SAFARI/MQSim</li>
+<li><strong>相关论文</strong>：
+<ul>
+<li>Sprinkler (HPCA 2014) — 乱序调度</li>
+<li>Preemptible GC (TCAD 2013) — 可抢占 GC</li>
+<li>Dynamic Page Allocation (ACM TOMPECS 2016) — Plane 分配方案</li>
+<li>Van Houdt (SIGMETRICS 2013) — GC 块选择算法</li>
+</ul>
+</li>
+</ul>
+
+    </article>
+  </main>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
+    integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"
+    integrity="sha384-YNHdsYkH6gMx9y3mRkmcJ2mFUjTd0qNQQvY9VYZgQd7DcN7env35GzlmFaZ23JGp"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"
+    integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"
+    crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            
+            
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            
+            throwOnError: false
+        });
+    });
+</script>
+
+
+
+
+
+<script 
+  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
+  crossorigin="anonymous">
+</script>
+<script>
+  mermaid.init(undefined, 'code.language-mermaid')
+</script>
+
+
+
+
+
+<div id="comment"></div>
+
+
+
+
+<script>
+    const s = document.createElement("script")
+    s.src = "https://giscus.app/client.js"
+    s.crossOrigin = "anonymous"
+    s.async = true
+    s.setAttribute("data-repo", "tanwubin\/tanwubin.github.io")
+    s.setAttribute("data-repo-id", "R_kgDONvnTiQ")
+    s.setAttribute("data-category", "Announcements")
+    s.setAttribute("data-category-id", "DIC_kwDONvnTic4CmaIS")
+    s.setAttribute("data-mapping", "pathname")
+    s.setAttribute("data-strict", "0")
+    s.setAttribute("data-reactions-enabled", "1")
+    s.setAttribute("data-emit-metadata", "0")
+    s.setAttribute("data-input-position", "buttom")
+    s.setAttribute("data-theme", window.minima_theme + "_protanopia")
+    s.setAttribute("data-lang", "en")
+    s.setAttribute("data-loading", "lazy")
+    document.getElementById("comment").appendChild(s)
+</script>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+  <footer class="mt-8 mb-8">
+  <div class="container mx-auto">
+    <div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-between items-center">
+      <div class="text-center sm:text-left">
+        <p class="mt-0 text-sm">© 2025 SparkBigBang</p>
+        <p class="mt-0 text-xs">
+          Built with Hugo v0.161.1
+          
+        </p>
+      </div>
+      
+      <p class="flex items-center mt-0">
+        
+          <a class="icon ml-1 mr-1" href="https://twitter.com/brieftime" title="twitter">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="mailto:644346160@qq.com" title="email">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="https://github.com/tanwubin" title="github">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          
+          </a>
+        
+          <a class="icon ml-1 mr-1" href="/index.xml" title="rss">
+          
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+          
+          </a>
+        
+      </p>
+    </div>
+  </div>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gumshoejs@5.1.2/dist/gumshoe.min.js"></script>
+  <script>
+    var spy = new Gumshoe('#TableOfContents a', {
+        nested: true,
+        nestedClass: 'active'
+      });
+  </script>
+</body>
+
+</html>

@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.sparkbigbang.com/zh-cn/</loc>
-    <lastmod>2026-07-31T20:21:24+08:00</lastmod>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
@@ -16,7 +16,7 @@
                 />
   </url><url>
     <loc>https://blog.sparkbigbang.com/zh-cn/categories/</loc>
-    <lastmod>2026-07-31T20:21:24+08:00</lastmod>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
@@ -27,6 +27,57 @@
                 hreflang="zh-cn"
                 href="https://blog.sparkbigbang.com/zh-cn/categories/"
                 />
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/zh-cn/categories/keep_learn/</loc>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://blog.sparkbigbang.com/categories/keep_learn/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://blog.sparkbigbang.com/zh-cn/categories/keep_learn/"
+                />
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/zh-cn/mqsim-architecture/</loc>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/zh-cn/series/</loc>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://blog.sparkbigbang.com/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://blog.sparkbigbang.com/zh-cn/series/"
+                />
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/zh-cn/tags/</loc>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://blog.sparkbigbang.com/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://blog.sparkbigbang.com/zh-cn/tags/"
+                />
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/zh-cn/tags/%E5%AD%98%E5%82%A8/</loc>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/zh-cn/series/%E5%AD%98%E5%82%A8%E4%BB%BF%E7%9C%9F/</loc>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.sparkbigbang.com/zh-cn/tags/%E4%BB%BF%E7%9C%9F/</loc>
+    <lastmod>2026-08-01T18:17:04+08:00</lastmod>
   </url><url>
     <loc>https://blog.sparkbigbang.com/zh-cn/tags/dgx-spark/</loc>
     <lastmod>2026-07-31T20:21:24+08:00</lastmod>
@@ -47,19 +98,6 @@
                 href="https://blog.sparkbigbang.com/zh-cn/categories/keep_practice/"
                 />
   </url><url>
-    <loc>https://blog.sparkbigbang.com/zh-cn/tags/</loc>
-    <lastmod>2026-07-31T20:21:24+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="https://blog.sparkbigbang.com/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://blog.sparkbigbang.com/zh-cn/tags/"
-                />
-  </url><url>
     <loc>https://blog.sparkbigbang.com/zh-cn/using-two-asus-ascend-gx10-for-ai/</loc>
     <lastmod>2026-07-31T20:21:24+08:00</lastmod>
   </url><url>
@@ -71,32 +109,6 @@
   </url><url>
     <loc>https://blog.sparkbigbang.com/zh-cn/des-simulation/</loc>
     <lastmod>2026-04-06T08:46:34+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.sparkbigbang.com/zh-cn/categories/keep_learn/</loc>
-    <lastmod>2026-04-06T08:46:34+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="https://blog.sparkbigbang.com/categories/keep_learn/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://blog.sparkbigbang.com/zh-cn/categories/keep_learn/"
-                />
-  </url><url>
-    <loc>https://blog.sparkbigbang.com/zh-cn/series/</loc>
-    <lastmod>2026-04-06T08:46:34+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="https://blog.sparkbigbang.com/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="https://blog.sparkbigbang.com/zh-cn/series/"
-                />
   </url><url>
     <loc>https://blog.sparkbigbang.com/zh-cn/series/%E4%BB%BF%E7%9C%9F/</loc>
     <lastmod>2026-04-06T08:46:34+08:00</lastmod>

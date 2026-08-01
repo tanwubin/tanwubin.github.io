@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>© 2025 SparkBigBang</copyright>
-    <lastBuildDate>Mon, 06 Apr 2026 08:46:34 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 01 Aug 2026 18:17:04 +0800</lastBuildDate>
     <atom:link href="https://blog.sparkbigbang.com/zh-cn/categories/keep_learn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MQSIM架构解析</title>
+      <link>https://blog.sparkbigbang.com/zh-cn/mqsim-architecture/</link>
+      <pubDate>Sat, 01 Aug 2026 18:17:04 +0800</pubDate>
+      <guid>https://blog.sparkbigbang.com/zh-cn/mqsim-architecture/</guid>
+      <description>&lt;h1 id=&#34;mqsim-项目整体架构&#34;&gt;MQSim 项目整体架构&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;MQSim 是一个精确模拟现代 NVMe 和 SATA SSD 行为的仿真器，由 CMU-SAFARI / ETH Zurich 团队开发，发表于 FAST 2018。它能够忠实建模多队列主机接口协议（如 NVMe）、SSD 稳态行为以及 I/O 请求的端到端延迟。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;1-项目概览&#34;&gt;1. 项目概览&lt;/h2&gt;&#xA;&lt;p&gt;MQSim 是一个&lt;strong&gt;离散事件驱动&lt;/strong&gt;的 SSD 仿真器，采用 C++11 编写。其核心设计理念是将 SSD 的硬件栈与主机栈分层建模，通过统一的事件引擎驱动整个仿真过程。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;入口&lt;/strong&gt;：&lt;code&gt;src/main.cpp&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;构建&lt;/strong&gt;：Linux 下使用 &lt;code&gt;Makefile&lt;/code&gt;（g++ -std=c++11），Windows 下使用 &lt;code&gt;MQSim.sln&lt;/code&gt;（Visual Studio 2017+）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;输入&lt;/strong&gt;：SSD 配置文件（XML）+ 工作负载定义文件（XML）&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;输出&lt;/strong&gt;：仿真结果文件（XML）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;运行流程&#34;&gt;运行流程&lt;/h3&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;./MQSim -i &amp;lt;SSD配置文件&amp;gt; -w &amp;lt;工作负载定义文件&amp;gt;&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;ol&gt;&#xA;&lt;li&gt;&lt;code&gt;main.cpp&lt;/code&gt; 解析命令行参数，读取 SSD 配置和工作负载定义（XML）&lt;/li&gt;&#xA;&lt;li&gt;若配置/工作负载文件不存在，则自动生成默认示例文件&lt;/li&gt;&#xA;&lt;li&gt;针对每个 I/O 场景（IO_Scenario），重建 Host 与 SSD 模型并执行仿真&lt;/li&gt;&#xA;&lt;li&gt;仿真结束后，将统计结果写入 &lt;code&gt;*_scenario_N.xml&lt;/code&gt; 文件&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;2-目录结构&#34;&gt;2. 目录结构&lt;/h2&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;MQSim/&#xA;├── src/&#xA;│   ├── main.cpp                 # 程序入口：参数解析、配置读取、仿真调度、结果收集&#xA;│   ├── sim/                     # 仿真引擎核心（事件驱动框架）&#xA;│   ├── exec/                    # 执行层（参数集、设备/主机系统组装）&#xA;│   ├── host/                    # 主机侧组件（PCIe、IO Flow、SATA HBA）&#xA;│   ├── ssd/                     # SSD 设备侧组件（FTL、缓存、PHY、主机接口）&#xA;│   ├── nvm_chip/                # NVM 芯片物理模型（Flash Chip/Die/Plane/Block/Page）&#xA;│   └── utils/                   # 工具库（XML、随机数、地址分区等）&#xA;├── ssdconfig.xml                # 示例 SSD 配置文件&#xA;├── workload.xml                 # 示例工作负载定义文件&#xA;├── traces/                      # 示例磁盘 trace 文件&#xA;├── fast18/                      # FAST 2018 论文实验配置&#xA;├── Makefile                     # Linux 构建脚本&#xA;└── MQSim.sln / .vcxproj         # Windows 构建工程&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;&#xA;&lt;h2 id=&#34;3-仿真引擎核心srcsim&#34;&gt;3. 仿真引擎核心（&lt;code&gt;src/sim/&lt;/code&gt;）&lt;/h2&gt;&#xA;&lt;p&gt;MQSim 采用经典的&lt;strong&gt;离散事件仿真&lt;/strong&gt;架构，所有仿真对象通过事件队列驱动。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>DES离散事件仿真理论及实践</title>
       <link>https://blog.sparkbigbang.com/zh-cn/des-simulation/</link>

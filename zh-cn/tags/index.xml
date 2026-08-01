@@ -7,8 +7,22 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>© 2025 SparkBigBang</copyright>
-    <lastBuildDate>Fri, 31 Jul 2026 20:21:24 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 01 Aug 2026 18:17:04 +0800</lastBuildDate>
     <atom:link href="https://blog.sparkbigbang.com/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>存储</title>
+      <link>https://blog.sparkbigbang.com/zh-cn/tags/%E5%AD%98%E5%82%A8/</link>
+      <pubDate>Sat, 01 Aug 2026 18:17:04 +0800</pubDate>
+      <guid>https://blog.sparkbigbang.com/zh-cn/tags/%E5%AD%98%E5%82%A8/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>仿真</title>
+      <link>https://blog.sparkbigbang.com/zh-cn/tags/%E4%BB%BF%E7%9C%9F/</link>
+      <pubDate>Sat, 01 Aug 2026 18:17:04 +0800</pubDate>
+      <guid>https://blog.sparkbigbang.com/zh-cn/tags/%E4%BB%BF%E7%9C%9F/</guid>
+      <description></description>
+    </item>
     <item>
       <title>DGX Spark</title>
       <link>https://blog.sparkbigbang.com/zh-cn/tags/dgx-spark/</link>

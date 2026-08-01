@@ -7,8 +7,29 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>© 2025 SparkBigBang</copyright>
-    <lastBuildDate>Mon, 06 Apr 2026 08:46:34 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 31 Jul 2026 20:21:24 +0800</lastBuildDate>
     <atom:link href="https://blog.sparkbigbang.com/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DGX Spark</title>
+      <link>https://blog.sparkbigbang.com/zh-cn/tags/dgx-spark/</link>
+      <pubDate>Fri, 31 Jul 2026 20:21:24 +0800</pubDate>
+      <guid>https://blog.sparkbigbang.com/zh-cn/tags/dgx-spark/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>GX10</title>
+      <link>https://blog.sparkbigbang.com/zh-cn/tags/gx10/</link>
+      <pubDate>Fri, 31 Jul 2026 20:21:24 +0800</pubDate>
+      <guid>https://blog.sparkbigbang.com/zh-cn/tags/gx10/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>推理</title>
+      <link>https://blog.sparkbigbang.com/zh-cn/tags/%E6%8E%A8%E7%90%86/</link>
+      <pubDate>Fri, 31 Jul 2026 20:21:24 +0800</pubDate>
+      <guid>https://blog.sparkbigbang.com/zh-cn/tags/%E6%8E%A8%E7%90%86/</guid>
+      <description></description>
+    </item>
     <item>
       <title>DES</title>
       <link>https://blog.sparkbigbang.com/zh-cn/tags/des/</link>
